@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import App from "../src/Hello";
+// import App from "../src/Hello";
+import App from "../src/App";
 
 export default { title: "Test" };
 
@@ -17,7 +18,8 @@ export const app = () => {
   }, []);
   */
 
-  return <App msg={"Hello, Tero"} />;
+  // return <App msg={"Bye, Tero"} />;
+  return <App />;
 };
 app.story = {
   name: "App",
