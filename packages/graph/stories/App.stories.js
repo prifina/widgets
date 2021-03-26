@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import App from "../src/graph";
 
-export default { title: "Test" };
+export default { title: "Graph" };
 
 export const app = () => {
   /*
