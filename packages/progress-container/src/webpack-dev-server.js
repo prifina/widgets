@@ -5,10 +5,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { LocalComponent } from "./App.js";
+// import { LocalComponent } from "./App.js";
+import { App } from "./App.js"
 
 const node = document.getElementById("app");
 
-const App = (props) => <LocalComponent {...props} />;
+// const App = (props) => <LocalComponent {...props} />;
+const App = (props) => <PC />;
+
 
 ReactDOM.render(<App msg={"Hello, Tero"} />, node);

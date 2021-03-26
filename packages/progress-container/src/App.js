@@ -1,17 +1,33 @@
 import React from "react";
-import { PrifinaProvider, PrifinaContext } from "@prifina/hooks";
+import { PrifinaProvider, PrifinaContext, usePrifina } from "@prifina/hooks";
+import Select from "react-select";
+import Box from "@blend-ui/core/dist/esm/Box";
+import { Text, Flex } from "@blend-ui/core";
+
 import ProgressContainer from "./ProgressContainer";
 import PC from "./PC";
+import { deviceOptions, getDeviceData } from "../src/data/helper";
+import ProgressCard from "./ProgressCard"
 
-// import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Text, Flex } from "@blend-ui/core";
-import { extendTheme, ThemeProvider } from "@chakra-ui/react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+import { ThemeProvider } from "@blend-ui/core";
+
+// import { ThemeProvider } from "@blend-ui/core";
 // import { extendTheme } from "@chakra-ui/react";
-import Box from "@blend-ui/core/dist/esm/Box";
 
 
-import { usePrifina } from "@prifina/hooks";
+{/*
+import {
+  extendTheme,
+  ThemeProvider,
+  CircularProgress,
+  CircularProgressLabel,
+} from "@chakra-ui/react";
+*/}
 
+
+// import { usePrifina } from "@prifina/hooks";
 // import { ThemeProvider } from "@blend-ui/core";
 
 /*
@@ -32,20 +48,23 @@ export const LocalComponent = (props) => {
   );
 };*/}
 
-{/* 
+ 
 export const App = () => {
   return (
     <React.Fragment>
       <Router>
         <ThemeProvider>
-          <Route exact path="/" exact component={PC} />
+          <PC />
         </ThemeProvider>
       </Router>
     </React.Fragment>
   );
 };
-*/}
 
+// <Route exact path="/" exact component={PC} />
+
+
+{/*
 export const App = () => {
   return(
   <ThemeProvider theme={theme}>
@@ -232,7 +251,7 @@ export const App = () => {
             </Flex>
           </Box>
         </Box>
-        <Box marginRight={50}>{/* <Text>Settings Logo</Text> */}
+        <Box marginRight={50}>
         </Flex>
         </Box>
         </Box>
@@ -240,5 +259,6 @@ export const App = () => {
     </ThemeProvider>
   );
 }
+*/}
 
 export default App; 

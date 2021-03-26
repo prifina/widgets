@@ -6,10 +6,26 @@ import Select from "react-select";
 import Box from "@blend-ui/core/dist/esm/Box";
 
 import ProgressContainer from "../src/ProgressContainer";
+import ProgressCard from "../src/ProgressCard";
+import Card from "../src/Card";
+
 
 import { extendTheme, ThemeProvider } from "@chakra-ui/react";
 
-import { deviceOptions, getDeviceData } from "../data/helper";
+{/*
+import {
+  extendTheme,
+  ThemeProvider,
+  CircularProgress,
+  CircularProgressLabel,
+} from "@chakra-ui/react";
+*/}
+
+
+import { deviceOptions, getDeviceData } from "../src/data/helper";
+
+import { selectStyleShadow } from "../src/styles/styles";
+
 
 const timeOptions = [{ label: "This Month", value: "thisMonth" }];
 
@@ -170,6 +186,7 @@ function PC() {
           previousValue.totalSleepTime + currentValue.totalSleepTime,
       };
     });
+
     setBarCalories2(Object.values(sumCalories2));
     setBarSteps2(Object.values(sumSteps2));
     setBarDistance2(Object.values(sumDistance2));
@@ -202,6 +219,7 @@ function PC() {
           previousValue.totalSleepTime + currentValue.totalSleepTime,
       };
     });
+
     setBarCalories3(Object.values(sumCalories3));
     setBarSteps3(Object.values(sumSteps3));
     setBarDistance3(Object.values(sumDistance3));
@@ -234,6 +252,7 @@ function PC() {
           previousValue.totalSleepTime + currentValue.totalSleepTime,
       };
     });
+
     setBarCalories4(Object.values(sumCalories4));
     setBarSteps4(Object.values(sumSteps4));
     setBarDistance4(Object.values(sumDistance4));
@@ -270,8 +289,9 @@ function PC() {
   return (
     <ThemeProvider theme={theme}>
       <Flex
-        marginLeft={251}
-        paddingLeft={70}
+        // marginLeft={251}
+        marginLeft={30}
+        paddingLeft={55}
         paddingTop={55}
         justifyContent={"space-between"}
       >
@@ -312,7 +332,7 @@ function PC() {
                       </div>
                     </Flex>
                     <Flex paddingRight={300} paddingBottom={27}>
-                      <Text fontSize={24} color="#5F6AC4"></Text>
+                      <Text fontSize={24} color="#5F6AC4"> </Text>
                     </Flex>
                   </Box>
                 </Flex>
@@ -322,7 +342,7 @@ function PC() {
               <Flex
                 width="634px"
                 height="308px"
-                borderRadius={10}
+                borderRadius={30}
                 style={styles}
                 justifyContent="center"
                 alignItems="center"
@@ -369,6 +389,8 @@ function PC() {
                   value7={value7}
                 />
               </Flex>
+
+
               {/*
               <Flex paddingLeft={40}>
                 <Box paddingRight={20}>
@@ -404,9 +426,10 @@ function PC() {
                     color="#E6FFFA"
                   />
                 </Box>
-              </Flex>
+              </Flex> */}
             </Flex>
           </Box>
+          {/*
           <Box>
             <Box marginBottom={30}>
               <Text fontSize={34} color="#5F6AC4">
@@ -453,8 +476,7 @@ function PC() {
           </Box>
         </Box>
         <Box marginRight={50}>{/* <Text>Settings Logo</Text> */}
-        </Flex>
-        </Box>
+        <Box marginRight={50}></Box>
         </Box>
       </Flex> 
     </ThemeProvider>
