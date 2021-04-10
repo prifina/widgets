@@ -2906,38 +2906,42 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.1.tgz#7f554e7368c9ab679a11f4a042ca17149d70cf12"
   integrity sha512-DvJbbn3dUgMxDnJLH+RZQPnXak1h4ZVYQ7CWiFWjQwBFkVajT4rfw2PdpHLTSTwxrYfnoEXkuBiwkDm6tPMQeA==
 
-"@prifina/google-timeline@latest":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@prifina/google-timeline/-/google-timeline-0.0.1.tgz#9cf1ba4fa6c11be2a250aa9e0abb56d951a6e6ed"
-  integrity sha512-IdWikvZ63a2SHbGl4lbDjkx/ITdzwz8WYcNto6Tlkm1x6lKT4HxryR+DT29Ph16EtkpGuQY7/2vx3CQZCCK6Mw==
+"@prifina/file-upload@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@prifina/file-upload/-/file-upload-0.0.3.tgz#f1b6ce34f0ae39638e6f13d8bef6e8e12bfe73fd"
+  integrity sha512-nPvtRWDndGMvbMRyhwVIxteTsS9HJpSwZ//LInb7rAUlFzZMwEwwU/7lBHudZD/ACnvCBZBTHktyGzLhZqIZ5A==
+
+"@prifina/google-timeline@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@prifina/google-timeline/-/google-timeline-0.0.10.tgz#8d70bbffa24583039ea3ba5216b5a6bd258ca0a5"
+  integrity sha512-wa1SOI3W65A6W8txCJTHUS64PrGvvfLzbkJRhlgaLGeAD+QGfZ+XDQLhYQMtJabEnH05Wh+Wye6+gkKpZs9HrQ==
+
+"@prifina/hooks@0.0.59":
+  version "0.0.59"
+  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.59.tgz#4ed07c97185fbffa0409fd944ee8d567e6b3c1a3"
+  integrity sha512-QFKTODUiokfGGxNkH997DvV4VNkef/Nqrr6K8oI+UqfVB7B39RmAmFmEQfXmV2+jXlNRuzcsRaxgsUN0P4/Z6g==
+  dependencies:
+    "@paciolan/remote-component" "^2.11.0"
+
+"@prifina/hooks@0.0.62", "@prifina/hooks@^0.0.62":
+  version "0.0.62"
+  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.62.tgz#bd02571d40566c9d0a8cb00d75862bf94e38eaca"
+  integrity sha512-Cs9VSZDXT7yf3HyRnerrbd9dKMUe9/hXWaUoEecjVXJQfqzN7+uutwf+jEX/YI/2MArMmbvMFJi0UuVM4tVb/Q==
+  dependencies:
+    "@paciolan/remote-component" "^2.11.0"
 
 "@prifina/hooks@^0.0.45":
   version "0.0.45"
   resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.45.tgz#877f145cabe177da38abe9603451d2dcc82c808b"
   integrity sha512-nJLeT+v+ZvzCGeOQZZaCggXwXSK5mFhutVQIJ3nBDN2yqe687MoHJK8pWUT5FNbpwi2hoBniksFbSOv/myTk0Q==
 
-"@prifina/hooks@^0.0.48":
-  version "0.0.48"
-  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.48.tgz#8272d380a11eb6f74a01638511faba6469f04022"
-  integrity sha512-OupdQnJYTGwWCt+07fnlstvsXgpmBnQ19hKaiMiyUkv1axuz1qmDalspc6c8PL+vj525flC/HdZ2CNsiu2oI1Q==
+"@reach/auto-id@^0.12.1":
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/@reach/auto-id/-/auto-id-0.12.1.tgz#2e4a7250d2067ec16a9b4ea732695bc75572405c"
+  integrity sha512-s8cdY6dF0hEBB/28BbidB2EX6JfEBVIWLP6S2Jg0Xqq2H3xijL+zrsjL40jACwXRkignjuP+CvYsuFuO0+/GRA==
   dependencies:
-    "@paciolan/remote-component" "^2.11.0"
-    axios "^0.21.1"
-
-"@prifina/hooks@^0.0.51":
-  version "0.0.51"
-  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.51.tgz#c88373d29089fd36aebc56d420bdbfdf40088170"
-  integrity sha512-WFnsy65OlZHDZZKH6HIShwE4TlvjkjRpDZHZJY/6wS2N63eCtkZZ8G7J/C5JSHBox7EFhXuOZQO3Io3fckx2fw==
-  dependencies:
-    "@paciolan/remote-component" "^2.11.0"
-    short-uuid "^4.1.0"
-
-"@prifina/hooks@^0.0.54":
-  version "0.0.54"
-  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.54.tgz#c153aef7b45978dd6535b59591c2b57290dbbf67"
-  integrity sha512-aaaaylS0qrRt4U9BACeFS/s/hsdVsMq5gnx5wCyymvHJKli3xjNIplSewXnv7m2cGUgL2pqeevBN7wL0CC9chA==
-  dependencies:
-    "@paciolan/remote-component" "^2.11.0"
+    "@reach/utils" "0.12.1"
+    tslib "^2.0.0"
 
 "@reach/alert@0.13.2":
   version "0.13.2"
@@ -2974,15 +2978,6 @@
   dependencies:
     "@types/warning" "^3.0.0"
     tslib "^2.0.0"
-    warning "^4.0.3"
-
-"@reach/utils@0.13.2":
-  version "0.13.2"
-  resolved "https://registry.yarnpkg.com/@reach/utils/-/utils-0.13.2.tgz#87e8fef8ebfe583fa48250238a1a3ed03189fcc8"
-  integrity sha512-3ir6cN60zvUrwjOJu7C6jec/samqAeyAB12ZADK+qjnmQPdzSYldrFWwDVV5H0WkhbYXR3uh+eImu13hCetNPQ==
-  dependencies:
-    "@types/warning" "^3.0.0"
-    tslib "^2.1.0"
     warning "^4.0.3"
 
 "@reach/visually-hidden@0.13.2":
@@ -4986,13 +4981,6 @@ aws4@^1.8.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
-
-axios@^0.21.1:
-  version "0.21.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
-  integrity sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==
-  dependencies:
-    follow-redirects "^1.10.0"
 
 babel-helper-evaluate-path@^0.5.0:
   version "0.5.0"

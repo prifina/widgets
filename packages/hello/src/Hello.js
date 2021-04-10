@@ -17,7 +17,7 @@ const appID = "helloWidget";
 
 const Hello = (props) => {
   const { msg, data } = props;
-
+  console.log("HELLO PROPS ", props);
   // init hook and get provider api services...
   const { onUpdate, Prifina } = usePrifina();
 
@@ -25,6 +25,7 @@ const Hello = (props) => {
   const prifina = new Prifina({ appId: appID });
 
   const msgText = msg || "Hello, ";
+
   const [helloText, setHelloText] = useState(msgText);
   const [helloData, setData] = useState(data);
 
@@ -35,7 +36,14 @@ const Hello = (props) => {
 
   const dataUpdate = (data) => {
     // should check the data payload... :)
-    setHelloText(data.msg);
+
+    if (
+      data.hasOwnProperty("settings") &&
+      typeof data.settings === "object" &&
+      data.settings.hasOwnProperty("msg")
+    ) {
+      setHelloText(data.settings.msg);
+    }
   };
 
   useEffect(() => {

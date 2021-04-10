@@ -1,7 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
+
+import { usePrifina } from "@prifina/hooks";
 import moment from "moment";
 import "moment-timezone";
+import { useId } from "@reach/auto-id";
 
 /*
 $primary: black;
@@ -161,26 +164,40 @@ function useIsMountedRef() {
   return isMountedRef;
 }
 
-const Watch = ({ offset = 0, tz = "" }) => {
-  //moment.tz.guess()
-  //console.log("MOMENT ", moment.tz.names());
-  /*
-  var select = document.getElementById('timezones');
-moment.tz.names().forEach(function(timezone){
-	var option = document.createElement('option');
-  option.textContent = timezone + ': ' + moment.tz(timezone).format('Z');
-  select.appendChild(option);
-});
-*/
-  moment.tz.names().forEach(function (timezone) {
-    //console.log(moment.tz(timezone).utcOffset());
-  });
-  //console.log(moment.tz.names());
+// unique appID for the widget....
+const appID = "watchWidget";
+
+const Watch = (props) => {
+  console.log("WATCH PROPS ", props);
+  const { offset, tz, data } = props;
+  // init hook and get provider api services...
+  const { onUpdate, Prifina } = usePrifina();
+
+  // init provider api with your appID
+  const prifina = new Prifina({ appId: appID });
+
+  const elementId = useId();
+
+  const localTz = moment.tz.guess();
+  const localOffset = moment.tz(localTz).utcOffset();
+  let tzDefault = {
+    offset: offset === -1 ? localOffset : offset,
+    tz: tz === "" ? localTz : tz,
+  };
+  if (
+    typeof data !== "undefined" &&
+    data.hasOwnProperty("settings") &&
+    data.settings.hasOwnProperty("tz") &&
+    data.settings.tz !== ""
+  ) {
+    tzDefault = {
+      offset: parseInt(data.settings.offset),
+      tz: data.settings.tz,
+    };
+    console.log("NEW DEFAULT, SETTINGS UPDATED ", tzDefault);
+  }
   const isMountedRef = useIsMountedRef();
-  const [tzInfo, setTzInfo] = useState({
-    offset: offset,
-    tz: tz === "" ? moment.tz.guess() : tz,
-  });
+  const [tzInfo, setTzInfo] = useState(tzDefault);
   const [clockSize, setClockSize] = useState("90%");
   const [dialHour, setDialHour] = useState([]);
   const [handPivot, setHandPivot] = useState({ top: 0, left: 0 });
@@ -207,7 +224,7 @@ moment.tz.names().forEach(function(timezone){
     let timeoutId = null;
     let intervalId = null;
     if (isMountedRef.current) {
-      const clock = document.getElementById("clock");
+      const clock = document.getElementById("clock-" + elementId);
       //console.log("MOUNTED ", clock);
 
       const { height: boxH, width: boxW } = getDims(clock, false, false);
@@ -240,17 +257,25 @@ moment.tz.names().forEach(function(timezone){
       //console.log("DIAL ", _dialHours);
       setDialHour(_dialHours);
 
-      const handPivotElement = document.getElementById("hand-pivot");
+      const handPivotElement = document.getElementById(
+        "hand-pivot-" + elementId
+      );
       const pivotBoxDims = getDims(handPivotElement, false, false);
       setHandPivot({
         top: height / 2 - pivotBoxDims.height / 2,
         left: width / 2 - pivotBoxDims.width / 2,
       });
 
-      const hoursHandElement = document.getElementById("hours-hand");
+      const hoursHandElement = document.getElementById(
+        "hours-hand-" + elementId
+      );
 
-      const minutesHandElement = document.getElementById("minutes-hand");
-      const secondsHandElement = document.getElementById("seconds-hand");
+      const minutesHandElement = document.getElementById(
+        "minutes-hand-" + elementId
+      );
+      const secondsHandElement = document.getElementById(
+        "seconds-hand-" + elementId
+      );
       const offByPivot = 0.05 * height;
 
       const hoursHandDims = getDims(hoursHandElement, false, false);
@@ -284,10 +309,40 @@ moment.tz.names().forEach(function(timezone){
         origin: `${secondsHandDims.width / 2}px ${secondsHandHeight}`,
       });
 
-      const dt = new Date();
+      let dt = new Date();
+
       const secsElpased = dt.getSeconds();
-      let minsElapsed = dt.getMinutes() + secsElpased / 60;
-      let hrsElapsed = (dt.getHours() % 12) + minsElapsed / 60;
+      let timezoneMins = dt.getMinutes();
+      let timezoneHours = dt.getHours();
+
+      const localOffset = moment.tz(moment.tz.guess()).utcOffset();
+      if (tzInfo.offset !== localOffset) {
+        const offsetDiff = tzInfo.offset - localOffset;
+
+        const offsetMod = offsetDiff % 60;
+        if (offsetMod !== 0) {
+          timezoneMins += offsetMod;
+        }
+        timezoneHours += (offsetDiff - offsetMod) / 60;
+
+        console.log("TZ ", localOffset, offsetDiff, tzInfo.tz, dt);
+        console.log("TZ ", timezoneHours, timezoneMins);
+      }
+
+      let minsElapsed = timezoneMins + secsElpased / 60;
+      let hrsElapsed = (timezoneHours % 12) + minsElapsed / 60;
+      /*
+      if (tzInfo.offset !== 0) {
+        const offsetMod = tzInfo.offset % 60;
+        if (offsetMod !== 0) {
+          minsElapsed += offsetMod;
+        }
+       // hrsElapsed += (tzInfo.offset - offsetMod) / 60;
+
+        console.log("TZ ", tzInfo.tz);
+      }
+*/
+      /*
       const offsetMod = tzInfo.offset % 60;
       if (offsetMod !== 0) {
         minsElapsed += offsetMod;
@@ -295,7 +350,7 @@ moment.tz.names().forEach(function(timezone){
       if (tzInfo.offset !== 0) {
         hrsElapsed += (tzInfo.offset - offsetMod) / 60;
       }
-
+      */
       const rotate = (elm, deg) => {
         elm.style.transform = `rotate(${deg}deg)`;
       };
@@ -325,27 +380,47 @@ moment.tz.names().forEach(function(timezone){
       clearTimeout(timeoutId);
       clearInterval(intervalId);
     };
-  }, [isMountedRef]);
+  }, [isMountedRef, tzInfo]);
+
+  const dataUpdate = (data) => {
+    // should check the data payload... :)
+    console.log("WATCH WIDGET UPDATE ", data);
+
+    if (data.hasOwnProperty("settings") && typeof data.settings === "object") {
+      //
+      setTzInfo({ offset: data.settings.offset, tz: data.settings.tz });
+    }
+  };
+
+  useEffect(() => {
+    // init callback function for background updates/notifications
+
+    onUpdate(appID, dataUpdate);
+  }, []);
 
   return (
     <Container>
-      <Clock id="clock" size={clockSize}>
+      <Clock id={"clock-" + elementId} size={clockSize}>
         <HoursHand
           pos={hoursHand}
           className="hours-hand"
-          id="hours-hand"
+          id={"hours-hand-" + elementId}
         ></HoursHand>
         <MinutesHand
           pos={minutesHand}
           className="minutes-hand"
-          id="minutes-hand"
+          id={"minutes-hand-" + elementId}
         ></MinutesHand>
         <SecondsHand
           pos={secondsHand}
           className="seconds-hand"
-          id="seconds-hand"
+          id={"seconds-hand-" + elementId}
         ></SecondsHand>
-        <Pivot pos={handPivot} className="hand-pivot" id="hand-pivot"></Pivot>
+        <Pivot
+          pos={handPivot}
+          className="hand-pivot"
+          id={"hand-pivot-" + elementId}
+        ></Pivot>
         {[...Array(12)].map((x, i) => {
           if ((i + 1) % 3 === 0) {
             return (
@@ -371,4 +446,10 @@ moment.tz.names().forEach(function(timezone){
   );
 };
 
+Watch.defaultProps = {
+  offset: -1,
+  tz: "",
+};
+
+Watch.displayName = "Watch";
 export default Watch;
