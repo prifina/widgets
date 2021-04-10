@@ -14,7 +14,7 @@ import {
 
 import {Text, Flex, extendTheme, ThemeProvider, Grid, GridItem} from "@chakra-ui/react";
 import WeatherMain from "../src/components/WeatherMain";
-import {BiRun} from "react-icons/bi";
+import {ReactComponent as RunIcon} from "../src/assets/run.svg";
 
 
 // -----------------------Config----------------------
@@ -185,13 +185,13 @@ function Exercise() {
                                     <Flex
                                         marginRight={10}
                                         marginTop = {40}
-                                        marginLeft={15}>
+                                        marginLeft={18}>
                                         <Flex
                                             marginRight={12}
-                                            marginLeft = {5}
+                                            marginLeft = {0}
                                             >
                                             
-                                            <BiRun size="2.2em" color="white" fill="white" style={iconStyles}> </BiRun>
+                                            <RunIcon size="2.2em" color="white" stroke = "white" fill="white" style={iconStyles}> </RunIcon>
                                             
                                              
                                         </Flex>

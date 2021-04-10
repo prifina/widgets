@@ -29,8 +29,8 @@ const WeatherMain = (props) => {
       >
 
         <img color={"#E9EDF0"} 
-          width={"25%"}
-          height={"25%"}
+          width={"27%"}
+          height={"27%"}
 
           src={`http://openweathermap.org/img/wn/${icon}@2x.png`}
         />
