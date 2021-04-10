@@ -47,21 +47,21 @@ const styles = {
 
 function Exercise() {
 
-    const [sum, setSum] = useState("");
-
     let dataNew = [
         { name: "March 20", startTime: 17 },
-        { name: "March 21", startTime: 8 },
+        { name: "March 21", startTime: 16 },
         { name: "March 22", startTime: 16 },
-        { name: "March 23", startTime: 20 },
-        { name: "March 24", startTime: 19 },
+        { name: "March 23", startTime: 15 },
+        { name: "March 24", startTime: 3 },
         { name: "March 25", startTime: 14 },
         { name: "March 26", startTime: 17 },
         { name: "March 27", startTime: 7 },
         { name: "March 28", startTime: 16 },
-        { name: "March 29", startTime: 18 },
+        { name: "March 29", startTime: 15 },
 
     ];
+
+    let startTimeList = dataNew.map((run) => run.startTime);
 
     //const dataAverage = getAverage([1,2,3]);
 
@@ -70,22 +70,79 @@ function Exercise() {
     const [upperBound, setUpperBound] = useState('18:00')
     const [runCount, setRunCount] = useState('5')
 
+    let iconStyles = { color: "white"};
 
-    //Function to caluclate the average of an array (argument = arr) for 10 items
-    const getAverage = arr => {
+    //--------------------FUNCTIONS------------------------------
+      
+      //METHOD: Function to caluclate the average of an array (argument = arr) for 10 items
+      const getAverage = arr =>{
         //Sum the values in the array
         const reducer = (total, currentValue) => total + currentValue;
         const sum = dataNew.reduce(reducer);
-        console.log(sum / 10);
+        console.log(sum/10);
 
         //divide the array sum by the length 10
         return sum / 10;
         //const u = 10;
         //return u;
 
-    }
+      }
 
-    let iconStyles = { color: "white" };
+    //METHOD: Returns the mode of array 
+    const getMode = arr =>{
+        const obj ={};
+
+        //Count the number of occurences for each object in the array
+        arr.forEach(number => {
+          if (!obj[number]){
+            obj[number] = 1;
+          }
+          else {
+            obj[number] += 1;
+          }
+        });
+
+        //Obj: '3':2, '4':4, '10': 3 ...etc
+
+        let highestValue = 0;
+        let highestValueKey = 1000;
+
+        //Loop over object and find object with highest value
+        for (let key in obj){
+          const value = obj[key];
+          if (value > highestValue){
+            highestValue = value;
+            highestValueKey = key;
+          }
+        }
+
+        //Convert the string keys into a number value
+        setLowerBound(Number(highestValueKey) - 1);
+        setUpperBound(Number(highestValueKey) + 1);
+        console.log(lowerBound);
+        console.log(upperBound);
+      }
+
+      //METHOD: Counts the number of times a value in the arr occurs within the lower and upper bounds
+    const getRunCount = function(arr, val, val2){
+
+        //Iterate over each element using reduce and add to count if element is between upper and lowerbounds
+        const runCount = arr.reduce((count, element) => {
+          return ((element <= val && element >= val2) ? count + 1 : count)
+        }, 0);
+
+
+        setRunCount(runCount);
+      };
+
+
+    //Called every time the application renders
+    useEffect(() => {
+      console.log(startTimeList); //startTime Array 
+      getMode(startTimeList);  //Find Mode of StartTime Array and finds the lower and upperbounds
+
+      getRunCount(startTimeList, upperBound, lowerBound); //Calculate run count within boundaries
+    })
 
     return (
         <ThemeProvider theme={theme}>
@@ -146,15 +203,16 @@ function Exercise() {
                                         marginTop = {40}
                                         marginLeft={15}>
                                         <Flex
-                                            marginRight={16}
+                                            marginRight={12}
+                                            marginLeft = {5}
                                             >
                                             
-                                            <BiRun size="2em" color="white" fill="white" style={iconStyles}> </BiRun>
+                                            <BiRun size="2.2em" color="white" fill="white" style={iconStyles}> </BiRun>
                                             
                                              
                                         </Flex>
                                         <Flex
-                                            marginLeft={2}
+                                            marginLeft={-2}
                                             justifyContent={"space-between"}
                                             flexDirection={"column"}>
 
@@ -174,7 +232,7 @@ function Exercise() {
                                                   color: "#7fffd4",
                                                   fontSize: 18.5,}}>
 
-                                                {lowerBound} to {upperBound} 
+                                                {lowerBound + ":00"} to {upperBound + ":00"}   
                                               </div>
                                             </Flex>
                                     </Flex>
@@ -205,7 +263,7 @@ function Exercise() {
                                   fontSize: 20,
                                   }}
                                 >
-                                You have run between {lowerBound} and {upperBound} {runCount} out of your last 10 runs.
+                                You have run between {lowerBound + ":00"} and {upperBound + ":00"} {runCount} out of your last 10 runs.
                             </Text>
                         </Flex>
                     
