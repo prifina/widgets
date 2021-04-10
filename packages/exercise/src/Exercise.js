@@ -17,22 +17,12 @@ import WeatherMain from "../src/components/WeatherMain";
 import {BiRun} from "react-icons/bi";
 
 
-// -----------------------FUNCTIONS----------------------
+// -----------------------Config----------------------
 
 const config = {
     initialColorMode: "light",
     useSystemColorMode: false,
 };
-
-//function for getting the sum of object arrays with string values
-function sumProperty(arr, type) {
-    return arr.reduce((total, obj) => {
-        if (typeof obj[type] === "string") {
-            return total + Number(obj[type]);
-        }
-        return total + obj[type];
-    }, 0);
-}
 
 const theme = extendTheme({ config });
 
@@ -43,27 +33,29 @@ const styles = {
     boxShadow: " 0px 5px 20px #F0F4F8",
 };
 
+//---------------DATA------------------------
+
+let dataNew = [
+  { name: "March 20", startTime: 17 },
+  { name: "March 21", startTime: 16 },
+  { name: "March 22", startTime: 16 },
+  { name: "March 23", startTime: 15 },
+  { name: "March 24", startTime: 3 },
+  { name: "March 25", startTime: 14 },
+  { name: "March 26", startTime: 17 },
+  { name: "March 27", startTime: 7 },
+  { name: "March 28", startTime: 16 },
+  { name: "March 29", startTime: 15 },
+
+];
+
+let startTimeList = dataNew.map((run) => run.startTime);
+
 //--------------APP FUNCTION--------------------------
 
 function Exercise() {
 
-    let dataNew = [
-        { name: "March 20", startTime: 17 },
-        { name: "March 21", startTime: 16 },
-        { name: "March 22", startTime: 16 },
-        { name: "March 23", startTime: 15 },
-        { name: "March 24", startTime: 3 },
-        { name: "March 25", startTime: 14 },
-        { name: "March 26", startTime: 17 },
-        { name: "March 27", startTime: 7 },
-        { name: "March 28", startTime: 16 },
-        { name: "March 29", startTime: 15 },
-
-    ];
-
-    let startTimeList = dataNew.map((run) => run.startTime);
-
-    //const dataAverage = getAverage([1,2,3]);
+    //------------------Constants-------------------------
 
     const [average, setAverage] = useState('16:24');
     const [lowerBound, setLowerBound] = useState('16:00')
@@ -74,8 +66,8 @@ function Exercise() {
 
     //--------------------FUNCTIONS------------------------------
       
-      //METHOD: Function to caluclate the average of an array (argument = arr) for 10 items
-      const getAverage = arr =>{
+    //METHOD: Function to caluclate the average of an array (argument = arr) for 10 items
+    const getAverage = arr =>{
         //Sum the values in the array
         const reducer = (total, currentValue) => total + currentValue;
         const sum = dataNew.reduce(reducer);
@@ -88,7 +80,7 @@ function Exercise() {
 
       }
 
-    //METHOD: Returns the mode of array 
+    //METHOD: Returns the mode of an array 
     const getMode = arr =>{
         const obj ={};
 
@@ -123,7 +115,7 @@ function Exercise() {
         console.log(upperBound);
       }
 
-      //METHOD: Counts the number of times a value in the arr occurs within the lower and upper bounds
+    //METHOD: Counts the number of times a value in the arr occurs within the lower and upper bounds
     const getRunCount = function(arr, val, val2){
 
         //Iterate over each element using reduce and add to count if element is between upper and lowerbounds
@@ -136,7 +128,8 @@ function Exercise() {
       };
 
 
-    //Called every time the application renders
+    //--------------------useEffect()--------------------------
+
     useEffect(() => {
       console.log(startTimeList); //startTime Array 
       getMode(startTimeList);  //Find Mode of StartTime Array and finds the lower and upperbounds
@@ -147,21 +140,12 @@ function Exercise() {
     return (
         <ThemeProvider theme={theme}>
 
-          {/*Exercise Widget*/}
-          <Flex
-          paddingLeft={70}
-          paddingRight={140}
-          justifyContent={"space-between"}
-        >
-
-
-            {/*New Exercise */}
-          <Box>
-            <Flex marginTop={40}
+          <Box style={styles} width={600} height={270} borderRadius={10}>
+            <Flex 
                 bg={"#14233d"}   //Added Background for Widget
                 borderRadius = {20} //Rounded border radius 
             > 
-              <Box style={styles} width={600} height={270} borderRadius={10}>
+              <Box style={styles} width={600} height={260} borderRadius={10}>
                 <Flex
                   justifyContent={"space-between"}
                   alignItems={"center"}
@@ -318,8 +302,6 @@ function Exercise() {
               </Box>
             </Flex>
           </Box>
-        </Flex>
-   
         </ThemeProvider>
 
     );

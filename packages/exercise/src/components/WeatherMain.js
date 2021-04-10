@@ -2,7 +2,7 @@ import React from "react";
 import useFetch from "../hooks/UseFetch";
 import { API_KEY, API_BASE_URL } from "../apis/config";
 //import { Text, Avatar, Flex } from "@blend-ui/core";
-import {Text, Flex, extendTheme, ThemeProvider, Grid, GridItem} from "@chakra-ui/react";
+import {Text, Flex} from "@chakra-ui/react";
 
 const WeatherMain = (props) => {
   const city = "Toronto";  //Ottawa
@@ -28,7 +28,7 @@ const WeatherMain = (props) => {
         display={'flex'}
       >
 
-        <img color={"#E9EDF0"} //Does not work-> Need to figure this out
+        <img color={"#E9EDF0"} 
           width={"25%"}
           height={"25%"}
 
