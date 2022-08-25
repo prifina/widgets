@@ -128,7 +128,7 @@ const OuraSleep = (props) => {
     };
     const activityResult = await API[appID].Oura.querySleepSummariesAsync({
       filter: filter,
-      fields: "deep,light",
+      fields: "deep",
     });
 
     console.log("activityResult", activityResult);
