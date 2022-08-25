@@ -53,7 +53,7 @@ const OuraSleep = (props) => {
   function getEveryNth(arr, nth) {
     const result = [];
 
-    for (let i = 0; i < arr.length; i += nth) {
+    for (let i = nth; i < arr.length; i += nth) {
       result.push(arr[i]);
     }
 
@@ -110,11 +110,11 @@ const OuraSleep = (props) => {
 
     console.log("PROCESS DATA", newData);
 
-    let newArray = Object.keys(newData);
+    let newArray = Object.values(newData);
 
     console.log("PROCESS DATA objects", newArray);
 
-    console.log("should be deep", getEveryNth(newArray, 1));
+    console.log("should be deep", getEveryNth(newArray, 0));
 
     console.log("should be light", getEveryNth(newArray, 2));
   };
