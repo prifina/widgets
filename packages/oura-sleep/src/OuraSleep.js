@@ -37,7 +37,6 @@ const Container = styled.div`
 const appID = "866fscSq5Ae7bPgUtb6ffB";
 
 const OuraSleep = (props) => {
-  const stage = "dev";
   const { data } = props;
   // init hook and get provider api services...
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
@@ -97,7 +96,9 @@ const OuraSleep = (props) => {
   ];
 
   const processData = (data) => {
-    console.log("PROCESS DATA", data);
+    let newData = data;
+
+    console.log("PROCESS DATA", newData);
   };
 
   const dataUpdate = async (payload) => {
@@ -139,7 +140,9 @@ const OuraSleep = (props) => {
       fields: "deep,light",
     });
     console.log("ACTIVITY RESULT", activityResult);
+    console.log("ACTIVITY RESULT 2", activityResult.data.getDataObject.content);
     if (stage === "dev") {
+      console.log("STAGE IS DEV");
       processData(activityResult.data.getDataObject.content[1]);
     }
 
