@@ -96,29 +96,36 @@ const OuraSleep = (props) => {
     },
   ];
 
-  // const dataUpdate = async (data) => {
-  //   // // should check the data payload... :)
-  //   // console.log("FITBIT UPDATE ", new Date().getTime(), data);
-  //   // //console.log(" UPDATE ", data.hasOwnProperty("settings"));
-  //   // //console.log(" UPDATE ", typeof data.settings);
-  //   // console.log(" UPDATE ", Object.keys(data));
-  //   // if (
-  //   //   data.data.hasOwnProperty("content") &&
-  //   //   data.data.content.hasOwnProperty("s3Url")
-  //   // ) {
-  //   //   console.log("GET ", data.data.content.s3Url);
-  //   //   setUrl(data.data.content.s3Url);
-  //   // }
-  // };
+  const processData = (data) => {
+    console.log("PROCESS DATA", data);
+  };
+
+  const dataUpdate = async (payload) => {
+    console.log("UPDATE ", payload);
+
+    if (
+      payload.hasOwnProperty("data") &&
+      payload.data.hasOwnProperty("content")
+    ) {
+      // process async data
+      if (
+        payload.data.dataconnector === "Oura/querySleepSummariesAsync" &&
+        payload.data.content.length > 1
+      ) {
+        processData(payload.data.content);
+      }
+    }
+  };
 
   useEffect(async () => {
     // init callback function for background updates/notifications
-    onUpdate(appID);
+    onUpdate(appID, dataUpdate);
     // register datasource modules
     registerHooks(appID, [Oura]);
 
     const d = new Date();
-    const dd = d.setDate(d.getDate() - 10);
+
+    const dd = d.setDate(d.getDate() - 14);
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
     const filter = {
@@ -126,21 +133,29 @@ const OuraSleep = (props) => {
         [Op.gte]: dateStr,
       },
     };
+
     const activityResult = await API[appID].Oura.querySleepSummariesAsync({
       filter: filter,
-      fields: "deep",
+      fields: "deep,light",
+    });
+    console.log("ACTIVITY RESULT", activityResult);
+    if (stage === "dev") {
+      processData(activityResult.data.getDataObject.content[1]);
+    }
+
+    /*
+    const result = await API[appID].Oura.queryActivitySummariesAsync({
+      filter: filter,
     });
 
-    console.log("activityResult", activityResult);
-    // console.log("content", activityResult.data.getDataObject.content);
+    console.log("RESULT ", result);
 
-    // processData(activityResult.data.getDataObject.content.score);
-
-    if (stage === "dev") {
-      // processData(activityResult.data.getDataObject.content);
-
-      console.log("activityResult STAGE DEV", activityResult);
-    }
+    processData(result.data.getDataObject.content[0]);
+*/
+    //needs solution this doesn't work
+    // if (result.data.getDataObject.content.activity.length > 0) {
+    //   processData(result.data.getDataObject.content.activity);
+    // }
   }, []);
 
   return (
