@@ -50,6 +50,16 @@ const OuraSleep = (props) => {
 
   // const { s3Data, error, isLoading, setUrl } = UseFetch(null);
 
+  function getEveryNth(arr, nth) {
+    const result = [];
+
+    for (let i = 0; i < arr.length; i += nth) {
+      result.push(arr[i]);
+    }
+
+    return result;
+  }
+
   const ouraData = [
     {
       name: "Page A",
@@ -99,6 +109,14 @@ const OuraSleep = (props) => {
     let newData = data;
 
     console.log("PROCESS DATA", newData);
+
+    let newArray = Object.keys(newData);
+
+    console.log("PROCESS DATA objects", newArray);
+
+    console.log("should be deep", getEveryNth(newArray, 1));
+
+    console.log("should be light", getEveryNth(newArray, 2));
   };
 
   const dataUpdate = async (payload) => {
