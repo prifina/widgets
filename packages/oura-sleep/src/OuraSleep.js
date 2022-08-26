@@ -53,7 +53,7 @@ const OuraSleep = (props) => {
   function getEveryNth(arr, nth) {
     const result = [];
 
-    for (let i = nth; i < arr.length; i += nth) {
+    for (let i = 0; i < arr.length; i += nth) {
       result.push(arr[i]);
     }
 
@@ -105,6 +105,36 @@ const OuraSleep = (props) => {
     },
   ];
 
+  //======
+  // let data2 = [
+  //   "deep,light",
+  //   "3032,20457",
+  //   "5872,14482",
+  //   "3142,11319",
+  //   "5799,11221",
+  //   "3806,11253",
+  //   "6234,12742",
+  //   "3316,10213",
+  //   "2635,11151",
+  //   "3540,11848",
+  //   "2218,13293",
+  //   "3646,9904",
+  //   "3362,11193",
+  //   "4014,15710",
+  //   "3185,13762",
+  //   "3836,17808",
+  // ];
+
+  // const result = []
+  //   .concat(...data2.map((str) => str.split(",")))
+  //   .filter(Boolean); // or .filter(s => s.length > 0) for the sake of readability
+
+  // console.log(result);
+
+  // console.log("should be deep", getEveryNth(result, 1));
+
+  // console.log("should be light", getEveryNth(result, 2));
+
   const processData = (data) => {
     let newData = data;
 
@@ -114,7 +144,7 @@ const OuraSleep = (props) => {
 
     console.log("PROCESS DATA objects", newArray);
 
-    console.log("should be deep", getEveryNth(newArray, 0));
+    console.log("should be deep", getEveryNth(newArray, 1));
 
     console.log("should be light", getEveryNth(newArray, 2));
   };
@@ -155,7 +185,7 @@ const OuraSleep = (props) => {
 
     const activityResult = await API[appID].Oura.querySleepSummariesAsync({
       filter: filter,
-      fields: "deep,light",
+      fields: "awake,light,rem,deep",
     });
     console.log("ACTIVITY RESULT", activityResult);
     console.log("ACTIVITY RESULT 2", activityResult.data.getDataObject.content);
