@@ -106,34 +106,67 @@ const OuraSleep = (props) => {
   ];
 
   //======
-  // let data2 = [
-  //   "deep,light",
-  //   "3032,20457",
-  //   "5872,14482",
-  //   "3142,11319",
-  //   "5799,11221",
-  //   "3806,11253",
-  //   "6234,12742",
-  //   "3316,10213",
-  //   "2635,11151",
-  //   "3540,11848",
-  //   "2218,13293",
-  //   "3646,9904",
-  //   "3362,11193",
-  //   "4014,15710",
-  //   "3185,13762",
-  //   "3836,17808",
-  // ];
+  let data2 = [
+    "awake,light,rem,deep",
+    "1754,17958,5325,2743",
+    "1333,10020,5423,5004",
+    "1878,15021,9764,5257",
+    "1589,13214,9082,7735",
+    "1241,10793,10015,4291",
+    "1783,9220,6023,2834",
+    "1370,18793,5183,6334",
+    "1988,16085,6152,2895",
+    "1139,14180,6797,4344",
+    "1170,11207,8844,5419",
+    "1356,16908,3660,4296",
+    "1805,15751,5691,5253",
+    "1832,14427,3371,3110",
+    "1198,10377,6075,7130",
+    "1795,15629,4640,6676",
+  ];
+
+  const keys = data2[0].split(",");
+
+  data2.shift();
+
+  data2 = data2.map((dataLine) => dataLine.split(",")).flat();
+
+  const chunkSize = 4;
+  const dataChunks = [];
+  for (let i = 0; i < data2.length; i += chunkSize) {
+    const chunk = data2.slice(i, i + chunkSize);
+    dataChunks.push(chunk);
+  }
+
+  const result = [];
+  dataChunks.forEach((dataChunk) => {
+    result.push({
+      [keys[0]]: dataChunk[0],
+      [keys[1]]: dataChunk[1],
+      [keys[2]]: dataChunk[2],
+      [keys[3]]: dataChunk[3],
+    });
+  });
+
+  console.log("hehe", result);
+
+  console.log("ORIGINAL DATA", data2);
+
+  // data2.shift();
 
   // const result = []
   //   .concat(...data2.map((str) => str.split(",")))
   //   .filter(Boolean); // or .filter(s => s.length > 0) for the sake of readability
 
-  // console.log(result);
+  // console.log("SPLIT DATA", result);
 
-  // console.log("should be deep", getEveryNth(result, 1));
+  // const every_nth = (arr, nth) => arr.filter((e, i) => i % nth === nth - 1);
 
-  // console.log("should be light", getEveryNth(result, 2));
+  // console.log("should be awake", every_nth(result, 1));
+
+  // console.log("should be light", every_nth(result, 2));
+  // console.log("should be rem", every_nth(result, 3));
+  // console.log("should be deep", every_nth(result, 4));
 
   const processData = (data) => {
     let newData = data;
@@ -165,6 +198,9 @@ const OuraSleep = (props) => {
       }
     }
   };
+  const appID = "12324194120ksoa";
+
+  const [day, setDay] = useState(1);
 
   useEffect(async () => {
     // init callback function for background updates/notifications
@@ -174,12 +210,12 @@ const OuraSleep = (props) => {
 
     const d = new Date();
 
-    const dd = d.setDate(d.getDate() - 14);
+    const dd = d.setDate(d.getDate() - day);
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
     const filter = {
       ["s3::date"]: {
-        [Op.gte]: dateStr,
+        [Op.eq]: dateStr,
       },
     };
 
@@ -227,7 +263,20 @@ const OuraSleep = (props) => {
             <option value="option2">Month</option>
             <option value="option3">Day</option>
           </Select>
-          <Text color="white">Range</Text>
+          <button
+            onClick={() => {
+              setDay(day - 1);
+            }}
+          >
+            back
+          </button>
+          <button
+            onClick={() => {
+              setDay(day + 1);
+            }}
+          >
+            forward
+          </button>
         </Flex>
         <Box
           height={202}
@@ -251,7 +300,7 @@ const OuraSleep = (props) => {
               <BarChart
                 width={200}
                 height={202}
-                data={ouraData}
+                data={result}
                 margin={{
                   top: 20,
                   right: 30,
@@ -260,12 +309,14 @@ const OuraSleep = (props) => {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="awake" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-                <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
+                <Bar dataKey="awake" stackId="a" fill="#8884d8" />
+                <Bar dataKey="light" stackId="a" fill="blue" />
+                <Bar dataKey="deep" stackId="a" fill="red" />
+                <Bar dataKey="rem" stackId="a" fill="#82ca9d" />
               </BarChart>
             </ResponsiveContainer>
           </Box>
