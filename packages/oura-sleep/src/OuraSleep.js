@@ -137,7 +137,7 @@ const OuraSleep = (props) => {
     //   console.log("STAGE IS DEV");
     //   processData(activityResult.data.getDataObject.content);
     // }
-    processData(activityResult.data.getDataObject.content[0]);
+    // processData(activityResult.data.getDataObject.content[0]);
 
     /*
     const result = await API[appID].Oura.queryActivitySummariesAsync({
