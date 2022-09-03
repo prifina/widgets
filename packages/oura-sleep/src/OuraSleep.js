@@ -104,7 +104,7 @@ const OuraSleep = (props) => {
   };
   const appID = "12324194120ksoa";
 
-  const [day, setDay] = useState(0);
+  const [day, setDay] = useState(1);
   const [date, setDate] = useState("");
 
   useEffect(async () => {
