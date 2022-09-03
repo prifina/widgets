@@ -94,6 +94,8 @@ const OuraSleep = (props) => {
   //   });
   // });
 
+  const [processedData, setProcessedData] = useState("");
+
   const processData = (data) => {
     let newData = data;
 
@@ -121,7 +123,11 @@ const OuraSleep = (props) => {
         [keys[3]]: dataChunk[3],
       });
     });
+
+    setProcessedData(result);
   };
+
+  console.log("processed data", processData);
 
   const dataUpdate = async (payload) => {
     console.log("UPDATE ", payload);
@@ -142,6 +148,7 @@ const OuraSleep = (props) => {
   const appID = "12324194120ksoa";
 
   const [day, setDay] = useState(0);
+  const [date, setDate] = useState("");
 
   useEffect(async () => {
     // init callback function for background updates/notifications
@@ -173,6 +180,7 @@ const OuraSleep = (props) => {
       processData(activityResult.data.getDataObject.content);
     }
     processData(activityResult.data.getDataObject.content);
+    setDate(dateStr);
 
     /*
     const result = await API[appID].Oura.queryActivitySummariesAsync({
@@ -193,9 +201,12 @@ const OuraSleep = (props) => {
 
   return (
     <Container>
-      <Text fontSize={16} color="white" fontWeight={700} ml={9} mb={21}>
-        Oura Sleep
-      </Text>
+      <Flex>
+        <Text fontSize={16} color="white" fontWeight={700} ml={9} mb={21}>
+          Oura Sleep
+        </Text>
+        <Text>{date}</Text>
+      </Flex>
       <Box>
         <Flex
           h={32}
