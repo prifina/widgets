@@ -117,7 +117,7 @@ const OuraSleep = (props) => {
 
     const d = new Date();
 
-    const dd = d.setDate(d.getDate() - day);
+    const dd = d.setDate(d.getDate() - 6);
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
     console.log("dateStr", dateStr);
