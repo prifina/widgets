@@ -80,7 +80,10 @@ const OuraSleep = (props) => {
         [keys[3]]: dataChunk[3],
       });
     });
+    setProcessedData(result);
   };
+
+  console.log("processed data", processData);
 
   const dataUpdate = async (payload) => {
     console.log("UPDATE ", payload);
@@ -134,7 +137,7 @@ const OuraSleep = (props) => {
     //   console.log("STAGE IS DEV");
     //   processData(activityResult.data.getDataObject.content);
     // }
-    processData(activityResult.data.getDataObject.content);
+    processData(activityResult.data.getDataObject.content[0]);
 
     /*
     const result = await API[appID].Oura.queryActivitySummariesAsync({
@@ -159,7 +162,7 @@ const OuraSleep = (props) => {
         <Text fontSize={16} color="white" fontWeight={700} ml={9} mb={21}>
           Oura Sleep
         </Text>
-        <Text>{date}</Text>
+        <Text color="white">{date}</Text>
       </Flex>
       <Box>
         <Flex
@@ -211,7 +214,7 @@ const OuraSleep = (props) => {
               <BarChart
                 width={200}
                 height={202}
-                // data={result}
+                data={processData}
                 margin={{
                   top: 20,
                   right: 30,
