@@ -214,7 +214,7 @@ const OuraSleep = (props) => {
               <BarChart
                 width={200}
                 height={202}
-                data={processData}
+                data={processedData}
                 margin={{
                   top: 20,
                   right: 30,
