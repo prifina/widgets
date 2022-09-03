@@ -83,7 +83,7 @@ const OuraSleep = (props) => {
     setProcessedData(result);
   };
 
-  console.log("processed data", processData);
+  console.log("processed data", processedData);
 
   const dataUpdate = async (payload) => {
     console.log("UPDATE ", payload);
@@ -101,10 +101,12 @@ const OuraSleep = (props) => {
         processData(payload.data.content);
       }
     }
+
+    console.log("PAYLOAD DATA", payload);
   };
   const appID = "12324194120ksoa";
 
-  const [day, setDay] = useState(1);
+  const [day, setDay] = useState(5);
   const [date, setDate] = useState("");
 
   useEffect(async () => {
