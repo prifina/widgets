@@ -41,15 +41,6 @@ const OuraSleep = (props) => {
   // init hook and get provider api services...
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
-  const [functions, setFunctions] = useState([]);
-
-  const [connectorFunction, setConnectorFunction] = useState("");
-  const [functionCondition, setFunctionCondition] = useState("eq");
-  const [conditionValue, setConditionValue] = useState("");
-  const [fieldsValue, setFieldsValue] = useState("");
-
-  // const { s3Data, error, isLoading, setUrl } = UseFetch(null);
-
   function getEveryNth(arr, nth) {
     const result = [];
 
@@ -60,126 +51,76 @@ const OuraSleep = (props) => {
     return result;
   }
 
-  const ouraData = [
-    {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ];
+  // //======
+  // let data2 = [
+  //   "awake,light,rem,deep",
+  //   "1754,17958,5325,2743",
+  //   "1333,10020,5423,5004",
+  //   "1878,15021,9764,5257",
+  //   "1589,13214,9082,7735",
+  //   "1241,10793,10015,4291",
+  //   "1783,9220,6023,2834",
+  //   "1370,18793,5183,6334",
+  //   "1988,16085,6152,2895",
+  //   "1139,14180,6797,4344",
+  //   "1170,11207,8844,5419",
+  //   "1356,16908,3660,4296",
+  //   "1805,15751,5691,5253",
+  //   "1832,14427,3371,3110",
+  //   "1198,10377,6075,7130",
+  //   "1795,15629,4640,6676",
+  // ];
 
-  //======
-  let data2 = [
-    "awake,light,rem,deep",
-    "1754,17958,5325,2743",
-    "1333,10020,5423,5004",
-    "1878,15021,9764,5257",
-    "1589,13214,9082,7735",
-    "1241,10793,10015,4291",
-    "1783,9220,6023,2834",
-    "1370,18793,5183,6334",
-    "1988,16085,6152,2895",
-    "1139,14180,6797,4344",
-    "1170,11207,8844,5419",
-    "1356,16908,3660,4296",
-    "1805,15751,5691,5253",
-    "1832,14427,3371,3110",
-    "1198,10377,6075,7130",
-    "1795,15629,4640,6676",
-  ];
-
-  const keys = data2[0].split(",");
-
-  data2.shift();
-
-  data2 = data2.map((dataLine) => dataLine.split(",")).flat();
-
-  const chunkSize = 4;
-  const dataChunks = [];
-  for (let i = 0; i < data2.length; i += chunkSize) {
-    const chunk = data2.slice(i, i + chunkSize);
-    dataChunks.push(chunk);
-  }
-
-  const result = [];
-  dataChunks.forEach((dataChunk) => {
-    result.push({
-      [keys[0]]: dataChunk[0],
-      [keys[1]]: dataChunk[1],
-      [keys[2]]: dataChunk[2],
-      [keys[3]]: dataChunk[3],
-    });
-  });
-
-  console.log("hehe", result);
-
-  console.log("ORIGINAL DATA", data2);
+  // const keys = data2[0].split(",");
 
   // data2.shift();
 
-  // const result = []
-  //   .concat(...data2.map((str) => str.split(",")))
-  //   .filter(Boolean); // or .filter(s => s.length > 0) for the sake of readability
+  // data2 = data2.map((dataLine) => dataLine.split(",")).flat();
 
-  // console.log("SPLIT DATA", result);
+  // const chunkSize = 4;
+  // const dataChunks = [];
+  // for (let i = 0; i < data2.length; i += chunkSize) {
+  //   const chunk = data2.slice(i, i + chunkSize);
+  //   dataChunks.push(chunk);
+  // }
 
-  // const every_nth = (arr, nth) => arr.filter((e, i) => i % nth === nth - 1);
-
-  // console.log("should be awake", every_nth(result, 1));
-
-  // console.log("should be light", every_nth(result, 2));
-  // console.log("should be rem", every_nth(result, 3));
-  // console.log("should be deep", every_nth(result, 4));
+  // const result = [];
+  // dataChunks.forEach((dataChunk) => {
+  //   result.push({
+  //     [keys[0]]: dataChunk[0],
+  //     [keys[1]]: dataChunk[1],
+  //     [keys[2]]: dataChunk[2],
+  //     [keys[3]]: dataChunk[3],
+  //   });
+  // });
 
   const processData = (data) => {
     let newData = data;
 
-    console.log("PROCESS DATA", newData);
+    console.log("newData", newData);
 
-    let newArray = Object.values(newData);
+    const keys = data[0].split(",");
 
-    console.log("PROCESS DATA objects", newArray);
+    data.shift();
 
-    console.log("should be deep", getEveryNth(newArray, 1));
+    data = data.map((dataLine) => dataLine.split(",")).flat();
 
-    console.log("should be light", getEveryNth(newArray, 2));
+    const chunkSize = 4;
+    const dataChunks = [];
+    for (let i = 0; i < data.length; i += chunkSize) {
+      const chunk = data.slice(i, i + chunkSize);
+      dataChunks.push(chunk);
+    }
+
+    const result = [];
+    dataChunks.forEach((dataChunk) => {
+      result.push({
+        [keys[0]]: dataChunk[0],
+        [keys[1]]: dataChunk[1],
+        [keys[2]]: dataChunk[2],
+        [keys[3]]: dataChunk[3],
+      });
+    });
   };
 
   const dataUpdate = async (payload) => {
@@ -200,7 +141,7 @@ const OuraSleep = (props) => {
   };
   const appID = "12324194120ksoa";
 
-  const [day, setDay] = useState(1);
+  const [day, setDay] = useState(0);
 
   useEffect(async () => {
     // init callback function for background updates/notifications
@@ -213,6 +154,8 @@ const OuraSleep = (props) => {
     const dd = d.setDate(d.getDate() - day);
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
+    console.log("dateStr", dateStr);
+
     const filter = {
       ["s3::date"]: {
         [Op.eq]: dateStr,
@@ -224,7 +167,7 @@ const OuraSleep = (props) => {
       fields: "awake,light,rem,deep",
     });
     console.log("ACTIVITY RESULT", activityResult);
-    console.log("ACTIVITY RESULT 2", activityResult.data.getDataObject.content);
+
     if (stage === "dev") {
       console.log("STAGE IS DEV");
       processData(activityResult.data.getDataObject.content[1]);
@@ -243,7 +186,9 @@ const OuraSleep = (props) => {
     // if (result.data.getDataObject.content.activity.length > 0) {
     //   processData(result.data.getDataObject.content.activity);
     // }
-  }, []);
+  }, [day]);
+
+  console.log("day", day);
 
   return (
     <Container>
@@ -265,14 +210,14 @@ const OuraSleep = (props) => {
           </Select>
           <button
             onClick={() => {
-              setDay(day - 1);
+              setDay(day + 1);
             }}
           >
             back
           </button>
           <button
             onClick={() => {
-              setDay(day + 1);
+              setDay(day - 1);
             }}
           >
             forward
@@ -300,7 +245,7 @@ const OuraSleep = (props) => {
               <BarChart
                 width={200}
                 height={202}
-                data={result}
+                // data={result}
                 margin={{
                   top: 20,
                   right: 30,
