@@ -51,49 +51,6 @@ const OuraSleep = (props) => {
     return result;
   }
 
-  // //======
-  // let data2 = [
-  //   "awake,light,rem,deep",
-  //   "1754,17958,5325,2743",
-  //   "1333,10020,5423,5004",
-  //   "1878,15021,9764,5257",
-  //   "1589,13214,9082,7735",
-  //   "1241,10793,10015,4291",
-  //   "1783,9220,6023,2834",
-  //   "1370,18793,5183,6334",
-  //   "1988,16085,6152,2895",
-  //   "1139,14180,6797,4344",
-  //   "1170,11207,8844,5419",
-  //   "1356,16908,3660,4296",
-  //   "1805,15751,5691,5253",
-  //   "1832,14427,3371,3110",
-  //   "1198,10377,6075,7130",
-  //   "1795,15629,4640,6676",
-  // ];
-
-  // const keys = data2[0].split(",");
-
-  // data2.shift();
-
-  // data2 = data2.map((dataLine) => dataLine.split(",")).flat();
-
-  // const chunkSize = 4;
-  // const dataChunks = [];
-  // for (let i = 0; i < data2.length; i += chunkSize) {
-  //   const chunk = data2.slice(i, i + chunkSize);
-  //   dataChunks.push(chunk);
-  // }
-
-  // const result = [];
-  // dataChunks.forEach((dataChunk) => {
-  //   result.push({
-  //     [keys[0]]: dataChunk[0],
-  //     [keys[1]]: dataChunk[1],
-  //     [keys[2]]: dataChunk[2],
-  //     [keys[3]]: dataChunk[3],
-  //   });
-  // });
-
   const [processedData, setProcessedData] = useState("");
 
   const processData = (data) => {
@@ -123,11 +80,7 @@ const OuraSleep = (props) => {
         [keys[3]]: dataChunk[3],
       });
     });
-
-    setProcessedData(result);
   };
-
-  console.log("processed data", processData);
 
   const dataUpdate = async (payload) => {
     console.log("UPDATE ", payload);
@@ -169,18 +122,19 @@ const OuraSleep = (props) => {
       },
     };
 
+    setDate(dateStr);
+
     const activityResult = await API[appID].Oura.querySleepSummariesAsync({
       filter: filter,
       fields: "awake,light,rem,deep",
     });
     console.log("ACTIVITY RESULT", activityResult);
 
-    if (stage === "dev") {
-      console.log("STAGE IS DEV");
-      processData(activityResult.data.getDataObject.content);
-    }
+    // if (stage === "dev") {
+    //   console.log("STAGE IS DEV");
+    //   processData(activityResult.data.getDataObject.content);
+    // }
     processData(activityResult.data.getDataObject.content);
-    setDate(dateStr);
 
     /*
     const result = await API[appID].Oura.queryActivitySummariesAsync({
