@@ -135,11 +135,7 @@ const OuraSleep = (props) => {
 
     const filter = {
       ["s3::date"]: {
-        // [Op.gte]: dateStr,
-        [Op.gt && Op.lt]: dateStrbefore,
-        dateStrafter,
-
-        // [Op.lt]: dateStrafter,
+        [Op.between]: [dateStrbefore, dateStrafter],
       },
     };
 
