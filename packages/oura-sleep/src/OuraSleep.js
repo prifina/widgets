@@ -114,15 +114,30 @@ const OuraSleep = (props) => {
     registerHooks(appID, [Oura]);
 
     const d = new Date();
+
     const dd = d.setDate(d.getDate() - day);
 
+    const daybefore = d.setDate(d.getDate() - 1);
+    const dayafter = d.setDate(d.getDate() + 2);
+
+    // console.log("test day before", daybefore);
+    // console.log("test day after", dayafter);
+
     const dateStr = new Date(dd).toISOString().split("T")[0];
+
+    const dateStrbefore = new Date(daybefore).toISOString().split("T")[0];
+    const dateStrafter = new Date(dayafter).toISOString().split("T")[0];
+
+    console.log("test day before", dateStrbefore);
+    console.log("test day after", dateStrafter);
 
     setDate(dateStr);
 
     const filter = {
       ["s3::date"]: {
-        [Op.gte]: dateStr,
+        // [Op.gte]: dateStr,
+        [Op.gt]: dateStrbefore,
+        [Op.lt]: dateStrafter,
       },
     };
 
