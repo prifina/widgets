@@ -95,7 +95,7 @@ const OuraSleep = (props) => {
     ) {
       // process async data
       if (
-        payload.data.dataconnector === "Oura/querySleepSummary"
+        payload.data.dataconnector === "Oura/querySleepDataAsync"
         // payload.data.content.length > 1
       ) {
         processData(payload.data.content);
@@ -140,8 +140,8 @@ const OuraSleep = (props) => {
       },
     };
 
-    const activityResult = await API[appID].Oura.querySleepSummary({
-      filter: filter,
+    const activityResult = await API[appID].Oura.querySleepDataAsync({
+      // filter: filter,
       fields: "awake,light,rem,deep",
     });
     console.log("activityResult", activityResult);
