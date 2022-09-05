@@ -54,6 +54,8 @@ const OuraSleep = (props) => {
   const [processedData, setProcessedData] = useState("");
 
   const processData = (data) => {
+    console.log("ORIGINAL PROCESS DATA", newData);
+
     let newData = data;
 
     console.log("newData", newData);
@@ -87,24 +89,19 @@ const OuraSleep = (props) => {
 
   const dataUpdate = async (payload) => {
     console.log("UPDATE ", payload);
-
     if (
       payload.hasOwnProperty("data") &&
       payload.data.hasOwnProperty("content")
     ) {
       // process async data
       if (
-        payload.data.dataconnector === "Oura/querySleepSummariesAsync"
-
-        // payload.data.content.length > 1
+        payload.data.dataconnector === "Oura/querySleepSummariesAsync" &&
+        payload.data.content.length > 1
       ) {
         processData(payload.data.content);
       }
     }
-
-    console.log("PAYLOAD DATA", payload);
   };
-  const appID = "12324194120ksoa";
 
   const [day, setDay] = useState(5);
   const [date, setDate] = useState("");
@@ -116,11 +113,9 @@ const OuraSleep = (props) => {
     registerHooks(appID, [Oura]);
 
     const d = new Date();
+    const dd = d.setDate(d.getDate() - 5);
 
-    const dd = d.setDate(d.getDate() - 6);
     const dateStr = new Date(dd).toISOString().split("T")[0];
-
-    console.log("dateStr", dateStr);
 
     const filter = {
       ["s3::date"]: {
@@ -128,34 +123,18 @@ const OuraSleep = (props) => {
       },
     };
 
-    setDate(dateStr);
-
     const activityResult = await API[appID].Oura.querySleepSummariesAsync({
       filter: filter,
       fields: "awake,light,rem,deep",
     });
-    console.log("ACTIVITY RESULT", activityResult);
+    console.log("activityResult", activityResult);
 
-    // if (stage === "dev") {
-    //   console.log("STAGE IS DEV");
-    //   processData(activityResult.data.getDataObject.content);
-    // }
-    // processData(activityResult.data.getDataObject.content[0]);
+    // processData(activityResult.data.getDataObject.content.score);
 
-    /*
-    const result = await API[appID].Oura.queryActivitySummariesAsync({
-      filter: filter,
-    });
-
-    console.log("RESULT ", result);
-
-    processData(result.data.getDataObject.content[0]);
-*/
-    //needs solution this doesn't work
-    // if (result.data.getDataObject.content.activity.length > 0) {
-    //   processData(result.data.getDataObject.content.activity);
-    // }
-  }, [day]);
+    if (stage === "dev") {
+      processData(activityResult.data.getDataObject.content[1].score[1]);
+    }
+  }, []);
 
   console.log("day", day);
 
