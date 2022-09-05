@@ -95,15 +95,15 @@ const OuraSleep = (props) => {
     ) {
       // process async data
       if (
-        payload.data.dataconnector === "Oura/querySleepSummariesAsync" &&
-        payload.data.content.length > 1
+        payload.data.dataconnector === "Oura/querySleepSummariesAsync"
+        // payload.data.content.length > 1
       ) {
         processData(payload.data.content);
       }
     }
   };
 
-  const [day, setDay] = useState(0);
+  const [day, setDay] = useState(1);
   const [date, setDate] = useState("");
 
   useEffect(async () => {
