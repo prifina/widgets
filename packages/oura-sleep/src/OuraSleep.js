@@ -100,6 +100,7 @@ const OuraSleep = (props) => {
       ) {
         processData(payload.data.content);
       }
+      console.log("PAYLOAD DATA", payload);
     }
   };
 
@@ -121,7 +122,7 @@ const OuraSleep = (props) => {
 
     const filter = {
       ["s3::date"]: {
-        [Op.eq]: dateStr,
+        [Op.gte]: dateStr,
       },
     };
 
