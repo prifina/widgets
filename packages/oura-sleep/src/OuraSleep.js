@@ -60,29 +60,29 @@ const OuraSleep = (props) => {
 
     console.log("newData", newData);
 
-    // const keys = data[0].split(",");
+    const keys = data[0].split(",");
 
-    // data.shift();
+    data.shift();
 
-    // data = data.map((dataLine) => dataLine.split(",")).flat();
+    data = data.map((dataLine) => dataLine.split(",")).flat();
 
-    // const chunkSize = 4;
-    // const dataChunks = [];
-    // for (let i = 0; i < data.length; i += chunkSize) {
-    //   const chunk = data.slice(i, i + chunkSize);
-    //   dataChunks.push(chunk);
-    // }
+    const chunkSize = 4;
+    const dataChunks = [];
+    for (let i = 0; i < data.length; i += chunkSize) {
+      const chunk = data.slice(i, i + chunkSize);
+      dataChunks.push(chunk);
+    }
 
-    // const result = [];
-    // dataChunks.forEach((dataChunk) => {
-    //   result.push({
-    //     [keys[0]]: dataChunk[0],
-    //     [keys[1]]: dataChunk[1],
-    //     [keys[2]]: dataChunk[2],
-    //     [keys[3]]: dataChunk[3],
-    //   });
-    // });
-    // setProcessedData(result);
+    const result = [];
+    dataChunks.forEach((dataChunk) => {
+      result.push({
+        [keys[0]]: dataChunk[0],
+        [keys[1]]: dataChunk[1],
+        [keys[2]]: dataChunk[2],
+        [keys[3]]: dataChunk[3],
+      });
+    });
+    setProcessedData(result);
 
     setProcessedData(newData);
   };
@@ -135,15 +135,17 @@ const OuraSleep = (props) => {
 
     setDate(dateStr);
 
-    // const filter = {
-    //   ["s3::date"]: {
-    //     [Op.between]: dateStrbefore,
-    //     dateStrafter,
-    //   },
-    // };
+    const filter = {
+      ["s3::date"]: {
+        [Op.between]: dateStrbefore,
+        dateStrafter,
+      },
+    };
 
-    const activityResult = await API[appID].Oura.querySleepSummary({
-      // filter: filter,
+    console.log("FILTER", filter);
+
+    const activityResult = await API[appID].Oura.querySleepSummariesAsync({
+      filter: filter,
       fields: "awake,light,rem,deep",
     });
     console.log("activityResult", activityResult);
