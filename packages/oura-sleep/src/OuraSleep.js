@@ -95,7 +95,7 @@ const OuraSleep = (props) => {
     ) {
       // process async data
       if (
-        payload.data.dataconnector === "Oura/querySleepDataAsync"
+        payload.data.dataconnector === "Oura/querySleepSummariesAsync"
         // payload.data.content.length > 1
       ) {
         processData(payload.data.content);
@@ -135,12 +135,12 @@ const OuraSleep = (props) => {
 
     const filter = {
       ["s3::date"]: {
-        // [Op.between]: [dateStrbefore, dateStrafter],
-        [Op.eq]: dateStr,
+        [Op.between]: dateStrbefore,
+        dateStrafter,
       },
     };
 
-    const activityResult = await API[appID].Oura.querySleepDataAsync({
+    const activityResult = await API[appID].Oura.querySleepSummariesAsync({
       filter: filter,
       fields: "awake,light,rem,deep",
     });
