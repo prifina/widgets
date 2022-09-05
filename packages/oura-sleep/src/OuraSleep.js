@@ -133,15 +133,15 @@ const OuraSleep = (props) => {
 
     setDate(dateStr);
 
-    const filter = {
-      ["s3::date"]: {
-        [Op.between]: dateStrbefore,
-        dateStrafter,
-      },
-    };
+    // const filter = {
+    //   ["s3::date"]: {
+    //     [Op.between]: dateStrbefore,
+    //     dateStrafter,
+    //   },
+    // };
 
-    const activityResult = await API[appID].Oura.querySleepSummariesAsync({
-      filter: filter,
+    const activityResult = await API[appID].Oura.querySleepSummary({
+      // filter: filter,
       fields: "awake,light,rem,deep",
     });
     console.log("activityResult", activityResult);
