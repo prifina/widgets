@@ -103,7 +103,7 @@ const OuraSleep = (props) => {
     }
   };
 
-  const [day, setDay] = useState(5);
+  const [day, setDay] = useState(0);
   const [date, setDate] = useState("");
 
   useEffect(async () => {
@@ -113,13 +113,15 @@ const OuraSleep = (props) => {
     registerHooks(appID, [Oura]);
 
     const d = new Date();
-    const dd = d.setDate(d.getDate() - 5);
+    const dd = d.setDate(d.getDate() - day);
 
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
+    setDate(dateStr);
+
     const filter = {
       ["s3::date"]: {
-        [Op.gte]: dateStr,
+        [Op.eq]: dateStr,
       },
     };
 
@@ -134,7 +136,7 @@ const OuraSleep = (props) => {
     if (stage === "dev") {
       processData(activityResult.data.getDataObject.content[1].score[1]);
     }
-  }, []);
+  }, [day]);
 
   console.log("day", day);
 
