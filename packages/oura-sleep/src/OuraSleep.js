@@ -6,7 +6,19 @@ import Oura from "@prifina/oura";
 import Garmin from "@prifina/garmin";
 import GoogleTimeline from "@prifina/google-timeline";
 
-import { Flex, Spacer, Text, Box, Select } from "@chakra-ui/react";
+import {
+  Flex,
+  Spacer,
+  Text,
+  Box,
+  Select,
+  Image,
+  IconButton,
+} from "@chakra-ui/react";
+
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+
+import OuraIcon from "./assets/oura.svg";
 
 import {
   BarChart,
@@ -24,12 +36,7 @@ const Container = styled.div`
   height: 300px;
   width: 300px;
   border-radius: 10px;
-  background: linear-gradient(
-    180deg,
-    #082673 30.67%,
-    #644bd0 75.51%,
-    #a56adf 106.47%
-  );
+  background: linear-gradient(180deg, #343434 0%, #d3bc69 149.83%);
   padding: 11px 8px 0px 8px;
 `;
 
@@ -55,35 +62,11 @@ const OuraSleep = (props) => {
   const [processedData, setProcessedData] = useState("");
 
   const processData = (data) => {
-    console.log("ORIGINAL PROCESS DATA", newData);
+    console.log("ORIGINAL PROCESS DATA", data);
 
     let newData = data;
 
     console.log("newData", newData);
-
-    // const keys = data[0].split(",");
-
-    // data.shift();
-
-    // data = data.map((dataLine) => dataLine.split(",")).flat();
-
-    // const chunkSize = 4;
-    // const dataChunks = [];
-    // for (let i = 0; i < data.length; i += chunkSize) {
-    //   const chunk = data.slice(i, i + chunkSize);
-    //   dataChunks.push(chunk);
-    // }
-
-    // const result = [];
-    // dataChunks.forEach((dataChunk) => {
-    //   result.push({
-    //     [keys[0]]: dataChunk[0],
-    //     [keys[1]]: dataChunk[1],
-    //     [keys[2]]: dataChunk[2],
-    //     [keys[3]]: dataChunk[3],
-    //   });
-    // });
-    // setProcessedData(result);
 
     setProcessedData(newData);
   };
@@ -118,9 +101,12 @@ const OuraSleep = (props) => {
     // register datasource modules
     registerHooks(appID, [Oura]);
 
-    const d = currentDate.current;
+    // const d = currentDate.current;
+    let d = new Date();
 
-    const dd = d.setDate(d.getDate() + day);
+    // d = currentDate.current;
+
+    const dd = d.setDate(d.getDate() - day);
 
     currentDate.current = dd;
 
@@ -129,6 +115,12 @@ const OuraSleep = (props) => {
     setDate(dateStr);
 
     console.log("datestr", dateStr);
+
+    const dateStr2 = new Date(currentDate.current).toISOString().split("T")[0];
+    const dateStr3 = new Date(dd).toISOString().split("T")[0];
+
+    console.log("currendate current", dateStr2);
+    console.log("currendate dd", dateStr3);
 
     const filter = {
       ["s3::date"]: {
@@ -154,39 +146,38 @@ const OuraSleep = (props) => {
 
   return (
     <Container>
-      <Flex>
-        <Text fontSize={16} color="white" fontWeight={700} ml={9} mb={21}>
-          Oura Sleep
+      <Flex alignItems="center" mb={21}>
+        <Text fontSize={16} color="white" fontWeight={700} ml={9} mr={110}>
+          Sleep widget
         </Text>
-        <Text color="white">{date}</Text>
+        <Image src={OuraIcon} />
       </Flex>
       <Box>
         <Flex
           h={32}
           justifyContent="space-between"
-          alignContent="center"
-          bg="#1B1D50"
-          padding="4px 8px 4px 8px"
+          alignItems="center"
+          bg="#FFA654"
+          padding="0px 65px 0px 65px"
+          borderTopRightRadius={10}
+          borderTopLeftRadius={10}
         >
-          <Select w={71} background="#000897" color="white">
-            <option value="option1">Year</option>
-            <option value="option2">Month</option>
-            <option value="option3">Day</option>
-          </Select>
-          <button
+          <IconButton
+            aria-label="Search database"
+            icon={<ChevronLeftIcon />}
             onClick={async () => {
               setDay(day + 1);
             }}
-          >
-            back
-          </button>
-          <button
+          />
+          <Text>{date}</Text>
+
+          <IconButton
+            aria-label="Search database"
+            icon={<ChevronRightIcon />}
             onClick={async () => {
               setDay(day - 1);
             }}
-          >
-            forward
-          </button>
+          />
         </Flex>
         <Box
           height={202}
@@ -223,10 +214,10 @@ const OuraSleep = (props) => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="awake" stackId="a" fill="#8884d8" />
-                <Bar dataKey="light" stackId="a" fill="blue" />
-                <Bar dataKey="deep" stackId="a" fill="red" />
-                <Bar dataKey="rem" stackId="a" fill="#82ca9d" />
+                <Bar dataKey="awake" stackId="a" fill="#FFE9D5" />
+                <Bar dataKey="light" stackId="a" fill="#FFA654" />
+                <Bar dataKey="deep" stackId="a" fill="#B96314" />
+                <Bar dataKey="rem" stackId="a" fill="#6D3D10" />
               </BarChart>
             </ResponsiveContainer>
           </Box>
