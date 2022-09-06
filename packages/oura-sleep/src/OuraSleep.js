@@ -134,18 +134,14 @@ const OuraSleep = (props) => {
     setDate(dateStr);
 
     const filter = {
-      // ["s3::date"]: {
-      //   [Op.between]: {
-      //     [Op.lte]: dateStrafter,
-      //     [Op.gte]: dateStrbefore,
-      //   },
-      // },
-      // ["s3::date"]: {
-      //   [Op.gte]: dateStrbefore,
-      //   [Op.lte]: dateStrafter,
-      // },
       ["s3::date"]: {
         [Op.gte]: dateStr,
+      },
+    };
+
+    const filter2 = {
+      ["s3::date"]: {
+        [Op.eq]: dateStr,
       },
     };
 
@@ -155,7 +151,14 @@ const OuraSleep = (props) => {
       filter: filter,
       fields: "awake,light,rem,deep",
     });
+
+    const activityResult2 = await API[appID].Oura.querySleepSummary({
+      filter: filter2,
+      fields: "awake,light,rem,deep",
+    });
     console.log("activityResult", activityResult);
+
+    console.log("activityResult2", activityResult2);
 
     if (stage === "dev") {
       processData(activityResult.data.getDataObject.content[1].score[1]);
