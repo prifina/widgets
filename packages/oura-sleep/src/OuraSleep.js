@@ -37,6 +37,7 @@ const Container = styled.div`
 const appID = "866fscSq5Ae7bPgUtb6ffB";
 
 const OuraSleep = (props) => {
+  let stage = "";
   const { data } = props;
   // init hook and get provider api services...
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
@@ -122,9 +123,6 @@ const OuraSleep = (props) => {
     const daybefore = d.setDate(d.getDate() - 1);
     const dayafter = d.setDate(d.getDate() + 2);
 
-    // console.log("test day before", daybefore);
-    // console.log("test day after", dayafter);
-
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
     const dateStrbefore = new Date(daybefore).toISOString().split("T")[0];
@@ -137,8 +135,15 @@ const OuraSleep = (props) => {
 
     const filter = {
       ["s3::date"]: {
-        [Op.between]: dateStrbefore,
-        dateStrafter,
+        [Op.between]: {
+          ["day"]: {
+            [Op.lt]: dateStrafter,
+            [Op.gt]: dateStrbefore,
+          },
+          ["day2"]: {
+            [Op.eq]: dateStr,
+          },
+        },
       },
     };
 
@@ -181,19 +186,33 @@ const OuraSleep = (props) => {
             <option value="option3">Day</option>
           </Select>
           <button
-            onClick={() => {
+            onClick={async () => {
               setDay(day + 1);
             }}
           >
             back
           </button>
           <button
-            onClick={() => {
+            onClick={async () => {
               setDay(day - 1);
             }}
           >
             forward
           </button>
+          {/* <button
+            onClick={async () => {
+              const filter = {
+                ["s3::date"]: {
+                  [Op[functionCondition]]: conditionValue,
+                },
+              };
+              console.log("FILTER", filter);
+
+              console.log("DATE ", new Date().getTime(), result);
+            }}
+          >
+            RUN
+          </button> */}
         </Flex>
         <Box
           height={202}
