@@ -107,7 +107,7 @@ const OuraSleep = (props) => {
     }
   };
 
-  const [day, setDay] = useState(1);
+  const [day, setDay] = useState(364);
   const [date, setDate] = useState("");
 
   useEffect(async () => {
@@ -120,26 +120,26 @@ const OuraSleep = (props) => {
 
     const dd = d.setDate(d.getDate() - day);
 
-    const daybefore = d.setDate(d.getDate() - 1);
-    const dayafter = d.setDate(d.getDate() + 2);
+    // const daybefore = d.setDate(d.getDate() - 1);
+    // const dayafter = d.setDate(d.getDate() + 2);
 
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
-    const dateStrbefore = new Date(daybefore).toISOString().split("T")[0];
-    const dateStrafter = new Date(dayafter).toISOString().split("T")[0];
+    // const dateStrbefore = new Date(daybefore).toISOString().split("T")[0];
+    // const dateStrafter = new Date(dayafter).toISOString().split("T")[0];
 
-    console.log("test day before", dateStrbefore);
-    console.log("test day after", dateStrafter);
+    // console.log("test day before", dateStrbefore);
+    // console.log("test day after", dateStrafter);
 
     setDate(dateStr);
 
-    const filter = {
-      ["s3::date"]: {
-        [Op.gte]: dateStr,
-      },
-    };
+    // const filter = {
+    //   ["s3::date"]: {
+    //     [Op.gte]: dateStr,
+    //   },
+    // };
 
-    const filter2 = {
+    const filter = {
       ["s3::date"]: {
         [Op.eq]: dateStr,
       },
@@ -147,16 +147,16 @@ const OuraSleep = (props) => {
 
     console.log("FILTER", filter);
 
-    const activityResult = await API[appID].Oura.querySleepSummariesAsync({
+    // const activityResult = await API[appID].Oura.querySleepSummariesAsync({
+    //   filter: filter,
+    //   fields: "awake,light,rem,deep",
+    // });
+
+    const activityResult2 = await API[appID].Oura.querySleepSummary({
       filter: filter,
       fields: "awake,light,rem,deep",
     });
-
-    const activityResult2 = await API[appID].Oura.querySleepSummary({
-      filter: filter2,
-      fields: "awake,light,rem,deep",
-    });
-    console.log("THE NEW BUILD activityResult", activityResult);
+    // console.log("THE NEW BUILD activityResult", activityResult);
 
     console.log("THE NEW BUILD activityResult2", activityResult2);
 
