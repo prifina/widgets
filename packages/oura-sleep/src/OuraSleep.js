@@ -34,7 +34,7 @@ const Container = styled.div`
 `;
 
 // unique appID for the widget....
-const appID = "866fscSq5Ae7bPgUtb6ffB";
+const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
 const OuraSleep = (props) => {
   let stage = "";
@@ -144,7 +144,7 @@ const OuraSleep = (props) => {
       //   [Op.gte]: dateStrbefore,
       //   [Op.lte]: dateStrafter,
       // },
-      ["s3::date3"]: {
+      ["s3::date"]: {
         [Op.gte]: dateStr,
       },
     };
