@@ -61,29 +61,29 @@ const OuraSleep = (props) => {
 
     console.log("newData", newData);
 
-    const keys = data[0].split(",");
+    // const keys = data[0].split(",");
 
-    data.shift();
+    // data.shift();
 
-    data = data.map((dataLine) => dataLine.split(",")).flat();
+    // data = data.map((dataLine) => dataLine.split(",")).flat();
 
-    const chunkSize = 4;
-    const dataChunks = [];
-    for (let i = 0; i < data.length; i += chunkSize) {
-      const chunk = data.slice(i, i + chunkSize);
-      dataChunks.push(chunk);
-    }
+    // const chunkSize = 4;
+    // const dataChunks = [];
+    // for (let i = 0; i < data.length; i += chunkSize) {
+    //   const chunk = data.slice(i, i + chunkSize);
+    //   dataChunks.push(chunk);
+    // }
 
-    const result = [];
-    dataChunks.forEach((dataChunk) => {
-      result.push({
-        [keys[0]]: dataChunk[0],
-        [keys[1]]: dataChunk[1],
-        [keys[2]]: dataChunk[2],
-        [keys[3]]: dataChunk[3],
-      });
-    });
-    setProcessedData(result);
+    // const result = [];
+    // dataChunks.forEach((dataChunk) => {
+    //   result.push({
+    //     [keys[0]]: dataChunk[0],
+    //     [keys[1]]: dataChunk[1],
+    //     [keys[2]]: dataChunk[2],
+    //     [keys[3]]: dataChunk[3],
+    //   });
+    // });
+    // setProcessedData(result);
 
     setProcessedData(newData);
   };
@@ -107,7 +107,9 @@ const OuraSleep = (props) => {
     }
   };
 
-  const [day, setDay] = useState(364);
+  const currentDate = useRef(new Date());
+
+  const [day, setDay] = useState(0);
   const [date, setDate] = useState("");
 
   useEffect(async () => {
@@ -116,28 +118,17 @@ const OuraSleep = (props) => {
     // register datasource modules
     registerHooks(appID, [Oura]);
 
-    const d = new Date();
+    const d = currentDate.current;
 
-    const dd = d.setDate(d.getDate() - day);
+    const dd = d.setDate(d.getDate() + day);
 
-    // const daybefore = d.setDate(d.getDate() - 1);
-    // const dayafter = d.setDate(d.getDate() + 2);
+    currentDate.current = dd;
 
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
-    // const dateStrbefore = new Date(daybefore).toISOString().split("T")[0];
-    // const dateStrafter = new Date(dayafter).toISOString().split("T")[0];
-
-    // console.log("test day before", dateStrbefore);
-    // console.log("test day after", dateStrafter);
-
     setDate(dateStr);
 
-    // const filter = {
-    //   ["s3::date"]: {
-    //     [Op.gte]: dateStr,
-    //   },
-    // };
+    console.log("datestr", dateStr);
 
     const filter = {
       ["s3::date"]: {
@@ -147,16 +138,10 @@ const OuraSleep = (props) => {
 
     console.log("FILTER", filter);
 
-    // const activityResult = await API[appID].Oura.querySleepSummariesAsync({
-    //   filter: filter,
-    //   fields: "awake,light,rem,deep",
-    // });
-
     const activityResult2 = await API[appID].Oura.querySleepSummary({
       filter: filter,
       fields: "awake,light,rem,deep",
     });
-    // console.log("THE NEW BUILD activityResult", activityResult);
 
     console.log("THE NEW BUILD activityResult2", activityResult2);
 
