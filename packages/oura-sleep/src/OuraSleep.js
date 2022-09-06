@@ -130,16 +130,17 @@ const OuraSleep = (props) => {
 
     console.log("FILTER", filter);
 
-    const activityResult2 = await API[appID].Oura.querySleepSummary({
+    const result = await API[appID].Oura.querySleepSummary({
       filter: filter,
       fields: "awake,light,rem,deep",
     });
 
-    console.log("THE NEW BUILD activityResult2", activityResult2);
+    console.log("THE NEW BUILD result", result);
 
     if (stage === "dev") {
-      processData(activityResult.data.getDataObject.content[1].score[1]);
+      processData(result.data.getDataObject.content[1].score[1]);
     }
+    processData(result.data.getDataObject.content[0]);
   }, [day]);
 
   console.log("day", day);
