@@ -156,9 +156,9 @@ const OuraSleep = (props) => {
       filter: filter2,
       fields: "awake,light,rem,deep",
     });
-    console.log("activityResult", activityResult);
+    console.log("THE NEW BUILD activityResult", activityResult);
 
-    console.log("activityResult2", activityResult2);
+    console.log("THE NEW BUILD activityResult2", activityResult2);
 
     if (stage === "dev") {
       processData(activityResult.data.getDataObject.content[1].score[1]);
