@@ -1,34 +1,23 @@
 {
-  "name": "@prifina-widgets/messaging-components",
+  "name": "@prifina-widgets/imessage-app-v2",
   "version": "0.0.0",
-  "description": "Prifina Chat components",
+  "description": "Prifina Chat app",
   "author": "Tero <tero@prifina.com>",
   "license": "MIT",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "exports": {
-    "import": "./dist/esm/index.js",
-    "require": "./dist/cjs/index.js"
+  "main": "dist/esm/index.js",
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "dist",
     "src"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "build": "rimraf dist && rollup -c",
-    "test": "./node_modules/.bin/jest"
-  },
   "devDependencies": {
     "@babel/cli": "^7.16.8",
     "@babel/core": "^7.16.12",
     "@babel/eslint-parser": "^7.18.2",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
-    "@rollup/plugin-babel": "^5.3.1",
-    "@rollup/plugin-node-resolve": "^13.3.0",
     "babel-jest": "^27.5.1",
     "babel-loader": "^8.2.2",
     "babel-plugin-react-docgen": "^4.2.1",
@@ -50,9 +39,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-test-renderer": "^18.2.0",
-    "rimraf": "^3.0.2",
-    "rollup": "^2.78.1",
-    "rollup-plugin-node-externals": "^4.1.1",
     "serve": "12.0.1",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5",
@@ -60,6 +46,15 @@
     "webpack": "5.65.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.5.0"
+  },
+  "scripts": {
+    "start": "webpack serve --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "serve": "serve dist -p 3003",
+    "xbuild": "cross-env NODE_ENV=production webpack --mode production --config config/webpack.config.js",
+    "xbuild:dev": "cross-env NODE_ENV=development webpack --mode development --config config/webpack.dev-config.js",
+    "xstart": "yarn build:dev && cross-env NODE_ENV=development webpack serve --config ./config/webpack.dev-config.js",
+    "xstorybook": "start-storybook -p 9009 -s public"
   },
   "peerDependencies": {
     "@prifina/hooks-v2": "^0.0.0",
@@ -70,6 +65,7 @@
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
+    "@prifina-widgets/messaging-components": "^0.0.0",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5",
     "timeago.js": "^4.0.2",
