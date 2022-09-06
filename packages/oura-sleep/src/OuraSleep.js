@@ -44,22 +44,9 @@ const Container = styled.div`
 const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
 const OuraSleep = (props) => {
-  let stage = "";
-  const { data } = props;
-  // init hook and get provider api services...
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
-  function getEveryNth(arr, nth) {
-    const result = [];
-
-    for (let i = 0; i < arr.length; i += nth) {
-      result.push(arr[i]);
-    }
-
-    return result;
-  }
-
-  const [processedData, setProcessedData] = useState("");
+  const [processedData, setProcessedData] = useState();
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
@@ -81,8 +68,8 @@ const OuraSleep = (props) => {
     ) {
       // process async data
       if (
-        payload.data.dataconnector === "Oura/querySleepSummariesAsync"
-        // payload.data.content.length > 1
+        payload.data.dataconnector === "Oura/querySleepSummariesAsync" &&
+        payload.data.content.length > 1
       ) {
         processData(payload.data.content);
       }
@@ -93,7 +80,7 @@ const OuraSleep = (props) => {
   const currentDate = useRef(new Date());
 
   const [day, setDay] = useState(0);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState();
 
   useEffect(async () => {
     // init callback function for background updates/notifications
