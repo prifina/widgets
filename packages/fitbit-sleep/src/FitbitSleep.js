@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
 import Fitbit from "@prifina/fitbit";
-import Oura from "@prifina/oura";
+
 import Garmin from "@prifina/garmin";
 import GoogleTimeline from "@prifina/google-timeline";
 
@@ -36,7 +36,7 @@ const Container = styled.div`
 // unique appID for the widget....
 const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
-const OuraSleep = (props) => {
+const FitbitSleep = (props) => {
   let stage = "";
   const { data } = props;
   // init hook and get provider api services...
@@ -98,7 +98,7 @@ const OuraSleep = (props) => {
     ) {
       // process async data
       if (
-        payload.data.dataconnector === "Oura/querySleepSummariesAsync"
+        payload.data.dataconnector === "Fitbit/querySleepDataAsync"
         // payload.data.content.length > 1
       ) {
         processData(payload.data.content);
@@ -114,7 +114,7 @@ const OuraSleep = (props) => {
     // init callback function for background updates/notifications
     onUpdate(appID, dataUpdate);
     // register datasource modules
-    registerHooks(appID, [Oura]);
+    registerHooks(appID, [Fitbit]);
 
     const d = new Date();
 
@@ -151,9 +151,9 @@ const OuraSleep = (props) => {
 
     console.log("FILTER", filter);
 
-    const activityResult = await API[appID].Oura.querySleepSummariesAsync({
+    const activityResult = await API[appID].Fitbit.querySleepDataAsync({
       filter: filter,
-      fields: "awake,light,rem,deep",
+      fields: "wake,light,rem,deep",
     });
     console.log("activityResult", activityResult);
 
@@ -168,7 +168,7 @@ const OuraSleep = (props) => {
     <Container>
       <Flex>
         <Text fontSize={16} color="white" fontWeight={700} ml={9} mb={21}>
-          Oura Sleep
+          Fitbit Sleep
         </Text>
         <Text color="white">{date}</Text>
       </Flex>
@@ -247,6 +247,6 @@ const OuraSleep = (props) => {
     </Container>
   );
 };
-OuraSleep.displayName = "OuraSleep";
+FitbitSleep.displayName = "FitbitSleep";
 
-export default OuraSleep;
+export default FitbitSleep;
