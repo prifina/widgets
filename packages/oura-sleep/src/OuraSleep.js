@@ -141,7 +141,11 @@ const OuraSleep = (props) => {
         },
       },
       ["s3::date"]: {
-        [Op.eq]: dateStr,
+        [Op.gte]: dateStrbefore,
+        [Op.lte]: dateStrafter,
+      },
+      ["s3::date3"]: {
+        [Op.gte]: dateStr,
       },
     };
 
