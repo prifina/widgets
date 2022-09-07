@@ -127,7 +127,7 @@ const OuraSleep = (props) => {
 
     console.log("newData", newData);
 
-    setProcessedData(data);
+    setProcessedData(newData);
   };
 
   console.log("processed data", processedData);
