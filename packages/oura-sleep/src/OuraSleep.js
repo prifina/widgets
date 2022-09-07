@@ -6,6 +6,8 @@ import Oura from "@prifina/oura";
 import Garmin from "@prifina/garmin";
 import GoogleTimeline from "@prifina/google-timeline";
 
+// import moment from "moment";
+
 import {
   Flex,
   Spacer,
@@ -63,7 +65,7 @@ let falseData = [
     duration: 18180,
     awake: 1289,
     light: 11655,
-    rem: 2514,
+    rem: 12876,
     deep: 2722,
     onset_latency: 480,
     restless: 39,
@@ -76,18 +78,6 @@ let falseData = [
     temperature_delta: -0.06,
     hypnogram_5min:
       "443432222211222333321112222222222111133333322221112233333333332232222334",
-    hr_5min: [
-      0, 53, 51, 0, 50, 50, 49, 49, 50, 50, 51, 52, 52, 51, 53, 58, 60, 60, 59,
-      58, 58, 58, 58, 55, 55, 55, 55, 56, 56, 55, 53, 53, 53, 53, 53, 53, 57,
-      58, 60, 60, 59, 57, 59, 58, 56, 56, 56, 56, 55, 55, 56, 56, 57, 58, 55,
-      56, 57, 60, 58, 58, 59, 57, 54, 54, 53, 52, 52, 55, 53, 54, 56, 0,
-    ],
-    rmssd_5min: [
-      0, 0, 62, 0, 75, 52, 56, 56, 64, 57, 55, 78, 77, 83, 70, 35, 21, 25, 49,
-      44, 48, 48, 62, 69, 66, 64, 79, 59, 67, 66, 70, 63, 53, 57, 53, 57, 38,
-      26, 18, 24, 30, 35, 36, 46, 53, 59, 50, 50, 53, 53, 57, 52, 41, 37, 49,
-      47, 48, 35, 32, 34, 52, 57, 62, 57, 70, 81, 81, 65, 69, 72, 64, 0,
-    ],
   },
 ];
 
@@ -123,18 +113,6 @@ let newD = {
   temperature_delta: -0.06,
   hypnogram_5min:
     "443432222211222333321112222222222111133333322221112233333333332232222334",
-  hr_5min: [
-    0, 53, 51, 0, 50, 50, 49, 49, 50, 50, 51, 52, 52, 51, 53, 58, 60, 60, 59,
-    58, 58, 58, 58, 55, 55, 55, 55, 56, 56, 55, 53, 53, 53, 53, 53, 53, 57, 58,
-    60, 60, 59, 57, 59, 58, 56, 56, 56, 56, 55, 55, 56, 56, 57, 58, 55, 56, 57,
-    60, 58, 58, 59, 57, 54, 54, 53, 52, 52, 55, 53, 54, 56, 0,
-  ],
-  rmssd_5min: [
-    0, 0, 62, 0, 75, 52, 56, 56, 64, 57, 55, 78, 77, 83, 70, 35, 21, 25, 49, 44,
-    48, 48, 62, 69, 66, 64, 79, 59, 67, 66, 70, 63, 53, 57, 53, 57, 38, 26, 18,
-    24, 30, 35, 36, 46, 53, 59, 50, 50, 53, 53, 57, 52, 41, 37, 49, 47, 48, 35,
-    32, 34, 52, 57, 62, 57, 70, 81, 81, 65, 69, 72, 64, 0,
-  ],
 };
 
 const OuraSleep = (props) => {
@@ -149,7 +127,7 @@ const OuraSleep = (props) => {
 
     console.log("newData", newData);
 
-    setProcessedData(newData);
+    setProcessedData(data);
   };
 
   console.log("processed data", processedData);
@@ -227,6 +205,36 @@ const OuraSleep = (props) => {
 
   console.log("day", day);
 
+  function secondsToTime(secs) {
+    var hours = Math.floor(secs / (60 * 60));
+
+    var divisor_for_minutes = secs % (60 * 60);
+    var minutes = Math.floor(divisor_for_minutes / 60);
+
+    var obj = hours + "h " + minutes + "m";
+    return obj;
+  }
+
+  let awake = processedData[0].awake;
+  let light = processedData[0].light;
+  let rem = processedData[0].rem;
+  let deep = processedData[0].deep;
+
+  let total = processedData[0].total;
+
+  // let displayData = [
+  //   {
+  //     awake: secondsToTime(awake),
+  //     light: secondsToTime(light),
+  //     rem: secondsToTime(rem),
+  //     deep: secondsToTime(deep),
+  //     total: secondsToTime(total),
+  //   },
+  // ];
+
+  console.log("total time", total);
+  // console.log("display time", displayData);
+
   return (
     <Container>
       <Flex alignItems="center" mb={21}>
@@ -302,24 +310,54 @@ const OuraSleep = (props) => {
                 vertical={false}
                 stroke="rgba(0, 0, 0, 0.12)"
               />
-              <XAxis dataKey="0" label="DAY" fontWeight={300} />
-              <YAxis />
+              <XAxis
+                tickLine={false}
+                dataKey="0"
+                stroke="rgba(0, 0, 0, 0.12)"
+                label={{
+                  value: "DAY",
+                  position: "bottom",
+                  offset: -20,
+                  stroke: "white",
+                  fontSize: 10,
+                }}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                label={{
+                  value: "HOURS ASLEEP",
+                  angle: -90,
+                  stroke: "white",
+                  fontSize: 10,
+                }}
+                /* Preventing the YAxis from showing decimals. */
+                allowDecimals={false}
+                type="number"
+                tickFormatter={(total) => {
+                  return Math.floor(total / 3600);
+                }}
+                domain={[0, "dataMax + 3600"]}
+                stroke="white"
+              />
+              />
               <Tooltip
                 contentStyle={{
-                  background: "rgba(0, 0, 0, 0.3)",
+                  background: "rgba(0, 0, 0, 0.9)",
                   padding: 5,
                   border: 0,
-                  width: 85,
-                  // height: 95,
+                  // width: 85,
                 }}
                 itemStyle={{ fontSize: 14 }}
-                // position={{ x: 200, y: 0 }}
+                formatter={(awake) => {
+                  return secondsToTime(awake);
+                }}
               />
               {/* <Legend /> */}
-              <Bar dataKey="awake" fill="#FFE9D5" />
-              <Bar dataKey="light" fill="#FFA654" />
-              <Bar dataKey="deep" fill="#B96314" />
-              <Bar dataKey="rem" fill="#6D3D10" />
+              <Bar barSize={45} name="Awake" dataKey="awake" fill="#FFE9D5" />
+              <Bar barSize={45} name="Light" dataKey="light" fill="#FFA654" />
+              <Bar barSize={45} name="Deep" dataKey="deep" fill="#B96314" />
+              <Bar barSize={45} name="REM" dataKey="rem" fill="#6D3D10" />
             </BarChart>
           </ResponsiveContainer>
         </Box>
