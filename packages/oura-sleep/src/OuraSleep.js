@@ -43,51 +43,53 @@ const Container = styled.div`
 // unique appID for the widget....
 const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
-let falseData = {
-  summary_date: "2022-09-04",
-  period_id: 0,
-  is_longest: 1,
-  timezone: 0,
-  bedtime_start: "2022-09-04T22:52:00+00:00",
-  bedtime_end: "2022-09-05T03:55:00+00:00",
-  score: 62,
-  score_total: 57,
-  score_disturbances: 83,
-  score_efficiency: 99,
-  score_latency: 88,
-  score_rem: 97,
-  score_deep: 59,
-  score_alignment: 31,
-  total: 16891,
-  duration: 18180,
-  awake: 1289,
-  light: 11655,
-  rem: 2514,
-  deep: 2722,
-  onset_latency: 480,
-  restless: 39,
-  efficiency: 94,
-  midpoint_time: 11010,
-  hr_lowest: 49,
-  hr_average: 56.375,
-  rmssd: 54,
-  breath_average: 13,
-  temperature_delta: -0.06,
-  hypnogram_5min:
-    "443432222211222333321112222222222111133333322221112233333333332232222334",
-  hr_5min: [
-    0, 53, 51, 0, 50, 50, 49, 49, 50, 50, 51, 52, 52, 51, 53, 58, 60, 60, 59,
-    58, 58, 58, 58, 55, 55, 55, 55, 56, 56, 55, 53, 53, 53, 53, 53, 53, 57, 58,
-    60, 60, 59, 57, 59, 58, 56, 56, 56, 56, 55, 55, 56, 56, 57, 58, 55, 56, 57,
-    60, 58, 58, 59, 57, 54, 54, 53, 52, 52, 55, 53, 54, 56, 0,
-  ],
-  rmssd_5min: [
-    0, 0, 62, 0, 75, 52, 56, 56, 64, 57, 55, 78, 77, 83, 70, 35, 21, 25, 49, 44,
-    48, 48, 62, 69, 66, 64, 79, 59, 67, 66, 70, 63, 53, 57, 53, 57, 38, 26, 18,
-    24, 30, 35, 36, 46, 53, 59, 50, 50, 53, 53, 57, 52, 41, 37, 49, 47, 48, 35,
-    32, 34, 52, 57, 62, 57, 70, 81, 81, 65, 69, 72, 64, 0,
-  ],
-};
+let falseData = [
+  {
+    summary_date: "2022-09-04",
+    period_id: 0,
+    is_longest: 1,
+    timezone: 0,
+    bedtime_start: "2022-09-04T22:52:00+00:00",
+    bedtime_end: "2022-09-05T03:55:00+00:00",
+    score: 62,
+    score_total: 57,
+    score_disturbances: 83,
+    score_efficiency: 99,
+    score_latency: 88,
+    score_rem: 97,
+    score_deep: 59,
+    score_alignment: 31,
+    total: 16891,
+    duration: 18180,
+    awake: 1289,
+    light: 11655,
+    rem: 2514,
+    deep: 2722,
+    onset_latency: 480,
+    restless: 39,
+    efficiency: 94,
+    midpoint_time: 11010,
+    hr_lowest: 49,
+    hr_average: 56.375,
+    rmssd: 54,
+    breath_average: 13,
+    temperature_delta: -0.06,
+    hypnogram_5min:
+      "443432222211222333321112222222222111133333322221112233333333332232222334",
+    hr_5min: [
+      0, 53, 51, 0, 50, 50, 49, 49, 50, 50, 51, 52, 52, 51, 53, 58, 60, 60, 59,
+      58, 58, 58, 58, 55, 55, 55, 55, 56, 56, 55, 53, 53, 53, 53, 53, 53, 57,
+      58, 60, 60, 59, 57, 59, 58, 56, 56, 56, 56, 55, 55, 56, 56, 57, 58, 55,
+      56, 57, 60, 58, 58, 59, 57, 54, 54, 53, 52, 52, 55, 53, 54, 56, 0,
+    ],
+    rmssd_5min: [
+      0, 0, 62, 0, 75, 52, 56, 56, 64, 57, 55, 78, 77, 83, 70, 35, 21, 25, 49,
+      44, 48, 48, 62, 69, 66, 64, 79, 59, 67, 66, 70, 63, 53, 57, 53, 57, 38,
+      26, 18, 24, 30, 35, 36, 46, 53, 59, 50, 50, 53, 53, 57, 52, 41, 37, 49,
+      47, 48, 35, 32, 34, 52, 57, 62, 57, 70, 81, 81, 65, 69, 72, 64, 0,
+    ],
+  },
+];
 
 let newD = {
   summary_date: "2022-09-06",
@@ -286,7 +288,7 @@ const OuraSleep = (props) => {
             <BarChart
               width={200}
               height={202}
-              data={processedData}
+              data={falseData}
               margin={{
                 top: 20,
                 right: 30,
@@ -295,11 +297,25 @@ const OuraSleep = (props) => {
               }}
               style={{ cursor: "pointer" }}
             >
-              <CartesianGrid strokeDasharray="" />
-              <XAxis dataKey="awake" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
+              <CartesianGrid
+                strokeDasharray="none"
+                vertical={false}
+                stroke="rgba(0, 0, 0, 0.12)"
+              />
+              <XAxis dataKey="0" label="DAY" fontWeight={300} />
+              <YAxis  />
+              <Tooltip
+                contentStyle={{
+                  background: "rgba(0, 0, 0, 0.3)",
+                  padding: 5,
+                  border: 0,
+                  width: 85,
+                  // height: 95,
+                }}
+                itemStyle={{ fontSize: 14 }}
+                // position={{ x: 200, y: 0 }}
+              />
+              {/* <Legend /> */}
               <Bar dataKey="awake" fill="#FFE9D5" />
               <Bar dataKey="light" fill="#FFA654" />
               <Bar dataKey="deep" fill="#B96314" />
