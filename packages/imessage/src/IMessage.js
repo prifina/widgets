@@ -38,6 +38,7 @@ const IMessage = (props) => {
     registerHooks,
     registerClient,
     unSubscribe,
+    check,
   } = usePrifina();
   const [hooksReady, setHooks] = useState(false);
   const [newChat, setNewChat] = useState(0);
@@ -47,7 +48,48 @@ const IMessage = (props) => {
   const [newChatMessage, setNewChatMessage] = useState([]);
 
   const dataUpdate = (payload) => {
-    console.log("UPDATE TEST PAYLOAD", payload, chat.current);
+    console.log(
+      "UPDATE TEST PAYLOAD",
+      new Date().toISOString(),
+      payload,
+      chat.current
+    );
+
+    if (payload?.error !== undefined) {
+      // what kind of error....
+      if (
+        payload.error?.errors !== undefined &&
+        Array.isArray(payload.error.errors)
+      ) {
+        // possible subscription expiration error...
+        if (payload.error.errors.length > 0) {
+          let errorCodes = {};
+          payload.error.errors.forEach((err) => {
+            // identity token that was passed is expired or is not valid.
+            if (
+              err?.message !== undefined &&
+              err.message.indexOf("service#ExpiredTokenException") > -1
+            ) {
+              errorCodes["SUBSCRIPTION_EXPIRED"] = true;
+            }
+          });
+
+          if (errorCodes?.SUBSCRIPTION_EXPIRED) {
+            console.log(check());
+            unSubscribe(appID, subscriptionHandler.current);
+            alert("Reload page...");
+          }
+        }
+      }
+    }
+    /*
+    error:
+errors: Array(1)
+0:
+message: "Connection failed: com.amazon.coral.service#ExpiredTokenException"
+[[Prototype]]: Object
+length: 1
+*/
     // payload.messagingStatus.cnt
     /*
     {addMessage: {…}}
@@ -205,6 +247,7 @@ const IMessage = (props) => {
             newChatMessage,
           }}
         >
+          {/* 
           <button onClick={addMsg}>New Message</button>
           <button onClick={addMsg2}>New Message2</button>
           <button
@@ -221,6 +264,7 @@ const IMessage = (props) => {
           >
             SUBS MSG STATUS
           </button>
+          */}
           <AppContainer>
             <Sidebar />
             <Chat newChat={newChat} />

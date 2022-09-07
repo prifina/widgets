@@ -56,6 +56,7 @@ const Form = styled(Chat)`
     flex: 1;
   }
 
+  
   .chat__messages {
     flex: 1;
     overflow: scroll;

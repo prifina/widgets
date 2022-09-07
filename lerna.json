@@ -1,5 +1,7 @@
 {
-  "packages": ["packages/*"],
+  "packages": [
+    "packages/*"
+  ],
   "npmClient": "yarn",
   "useWorkspaces": true,
   "version": "independent",
@@ -9,6 +11,8 @@
     "**/package.json",
     "**/*.md",
     "**/perf/**",
-    "**/messaging-components/**"
+    "**/messaging-components/**",
+    "**/cra-starter/**",
+    "**/webpack-starter/**"
   ]
 }
