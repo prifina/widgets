@@ -333,7 +333,6 @@ const OuraSleep = (props) => {
                   stroke: "white",
                   fontSize: 10,
                 }}
-                /* Preventing the YAxis from showing decimals. */
                 allowDecimals={false}
                 type="number"
                 tickFormatter={(total) => {
@@ -341,8 +340,9 @@ const OuraSleep = (props) => {
                 }}
                 domain={[0, "dataMax + 3600"]}
                 stroke="white"
+                dataKey="total"
               />
-              />
+
               <Tooltip
                 contentStyle={{
                   background: "rgba(0, 0, 0, 0.9)",
@@ -355,7 +355,7 @@ const OuraSleep = (props) => {
                   return secondsToTime(awake);
                 }}
               />
-              {/* <Legend /> */}
+
               <Bar barSize={45} name="Awake" dataKey="awake" fill="#FFE9D5" />
               <Bar barSize={45} name="Light" dataKey="light" fill="#FFA654" />
               <Bar barSize={45} name="Deep" dataKey="deep" fill="#B96314" />
