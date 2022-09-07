@@ -145,13 +145,13 @@ const FitbitSleep = (props) => {
       //   [Op.lte]: dateStrafter,
       // },
       ["s3::date"]: {
-        [Op.gte]: dateStr,
+        [Op.eq]: dateStr,
       },
     };
 
     console.log("FILTER", filter);
 
-    const activityResult = await API[appID].Fitbit.querySleepDataAsync({
+    const activityResult = await API[appID].Fitbit.querySleepSummary({
       filter: filter,
       fields: "wake,light,rem,deep",
     });
