@@ -127,7 +127,7 @@ const OuraSleep = (props) => {
 
   const currentDate = useRef(new Date());
 
-  const [day, setDay] = useState(0);
+  const [day, setDay] = useState(1);
   const [date, setDate] = useState();
 
   useEffect(async () => {
@@ -241,7 +241,7 @@ const OuraSleep = (props) => {
             <BarChart
               width={200}
               height={202}
-              data={falseData}
+              data={processedData}
               margin={{
                 top: 20,
                 right: 30,
