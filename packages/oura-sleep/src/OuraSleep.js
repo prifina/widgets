@@ -217,12 +217,12 @@ const OuraSleep = (props) => {
     return obj;
   }
 
-  let awake = processedData[0].awake;
-  let light = processedData[0].light;
-  let rem = processedData[0].rem;
-  let deep = processedData[0].deep;
+  // let awake = processedData[0].awake;
+  // let light = processedData[0].light;
+  // let rem = processedData[0].rem;
+  // let deep = processedData[0].deep;
 
-  let total = processedData[0].total;
+  // let total = processedData[0].total;
 
   // let displayData = [
   //   {
@@ -234,7 +234,7 @@ const OuraSleep = (props) => {
   //   },
   // ];
 
-  console.log("total time", total);
+  // console.log("total time", total);
   // console.log("display time", displayData);
 
   return (
@@ -367,6 +367,7 @@ const OuraSleep = (props) => {
     </Container>
   );
 };
+
 OuraSleep.displayName = "OuraSleep";
 
 export default OuraSleep;
