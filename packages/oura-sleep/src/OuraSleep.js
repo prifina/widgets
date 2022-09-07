@@ -103,7 +103,7 @@ const OuraSleep = (props) => {
 
     console.log("newData", newData);
 
-    setProcessedData(data);
+    setProcessedData(newData);
   };
 
   console.log("processed data", processedData);
@@ -231,45 +231,36 @@ const OuraSleep = (props) => {
         <Box
           height={202}
           style={{
-            background: "#FBF2F2",
-            opacity: 0.6,
+            background: "rgba(251, 242, 242, 0.3)",
+
             borderBottomLeftRadius: 10,
             borderBottomRightRadius: 10,
           }}
         >
-          <Box
-            height={202}
-            style={{
-              background: "rgba(0255, 255, 255, 0.1)",
-              // opacity: 0.5,
-              borderBottomLeftRadius: 10,
-              borderBottomRightRadius: 10,
-            }}
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                width={200}
-                height={202}
-                data={processedData}
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 0,
-                  bottom: 0,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="awake" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="awake" fill="#FFE9D5" />
-                <Bar dataKey="light" fill="#FFA654" />
-                <Bar dataKey="deep" fill="#B96314" />
-                <Bar dataKey="rem" fill="#6D3D10" />
-              </BarChart>
-            </ResponsiveContainer>
-          </Box>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              width={200}
+              height={202}
+              data={falseData}
+              margin={{
+                top: 20,
+                right: 30,
+                left: 0,
+                bottom: 0,
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <CartesianGrid strokeDasharray="" />
+              <XAxis dataKey="awake" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="awake" fill="#FFE9D5" />
+              <Bar dataKey="light" fill="#FFA654" />
+              <Bar dataKey="deep" fill="#B96314" />
+              <Bar dataKey="rem" fill="#6D3D10" />
+            </BarChart>
+          </ResponsiveContainer>
         </Box>
       </Box>
     </Container>
