@@ -288,7 +288,7 @@ const OuraSleep = (props) => {
             <BarChart
               width={200}
               height={202}
-              data={falseData}
+              data={processedData}
               margin={{
                 top: 20,
                 right: 30,
@@ -303,7 +303,7 @@ const OuraSleep = (props) => {
                 stroke="rgba(0, 0, 0, 0.12)"
               />
               <XAxis dataKey="0" label="DAY" fontWeight={300} />
-              <YAxis  />
+              <YAxis />
               <Tooltip
                 contentStyle={{
                   background: "rgba(0, 0, 0, 0.3)",
