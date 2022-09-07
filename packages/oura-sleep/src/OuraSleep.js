@@ -128,6 +128,8 @@ const OuraSleep = (props) => {
     console.log("newData", newData);
 
     setProcessedData(newData);
+
+    console.log("new 17");
   };
 
   console.log("processed data", processedData);
@@ -191,7 +193,7 @@ const OuraSleep = (props) => {
 
     const result = await API[appID].Oura.querySleepSummary({
       filter: filter,
-      fields: "awake,light,rem,deep",
+      // fields: "awake,light,rem,deep",
     });
 
     console.log("THE NEW BUILD result", result);
