@@ -1,7 +1,7 @@
 {
-  "name": "oura-readiness",
+  "name": "oura-activity",
   "version": "1.0.0",
-  "description": "Sleep widget powered by Oura data",
+  "description": "Activity widget powered by Oura data",
   "author": "hamza <hamzahalilovic.12@gmail.com>",
   "homepage": "https://github.com/hamzahalilovic/widgets#readme",
   "main": "dist/esm/index.js",

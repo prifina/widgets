@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import OuraSleep from "../src/OuraSleep";
+import OuraActivity from "../src/OuraActivity";
 
-export default { title: "OuraSleep" };
+export default { title: "OuraActivity" };
 
 export const app = () => {
-  return <OuraSleep stage="dev" />;
+  return <OuraActivity stage="dev" />;
 };
 app.story = {
-  name: "OuraSleep",
+  name: "OuraActivity",
 };

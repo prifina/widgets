@@ -1,11 +1,11 @@
-# `oura-sleep`
+# `oura-activity`
 
 > TODO: description
 
 ## Usage
 
 ```
-const ouraSleep = require('oura-sleep');
+const ouraActivity = require('oura-activity');
 
 // TODO: DEMONSTRATE API
 ```

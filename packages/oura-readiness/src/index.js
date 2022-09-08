@@ -2,5 +2,5 @@
  * Entrypoint of the Remote Component.
  */
 
-import OuraSleep from "./OuraSleep.js";
-export default OuraSleep;
+import OuraActivity from "./OuraActivity.js";
+export default OuraActivity;
