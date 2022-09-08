@@ -146,7 +146,7 @@ const OuraHeart = (props) => {
       // fields: "awake,light,rem,deep",
     });
 
-    const ddd = d.setDate(d.getDate() - 6);
+    const ddd = d.setDate(d.getDate() - 14);
 
     const asyncDateStr = new Date(ddd).toISOString().split("T")[0];
 
