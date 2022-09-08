@@ -51,7 +51,7 @@ const OuraActivity = (props) => {
 
   const [processedData, setProcessedData] = useState({});
 
-  const [processedData2, setProcessedData2] = useState();
+  const [processedData2, setProcessedData2] = useState({});
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
