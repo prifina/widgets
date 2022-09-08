@@ -51,6 +51,8 @@ const OuraActivity = (props) => {
 
   const [processedData, setProcessedData] = useState({});
 
+  const [processedData2, setProcessedData2] = useState();
+
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
 
@@ -60,7 +62,11 @@ const OuraActivity = (props) => {
 
     setProcessedData(newData);
 
-    console.log("new 17");
+    let newData2 = data;
+
+    console.log("newData2", newData2);
+
+    setProcessedData2(newData2);
   };
 
   console.log("processed data", processedData);
@@ -203,19 +209,19 @@ const OuraActivity = (props) => {
             <Flex>
               <FireIcon color="#FFA654" />
               <Text ml={3} color="#FFA654">
-                {/* {processedData[0].cal_total} */}
+                {processedData2.cal_total}
               </Text>
             </Flex>
             <Flex>
               <StepsIcon color="#FFE9D5" />
               <Text ml={3} color="#FFE9D5">
-                {/* {processedData[0].steps} */}
+                {setProcessedData2.steps}
               </Text>
             </Flex>
             <Flex>
               <DistanceIcon color="#F8F043" />
               <Text ml={3} color="#F8F043">
-                {/* {processedData[0].daily_movement} */}
+                {processedData2.daily_movement}
               </Text>
             </Flex>
           </Flex>

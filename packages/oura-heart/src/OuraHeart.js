@@ -68,14 +68,19 @@ const OuraHeart = (props) => {
 
   const [processedData, setProcessedData] = useState({});
 
-  const [processedAsyncData, setProcessedAsyncData] = useState({});
+  const [processedData2, setProcessedData2] = useState();
+
+  const [processedAsyncData, setProcessedAsyncData] = useState();
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
 
     let newData = [data];
+    let newData2 = data;
     console.log("newData", newData);
+    console.log("newData2", newData2);
 
+    setProcessedData2(newData2);
     setProcessedData(newData);
   };
 
@@ -167,7 +172,7 @@ const OuraHeart = (props) => {
 
     processData(result.data.getDataObject.content[0]);
 
-    processAsyncData(asyncResult.data.getDataObject.content[0]);
+    processAsyncData(asyncResult.data.getDataObject.content);
 
     // if (stage === "dev") {
     //   processData(result.data.getDataObject.content[1].score[1]);
@@ -239,7 +244,7 @@ const OuraHeart = (props) => {
             style={{ paddingRight: 55, paddingLeft: 55 }}
           >
             <Text as="b" fontSize={48} color="#FFF500">
-              {processedData[0].score_resting_hr}
+              {processedData2.score_resting_hr}
             </Text>
           </Flex>
           <ResponsiveContainer width="100%" height="50%">
