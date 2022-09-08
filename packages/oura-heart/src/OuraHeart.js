@@ -103,9 +103,8 @@ const OuraHeart = (props) => {
     ) {
       // process async data
       if (
-        payload.data.dataconnector === "Oura/queryReadinessSummariesAsync"
-        // &&
-        // payload.data.content.length > 1
+        payload.data.dataconnector === "Oura/queryReadinessSummariesAsync" &&
+        payload.data.content.length > 1
       ) {
         processedAsyncData(payload.data.content);
       }
@@ -172,12 +171,28 @@ const OuraHeart = (props) => {
 
     processData(result.data.getDataObject.content[0]);
 
+    processData(result.data.getDataObject.content[0]);
+
     // if (stage === "dev") {
     //   processData(result.data.getDataObject.content[1].score[1]);
     // }
   }, [day]);
 
   console.log("day", day);
+
+  const [period, setPeriod] = useState(7);
+
+  const handleChange = (e) => {
+    setPeriod(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    setPeriod(e.target.value);
+
+    e.preventDefault();
+  };
+
+  console.log("period", period);
 
   return (
     <Container>
@@ -193,39 +208,57 @@ const OuraHeart = (props) => {
           justifyContent="space-between"
           alignItems="center"
           bg="#FFA654"
-          padding="0px 65px 0px 65px"
+          padding="0px 25px 0px 25px"
           borderTopRightRadius={8}
           borderTopLeftRadius={8}
         >
-          <IconButton
+          <select
             style={{
-              background: "transparent",
+              background: "#FFF500",
               border: 0,
-              cursor: "pointer",
-              fontSize: 19,
+              borderRadius: 10,
+              padding: 3,
             }}
-            aria-label="Search database"
-            icon={<ChevronLeftIcon />}
-            onClick={async () => {
-              setDay(day + 1);
-            }}
-          />
-          <Text>{date}</Text>
+          >
+            <option value={6} onChange={handleChange}>
+              Week
+            </option>
+            <option value={29} onChange={handleChange}>
+              Month
+            </option>
+          </select>
 
-          <IconButton
-            disabled={day === 1 ? true : false}
-            style={{
-              background: "transparent",
-              border: 0,
-              cursor: "pointer",
-              fontSize: 19,
-            }}
-            aria-label="Search database"
-            icon={<ChevronRightIcon />}
-            onClick={async () => {
-              setDay(day - 1);
-            }}
-          />
+          <Flex>
+            <IconButton
+              style={{
+                background: "transparent",
+                border: 0,
+                cursor: "pointer",
+                fontSize: 19,
+              }}
+              aria-label="Search database"
+              icon={<ChevronLeftIcon />}
+              onClick={async () => {
+                setDay(day + 1);
+              }}
+            />
+            <Text>{date}</Text>
+
+            <IconButton
+              disabled={day === 1 ? true : false}
+              style={{
+                background: "transparent",
+                border: 0,
+                cursor: "pointer",
+                fontSize: 19,
+              }}
+              aria-label="Search database"
+              icon={<ChevronRightIcon />}
+              onClick={async () => {
+                setDay(day - 1);
+              }}
+            />
+          </Flex>
         </Flex>
         <Box
           height={200}
@@ -242,7 +275,7 @@ const OuraHeart = (props) => {
             style={{ paddingRight: 55, paddingLeft: 55 }}
           >
             <Text as="b" fontSize={48} color="#FFF500">
-              {processedData2.score_resting_hr}
+              {/* {processedData2.score_resting_hr} */}
             </Text>
           </Flex>
           <ResponsiveContainer width="100%" height="50%">
