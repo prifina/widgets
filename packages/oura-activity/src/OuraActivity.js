@@ -49,7 +49,7 @@ let falseData = [
 const OuraActivity = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
-  const [processedData, setProcessedData] = useState();
+  const [processedData, setProcessedData] = useState({});
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
@@ -203,19 +203,19 @@ const OuraActivity = (props) => {
             <Flex>
               <FireIcon color="#FFA654" />
               <Text ml={3} color="#FFA654">
-                {processedData[0].cal_total}
+                {/* {processedData[0].cal_total} */}
               </Text>
             </Flex>
             <Flex>
               <StepsIcon color="#FFE9D5" />
               <Text ml={3} color="#FFE9D5">
-                {processedData[0].steps}
+                {/* {processedData[0].steps} */}
               </Text>
             </Flex>
             <Flex>
               <DistanceIcon color="#F8F043" />
               <Text ml={3} color="#F8F043">
-                {processedData[0].daily_movement}
+                {/* {processedData[0].daily_movement} */}
               </Text>
             </Flex>
           </Flex>
