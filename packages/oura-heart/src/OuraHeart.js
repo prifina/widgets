@@ -239,7 +239,7 @@ const OuraHeart = (props) => {
             style={{ paddingRight: 55, paddingLeft: 55 }}
           >
             <Text as="b" fontSize={48} color="#FFF500">
-              {falseData[0].score_resting_hr}
+              {processedData[0].score_resting_hr}
             </Text>
           </Flex>
           <ResponsiveContainer width="100%" height="50%">
