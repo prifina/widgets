@@ -156,7 +156,7 @@ const OuraHeart = (props) => {
 
     const asyncFilter = {
       ["s3::date"]: {
-        [Op.eq]: asyncDateStr,
+        [Op.gte]: asyncDateStr,
       },
     };
 
@@ -319,7 +319,7 @@ const OuraHeart = (props) => {
                 itemStyle={{ fontSize: 10 }}
               />
               <Line
-                type="monotone"
+                type="monotoneX"
                 dataKey="score_resting_hr"
                 stroke="#FFF500"
                 strokeWidth={1}
