@@ -171,8 +171,6 @@ const OuraHeart = (props) => {
 
     processData(result.data.getDataObject.content[0]);
 
-    processData(result.data.getDataObject.content[0]);
-
     // if (stage === "dev") {
     //   processData(result.data.getDataObject.content[1].score[1]);
     // }
