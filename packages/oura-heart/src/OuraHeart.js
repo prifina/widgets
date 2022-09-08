@@ -98,8 +98,9 @@ const OuraHeart = (props) => {
     ) {
       // process async data
       if (
-        payload.data.dataconnector === "Oura/queryReadinessSummariesAsync" &&
-        payload.data.content.length > 1
+        payload.data.dataconnector === "Oura/queryReadinessSummariesAsync"
+        // &&
+        // payload.data.content.length > 1
       ) {
         processedAsyncData(payload.data.content);
       }
@@ -166,7 +167,7 @@ const OuraHeart = (props) => {
 
     processData(result.data.getDataObject.content[0]);
 
-    processAsyncData(asyncResult);
+    processAsyncData(asyncResult.data.getDataObject.content[0]);
 
     // if (stage === "dev") {
     //   processData(result.data.getDataObject.content[1].score[1]);
@@ -224,12 +225,12 @@ const OuraHeart = (props) => {
           />
         </Flex>
         <Box
-          height={210}
+          height={200}
           style={{
             background: "rgba(251, 242, 242, 0.3)",
             borderBottomLeftRadius: 8,
             borderBottomRightRadius: 8,
-            paddingTop: 10,
+            paddingTop: 40,
           }}
         >
           <Flex
@@ -244,9 +245,9 @@ const OuraHeart = (props) => {
           <ResponsiveContainer width="100%" height="50%">
             <LineChart
               style={{ cursor: "pointer" }}
-              data={asyncFalseData}
+              data={processedAsyncData}
               margin={{
-                top: 10,
+                top: 20,
                 right: 15,
                 left: -15,
                 bottom: 0,
