@@ -132,7 +132,7 @@ const FitbitSleep = (props) => {
       filter: filter,
     });
 
-    console.log("THE NEW BUILD result", result);
+    console.log("result", result);
 
     processData(result.data.getDataObject.content[0]);
 
