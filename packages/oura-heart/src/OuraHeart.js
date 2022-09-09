@@ -75,7 +75,7 @@ const OuraHeart = (props) => {
 
   const [processedAsyncData, setProcessedAsyncData] = useState([]);
 
-  let stage = "dev";
+  // let stage = "dev";
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
