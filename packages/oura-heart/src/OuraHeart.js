@@ -185,7 +185,7 @@ const OuraHeart = (props) => {
 
     const asyncResult = await API[appID].Oura.queryReadinessSummariesAsync({
       filter: asyncFilter,
-      fields: "summary_date, score_resting_hr",
+      fields: "score_resting_hr",
     });
 
     console.log("result", result);
