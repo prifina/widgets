@@ -214,7 +214,7 @@ const OuraActivity = (props) => {
             <Flex>
               <StepsIcon color="#FFE9D5" />
               <Text ml={3} color="#FFE9D5">
-                {setProcessedData2.steps}
+                {processedData2.steps}
               </Text>
             </Flex>
             <Flex>
