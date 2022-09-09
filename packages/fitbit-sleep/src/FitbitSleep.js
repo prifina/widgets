@@ -128,7 +128,7 @@ const FitbitSleep = (props) => {
 
     console.log("FILTER", filter);
 
-    const result = await API[appID].Fitbit.querySleepSummary({
+    const result = await API[appID].Fitbit.querySleepData({
       filter: filter,
     });
 
