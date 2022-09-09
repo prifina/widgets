@@ -101,10 +101,22 @@ const OuraHeart = (props) => {
     let newData = data;
     console.log("newData ASYNC", newData);
 
-    setProcessedAsyncData(newData);
+    newData.shift();
+
+    newData = newData.map((dataLine) => dataLine.split(",")).flat();
+
+    const result = [];
+    newData.forEach((item) => {
+      result.push({
+        score_resting_hr: Number(item),
+      });
+    });
+
+    setProcessedAsyncData(result);
   };
 
   console.log("processed data", processedData);
+  console.log("processed async data", processedAsyncData);
 
   const dataUpdate = async (payload) => {
     console.log("UPDATE ", payload);
@@ -190,17 +202,6 @@ const OuraHeart = (props) => {
   };
 
   console.log("period", period);
-
-  asyncFalseData.shift();
-
-  asyncFalseData = asyncFalseData.map((dataLine) => dataLine.split(",")).flat();
-
-  const result = [];
-  asyncFalseData.forEach((item) => {
-    result.push({
-      score_resting_hr: Number(item),
-    });
-  });
 
   console.log("processed async result", result);
   return (
@@ -336,7 +337,7 @@ const OuraHeart = (props) => {
             <LineChart
               width={500}
               height={100}
-              data={result}
+              data={processedAsyncData}
               margin={{
                 top: 10,
                 right: 15,
