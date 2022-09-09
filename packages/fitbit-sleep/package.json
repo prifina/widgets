@@ -11,8 +11,8 @@
   "files": [
     "dist"
   ],
-  "license": "MIT",
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.9",
     "@chakra-ui/react": "^1.6.7",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",

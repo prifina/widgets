@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
 import Fitbit from "@prifina/fitbit";
 
+// import moment from "moment";
+
 import {
   Flex,
   Spacer,
@@ -15,7 +17,7 @@ import {
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
-import FitbitLogo from "./assets/fitbit.svg";
+import FitbitIcon from "./assets/fitbit.svg";
 
 import {
   BarChart,
@@ -33,32 +35,87 @@ const Container = styled.div`
   height: 300px;
   width: 300px;
   border-radius: 10px;
-  background: linear-gradient(
-    180deg,
-    #082673 30.67%,
-    #644bd0 75.51%,
-    #a56adf 106.47%
-  );
+  background: linear-gradient(180deg, #343434 0%, #d3bc69 149.83%);
   padding: 11px 8px 0px 8px;
 `;
 
+// unique appID for the widget....
 const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
 let falseData = [
   {
     summary_date: "2022-09-04",
+    period_id: 0,
+    is_longest: 1,
+    timezone: 0,
+    bedtime_start: "2022-09-04T22:52:00+00:00",
+    bedtime_end: "2022-09-05T03:55:00+00:00",
+    score: 62,
+    score_total: 57,
+    score_disturbances: 83,
+    score_efficiency: 99,
+    score_latency: 88,
+    score_rem: 97,
+    score_deep: 59,
+    score_alignment: 31,
     total: 16891,
+    duration: 18180,
     awake: 1289,
     light: 11655,
     rem: 12876,
     deep: 2722,
+    onset_latency: 480,
+    restless: 39,
+    efficiency: 94,
+    midpoint_time: 11010,
+    hr_lowest: 49,
+    hr_average: 56.375,
+    rmssd: 54,
+    breath_average: 13,
+    temperature_delta: -0.06,
+    hypnogram_5min:
+      "443432222211222333321112222222222111133333322221112233333333332232222334",
   },
 ];
+
+let newD = {
+  summary_date: "2022-09-06",
+  period_id: 0,
+  is_longest: 1,
+  timezone: 0,
+  bedtime_start: "2022-09-06T23:02:00+00:00",
+  bedtime_end: "2022-09-07T05:32:00+00:00",
+  score: 65,
+  score_total: 57,
+  score_disturbances: 83,
+  score_efficiency: 99,
+  score_latency: 88,
+  score_rem: 97,
+  score_deep: 59,
+  score_alignment: 31,
+  total: 21826,
+  duration: 23400,
+  awake: 1574,
+  light: 10913,
+  rem: 4475,
+  deep: 6438,
+  onset_latency: 480,
+  restless: 39,
+  efficiency: 94,
+  midpoint_time: 11010,
+  hr_lowest: 49,
+  hr_average: 56.375,
+  rmssd: 54,
+  breath_average: 13,
+  temperature_delta: -0.06,
+  hypnogram_5min:
+    "443432222211222333321112222222222111133333322221112233333333332232222334",
+};
 
 const FitbitSleep = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
-  const [processedData, setProcessedData] = useState();
+  const [processedData, setProcessedData] = useState({});
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
@@ -68,6 +125,8 @@ const FitbitSleep = (props) => {
     console.log("newData", newData);
 
     setProcessedData(newData);
+
+    console.log("new 17");
   };
 
   console.log("processed data", processedData);
@@ -78,12 +137,13 @@ const FitbitSleep = (props) => {
       payload.hasOwnProperty("data") &&
       payload.data.hasOwnProperty("content")
     ) {
-      // if (
-      //   payload.data.dataconnector === "Fitbit/querySleepSummariesAsync" &&
-      //   payload.data.content.length > 1
-      // ) {
-      //   processData(payload.data.content);
-      // }
+      // process async data
+      if (
+        payload.data.dataconnector === "Fitbit/querySleepSummariesAsync" &&
+        payload.data.content.length > 1
+      ) {
+        processData(payload.data.content);
+      }
       console.log("PAYLOAD DATA", payload);
     }
   };
@@ -128,16 +188,17 @@ const FitbitSleep = (props) => {
 
     console.log("FILTER", filter);
 
-    const result = await API[appID].Fitbit.querySleepData({
+    const result = await API[appID].Fitbit.querySleepSummary({
       filter: filter,
+      // fields: "awake,light,rem,deep",
     });
 
-    console.log("result", result);
+    console.log("THE NEW BUILD result", result);
 
     processData(result.data.getDataObject.content[0]);
 
-    // if (props.stage === "dev") {
-    //   processData(falseData);
+    // if (stage === "dev") {
+    //   processData(result.data.getDataObject.content[1].score[1]);
     // }
   }, [day]);
 
@@ -153,20 +214,40 @@ const FitbitSleep = (props) => {
     return obj;
   }
 
+  // let awake = processedData[0].awake;
+  // let light = processedData[0].light;
+  // let rem = processedData[0].rem;
+  // let deep = processedData[0].deep;
+
+  // let total = processedData[0].total;
+
+  // let displayData = [
+  //   {
+  //     awake: secondsToTime(awake),
+  //     light: secondsToTime(light),
+  //     rem: secondsToTime(rem),
+  //     deep: secondsToTime(deep),
+  //     total: secondsToTime(total),
+  //   },
+  // ];
+
+  // console.log("total time", total);
+  // console.log("display time", displayData);
+
   return (
     <Container>
-      <Flex alignItems="center" mb={11}>
+      <Flex alignItems="center" mb={21}>
         <Text fontSize={16} color="white" fontWeight={700} ml={9} mr={110}>
           Sleep widget
         </Text>
-        <Image src={FitbitLogo} />
+        <Image src={FitbitIcon} />
       </Flex>
       <Box>
         <Flex
           h={32}
           justifyContent="space-between"
           alignItems="center"
-          bg="#D4D7F2"
+          bg="#FFA654"
           padding="0px 65px 0px 65px"
           borderTopRightRadius={8}
           borderTopLeftRadius={8}
@@ -214,7 +295,7 @@ const FitbitSleep = (props) => {
             <BarChart
               width={200}
               height={202}
-              data={processedData}
+              data={false}
               margin={{
                 top: 20,
                 right: 30,
@@ -262,9 +343,10 @@ const FitbitSleep = (props) => {
               <Tooltip
                 cursor={{ fill: "transparent" }}
                 contentStyle={{
-                  background: "#D4D7F2",
+                  background: "rgba(0, 0, 0, 0.9)",
                   padding: 5,
                   border: 0,
+                  // width: 85,
                 }}
                 itemStyle={{ fontSize: 14 }}
                 formatter={(awake) => {
@@ -272,10 +354,10 @@ const FitbitSleep = (props) => {
                 }}
               />
 
-              <Bar barSize={45} name="Awake" dataKey="awake" fill="#DDB7F4" />
-              <Bar barSize={45} name="Light" dataKey="light" fill="#294BC1" />
-              <Bar barSize={45} name="Deep" dataKey="deep" fill="#2A2E9C" />
-              <Bar barSize={45} name="REM" dataKey="rem" fill="#222671" />
+              <Bar barSize={45} name="Awake" dataKey="awake" fill="#FFE9D5" />
+              <Bar barSize={45} name="Light" dataKey="light" fill="#FFA654" />
+              <Bar barSize={45} name="Deep" dataKey="deep" fill="#B96314" />
+              <Bar barSize={45} name="REM" dataKey="rem" fill="#6D3D10" />
             </BarChart>
           </ResponsiveContainer>
         </Box>
