@@ -279,7 +279,7 @@ const OuraHeart = (props) => {
             style={{ paddingRight: 55, paddingLeft: 55 }}
           >
             <Text as="b" fontSize={48} color="#FFF500">
-              {processedData.score_resting_hr}
+              {processedData[0].score_resting_hr}
             </Text>
           </Flex>
           <ResponsiveContainer width="100%" height="35%">
@@ -308,7 +308,7 @@ const OuraHeart = (props) => {
                 type="monotoneX"
                 dataKey="score_resting_hr"
                 stroke="#FFF500"
-                strokeWidth={3}
+                strokeWidth={2}
                 activeDot={{ r: 3 }}
               />
 
