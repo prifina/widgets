@@ -1,12 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
-import Fitbit from "@prifina/fitbit";
 
 import Garmin from "@prifina/garmin";
-import GoogleTimeline from "@prifina/google-timeline";
 
-import { Flex, Spacer, Text, Box, Select } from "@chakra-ui/react";
+// import moment from "moment";
+
+import {
+  Flex,
+  Spacer,
+  Text,
+  Box,
+  Select,
+  Image,
+  IconButton,
+} from "@chakra-ui/react";
+
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+
+import GarminLogo from "./assets/garmin.svg";
 
 import {
   BarChart,
@@ -24,68 +36,40 @@ const Container = styled.div`
   height: 300px;
   width: 300px;
   border-radius: 10px;
-  background: linear-gradient(
-    180deg,
-    #082673 30.67%,
-    #644bd0 75.51%,
-    #a56adf 106.47%
-  );
+  background: linear-gradient(180deg, #343434 0%, #d3bc69 149.83%);
   padding: 11px 8px 0px 8px;
 `;
 
 // unique appID for the widget....
 const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
-const GarminSleep = (props) => {
-  let stage = "";
-  const { data } = props;
-  // init hook and get provider api services...
+export const SleepsDataObject = {
+  summaryid: "x3a9c8fe-61c8ca74-8340",
+  calendardate: "2021-12-27",
+  durationinseconds: 33600,
+  deepsleepdurationinseconds: 0,
+  lightsleepdurationinseconds: 28260,
+  remsleepinseconds: 5340,
+  awakedurationinseconds: 60,
+};
+
+const OuraSleep = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
-  function getEveryNth(arr, nth) {
-    const result = [];
+  const stage = props.stage || "prod";
 
-    for (let i = 0; i < arr.length; i += nth) {
-      result.push(arr[i]);
-    }
-
-    return result;
-  }
-
-  const [processedData, setProcessedData] = useState("");
+  const [processedData, setProcessedData] = useState({});
 
   const processData = (data) => {
-    console.log("ORIGINAL PROCESS DATA", newData);
+    console.log("ORIGINAL PROCESS DATA", data);
 
-    let newData = data;
+    let newData = [data];
 
     console.log("newData", newData);
 
-    const keys = data[0].split(",");
-
-    data.shift();
-
-    data = data.map((dataLine) => dataLine.split(",")).flat();
-
-    const chunkSize = 4;
-    const dataChunks = [];
-    for (let i = 0; i < data.length; i += chunkSize) {
-      const chunk = data.slice(i, i + chunkSize);
-      dataChunks.push(chunk);
-    }
-
-    const result = [];
-    dataChunks.forEach((dataChunk) => {
-      result.push({
-        [keys[0]]: dataChunk[0],
-        [keys[1]]: dataChunk[1],
-        [keys[2]]: dataChunk[2],
-        [keys[3]]: dataChunk[3],
-      });
-    });
-    setProcessedData(result);
-
     setProcessedData(newData);
+
+    console.log("new 17");
   };
 
   console.log("processed data", processedData);
@@ -98,8 +82,8 @@ const GarminSleep = (props) => {
     ) {
       // process async data
       if (
-        payload.data.dataconnector === "Garmin/SleepsDataObject"
-        // payload.data.content.length > 1
+        payload.data.dataconnector === "Garmin/querySleepsDataAsync" &&
+        payload.data.content.length > 1
       ) {
         processData(payload.data.content);
       }
@@ -107,8 +91,10 @@ const GarminSleep = (props) => {
     }
   };
 
+  const currentDate = useRef(new Date());
+
   const [day, setDay] = useState(1);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState();
 
   useEffect(async () => {
     // init callback function for background updates/notifications
@@ -116,34 +102,28 @@ const GarminSleep = (props) => {
     // register datasource modules
     registerHooks(appID, [Garmin]);
 
-    const d = new Date();
+    // const d = currentDate.current;
+    let d = new Date();
+
+    // d = currentDate.current;
 
     const dd = d.setDate(d.getDate() - day);
 
-    const daybefore = d.setDate(d.getDate() - 1);
-    const dayafter = d.setDate(d.getDate() + 2);
+    currentDate.current = dd;
 
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
-    const dateStrbefore = new Date(daybefore).toISOString().split("T")[0];
-    const dateStrafter = new Date(dayafter).toISOString().split("T")[0];
-
-    console.log("test day before", dateStrbefore);
-    console.log("test day after", dateStrafter);
-
     setDate(dateStr);
 
+    console.log("datestr", dateStr);
+
+    const dateStr2 = new Date(currentDate.current).toISOString().split("T")[0];
+    const dateStr3 = new Date(dd).toISOString().split("T")[0];
+
+    console.log("currendate current", dateStr2);
+    console.log("currendate dd", dateStr3);
+
     const filter = {
-      // ["s3::date"]: {
-      //   [Op.between]: {
-      //     [Op.lte]: dateStrafter,
-      //     [Op.gte]: dateStrbefore,
-      //   },
-      // },
-      // ["s3::date"]: {
-      //   [Op.gte]: dateStrbefore,
-      //   [Op.lte]: dateStrafter,
-      // },
       ["s3::date"]: {
         [Op.gte]: dateStr,
       },
@@ -151,103 +131,185 @@ const GarminSleep = (props) => {
 
     console.log("FILTER", filter);
 
-    const activityResult = await API[appID].Garmin.SleepsDataObject({
+    const result = await API[appID].Garmin.querySleepsDataAsync({
       filter: filter,
       fields:
-        "awakedurationinseconds,lightsleepdurationinseconds,remsleepinseconds,deepsleepdurationinseconds",
+        "awakedurationinseconds,lightsleepdurationinseconds,deepsleepdurationinseconds,remsleepinseconds",
     });
-    console.log("activityResult", activityResult);
 
-    if (stage === "dev") {
-      processData(activityResult.data.getDataObject.content[1].score[1]);
-    }
+    console.log("THE NEW BUILD result", result);
+
+    processData(result.data.getDataObject.content[0]);
+
+    // if (stage === "dev") {
+    //   processData(result.data.getDataObject.content[1].score[1]);
+    // }
   }, [day]);
 
   console.log("day", day);
 
+  function secondsToTime(secs) {
+    var hours = Math.floor(secs / (60 * 60));
+
+    var divisor_for_minutes = secs % (60 * 60);
+    var minutes = Math.floor(divisor_for_minutes / 60);
+
+    var obj = hours + "h " + minutes + "m";
+    return obj;
+  }
+
+  // let awake = processedData[0].awake;
+  // let light = processedData[0].light;
+  // let rem = processedData[0].rem;
+  // let deep = processedData[0].deep;
+
+  // let total = processedData[0].total;
+
+  // let displayData = [
+  //   {
+  //     awake: secondsToTime(awake),
+  //     light: secondsToTime(light),
+  //     rem: secondsToTime(rem),
+  //     deep: secondsToTime(deep),
+  //     total: secondsToTime(total),
+  //   },
+  // ];
+
+  // console.log("total time", total);
+  // console.log("display time", displayData);
+
   return (
     <Container>
-      <Flex>
-        <Text fontSize={16} color="white" fontWeight={700} ml={9} mb={21}>
-          Garmin Sleep
+      <Flex alignItems="center" mb={21}>
+        <Text fontSize={16} color="white" fontWeight={700} ml={9} mr={110}>
+          Sleep widget
         </Text>
-        <Text color="white">{date}</Text>
+        <Image src={GarminLogo} />
       </Flex>
       <Box>
         <Flex
           h={32}
           justifyContent="space-between"
-          alignContent="center"
-          bg="#1B1D50"
-          padding="4px 8px 4px 8px"
+          alignItems="center"
+          bg="#FFA654"
+          padding="0px 65px 0px 65px"
+          borderTopRightRadius={8}
+          borderTopLeftRadius={8}
         >
-          <Select w={71} background="#000897" color="white">
-            <option value="option1">Year</option>
-            <option value="option2">Month</option>
-            <option value="option3">Day</option>
-          </Select>
-          <button
+          <IconButton
+            style={{
+              background: "transparent",
+              border: 0,
+              cursor: "pointer",
+              fontSize: 19,
+            }}
+            aria-label="Search database"
+            icon={<ChevronLeftIcon />}
             onClick={async () => {
               setDay(day + 1);
             }}
-          >
-            back
-          </button>
-          <button
+          />
+          <Text>{date}</Text>
+
+          <IconButton
+            disabled={day === 1 ? true : false}
+            style={{
+              background: "transparent",
+              border: 0,
+              cursor: "pointer",
+              fontSize: 19,
+            }}
+            aria-label="Search database"
+            icon={<ChevronRightIcon />}
             onClick={async () => {
               setDay(day - 1);
             }}
-          >
-            forward
-          </button>
+          />
         </Flex>
         <Box
           height={202}
           style={{
-            background: "#FBF2F2",
-            opacity: 0.6,
+            background: "rgba(251, 242, 242, 0.3)",
+
             borderBottomLeftRadius: 10,
             borderBottomRightRadius: 10,
           }}
         >
-          <Box
-            height={202}
-            style={{
-              // background: "#FBF2F2",
-              opacity: 1,
-              borderBottomLeftRadius: 10,
-              borderBottomRightRadius: 10,
-            }}
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                width={200}
-                height={202}
-                data={processedData}
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 0,
-                  bottom: 0,
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              width={200}
+              height={202}
+              // data={processedData}
+              margin={{
+                top: 20,
+                right: 30,
+                left: 0,
+                bottom: 0,
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <CartesianGrid
+                strokeDasharray="none"
+                vertical={false}
+                stroke="rgba(0, 0, 0, 0.12)"
+              />
+              <XAxis
+                tickLine={false}
+                dataKey="0"
+                stroke="rgba(0, 0, 0, 0.12)"
+                label={{
+                  value: "DAY",
+                  position: "bottom",
+                  offset: -20,
+                  stroke: "white",
+                  fontSize: 10,
                 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="awake" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="awake" stackId="a" fill="#8884d8" />
-                <Bar dataKey="light" stackId="a" fill="blue" />
-                <Bar dataKey="deep" stackId="a" fill="red" />
-                <Bar dataKey="rem" stackId="a" fill="#82ca9d" />
-              </BarChart>
-            </ResponsiveContainer>
-          </Box>
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                label={{
+                  value: "HOURS ASLEEP",
+                  angle: -90,
+                  stroke: "white",
+                  fontSize: 10,
+                }}
+                allowDecimals={false}
+                type="number"
+                tickFormatter={(total) => {
+                  return Math.floor(total / 3600);
+                }}
+                domain={[0, "dataMax + 3600"]}
+                stroke="white"
+                dataKey="total"
+              />
+
+              <Tooltip
+                cursor={{ fill: "transparent" }}
+                contentStyle={{
+                  background: "rgba(0, 0, 0, 0.9)",
+                  padding: 5,
+                  border: 0,
+                  // width: 85,
+                }}
+                itemStyle={{ fontSize: 14 }}
+                formatter={(awake) => {
+                  return secondsToTime(awake);
+                }}
+              />
+
+              <Bar barSize={45} name="Awake" dataKey="awake" fill="#FFE9D5" />
+              <Bar barSize={45} name="Light" dataKey="light" fill="#FFA654" />
+              <Bar barSize={45} name="Deep" dataKey="deep" fill="#B96314" />
+              <Bar barSize={45} name="REM" dataKey="rem" fill="#6D3D10" />
+            </BarChart>
+          </ResponsiveContainer>
         </Box>
       </Box>
     </Container>
   );
 };
-GarminSleep.displayName = "GarminSleep";
 
-export default GarminSleep;
+OuraSleep.displayName = "OuraSleep";
+
+export default OuraSleep;

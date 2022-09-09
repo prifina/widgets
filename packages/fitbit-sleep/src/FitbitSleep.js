@@ -35,85 +35,48 @@ const Container = styled.div`
   height: 300px;
   width: 300px;
   border-radius: 10px;
-  background: linear-gradient(180deg, #343434 0%, #d3bc69 149.83%);
+  background: linear-gradient(
+    180deg,
+    #082673 30.67%,
+    #644bd0 75.51%,
+    #a56adf 106.47%
+  );
   padding: 11px 8px 0px 8px;
 `;
 
 // unique appID for the widget....
-const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
-let falseData = [
-  {
-    summary_date: "2022-09-04",
-    period_id: 0,
-    is_longest: 1,
-    timezone: 0,
-    bedtime_start: "2022-09-04T22:52:00+00:00",
-    bedtime_end: "2022-09-05T03:55:00+00:00",
-    score: 62,
-    score_total: 57,
-    score_disturbances: 83,
-    score_efficiency: 99,
-    score_latency: 88,
-    score_rem: 97,
-    score_deep: 59,
-    score_alignment: 31,
-    total: 16891,
-    duration: 18180,
-    awake: 1289,
-    light: 11655,
-    rem: 12876,
-    deep: 2722,
-    onset_latency: 480,
-    restless: 39,
-    efficiency: 94,
-    midpoint_time: 11010,
-    hr_lowest: 49,
-    hr_average: 56.375,
-    rmssd: 54,
-    breath_average: 13,
-    temperature_delta: -0.06,
-    hypnogram_5min:
-      "443432222211222333321112222222222111133333322221112233333333332232222334",
+const sleepSummary = {
+  deep: {
+    count: 4,
+    minutes: 27,
+    thirtyDayAvgMinutes: 67,
   },
-];
-
-let newD = {
-  summary_date: "2022-09-06",
-  period_id: 0,
-  is_longest: 1,
-  timezone: 0,
-  bedtime_start: "2022-09-06T23:02:00+00:00",
-  bedtime_end: "2022-09-07T05:32:00+00:00",
-  score: 65,
-  score_total: 57,
-  score_disturbances: 83,
-  score_efficiency: 99,
-  score_latency: 88,
-  score_rem: 97,
-  score_deep: 59,
-  score_alignment: 31,
-  total: 21826,
-  duration: 23400,
-  awake: 1574,
-  light: 10913,
-  rem: 4475,
-  deep: 6438,
-  onset_latency: 480,
-  restless: 39,
-  efficiency: 94,
-  midpoint_time: 11010,
-  hr_lowest: 49,
-  hr_average: 56.375,
-  rmssd: 54,
-  breath_average: 13,
-  temperature_delta: -0.06,
-  hypnogram_5min:
-    "443432222211222333321112222222222111133333322221112233333333332232222334",
+  light: {
+    count: 20,
+    minutes: 277,
+    thirtyDayAvgMinutes: 228,
+  },
+  rem: {
+    count: 5,
+    minutes: 78,
+    thirtyDayAvgMinutes: 109,
+  },
+  wake: {
+    count: 17,
+    minutes: 78,
+    thirtyDayAvgMinutes: 77,
+  },
+  minutesAsleep: 382,
+  minutesAwake: 78,
 };
 
 const FitbitSleep = (props) => {
+  const stage = props.stage || "prod";
+
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
+
+  const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
   const [processedData, setProcessedData] = useState({});
 
@@ -125,8 +88,6 @@ const FitbitSleep = (props) => {
     console.log("newData", newData);
 
     setProcessedData(newData);
-
-    console.log("new 17");
   };
 
   console.log("processed data", processedData);
@@ -174,12 +135,6 @@ const FitbitSleep = (props) => {
 
     console.log("datestr", dateStr);
 
-    const dateStr2 = new Date(currentDate.current).toISOString().split("T")[0];
-    const dateStr3 = new Date(dd).toISOString().split("T")[0];
-
-    console.log("currendate current", dateStr2);
-    console.log("currendate dd", dateStr3);
-
     const filter = {
       ["s3::date"]: {
         [Op.eq]: dateStr,
@@ -190,16 +145,15 @@ const FitbitSleep = (props) => {
 
     const result = await API[appID].Fitbit.querySleepSummary({
       filter: filter,
-      // fields: "awake,light,rem,deep",
     });
 
     console.log("THE NEW BUILD result", result);
 
     processData(result.data.getDataObject.content[0]);
 
-    // if (stage === "dev") {
-    //   processData(result.data.getDataObject.content[1].score[1]);
-    // }
+    if (stage === "dev") {
+      processData([sleepSummary]);
+    }
   }, [day]);
 
   console.log("day", day);
@@ -214,29 +168,9 @@ const FitbitSleep = (props) => {
     return obj;
   }
 
-  // let awake = processedData[0].awake;
-  // let light = processedData[0].light;
-  // let rem = processedData[0].rem;
-  // let deep = processedData[0].deep;
-
-  // let total = processedData[0].total;
-
-  // let displayData = [
-  //   {
-  //     awake: secondsToTime(awake),
-  //     light: secondsToTime(light),
-  //     rem: secondsToTime(rem),
-  //     deep: secondsToTime(deep),
-  //     total: secondsToTime(total),
-  //   },
-  // ];
-
-  // console.log("total time", total);
-  // console.log("display time", displayData);
-
   return (
     <Container>
-      <Flex alignItems="center" mb={21}>
+      <Flex alignItems="center" mb={11}>
         <Text fontSize={16} color="white" fontWeight={700} ml={9} mr={110}>
           Sleep widget
         </Text>
@@ -247,7 +181,7 @@ const FitbitSleep = (props) => {
           h={32}
           justifyContent="space-between"
           alignItems="center"
-          bg="#FFA654"
+          bg="#D4D7F2"
           padding="0px 65px 0px 65px"
           borderTopRightRadius={8}
           borderTopLeftRadius={8}
@@ -287,15 +221,13 @@ const FitbitSleep = (props) => {
           style={{
             background: "rgba(251, 242, 242, 0.3)",
 
-            borderBottomLeftRadius: 10,
-            borderBottomRightRadius: 10,
+            borderBottomLeftRadius: 8,
+            borderBottomRightRadius: 8,
           }}
         >
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              width={200}
-              height={202}
-              data={false}
+              data={processData}
               margin={{
                 top: 20,
                 right: 30,
@@ -337,7 +269,7 @@ const FitbitSleep = (props) => {
                 }}
                 domain={[0, "dataMax + 3600"]}
                 stroke="white"
-                dataKey="total"
+                // dataKey="total"
               />
 
               <Tooltip
@@ -354,10 +286,30 @@ const FitbitSleep = (props) => {
                 }}
               />
 
-              <Bar barSize={45} name="Awake" dataKey="awake" fill="#FFE9D5" />
-              <Bar barSize={45} name="Light" dataKey="light" fill="#FFA654" />
-              <Bar barSize={45} name="Deep" dataKey="deep" fill="#B96314" />
-              <Bar barSize={45} name="REM" dataKey="rem" fill="#6D3D10" />
+              <Bar
+                barSize={45}
+                name="Awake"
+                dataKey="awake.minutes"
+                fill="#FFE9D5"
+              />
+              <Bar
+                barSize={45}
+                name="Light"
+                dataKey="light.minutes"
+                fill="#FFA654"
+              />
+              <Bar
+                barSize={45}
+                name="Deep"
+                dataKey="deep.minutes"
+                fill="#B96314"
+              />
+              <Bar
+                barSize={45}
+                name="REM"
+                dataKey="rem.minutes"
+                fill="#6D3D10"
+              />
             </BarChart>
           </ResponsiveContainer>
         </Box>
