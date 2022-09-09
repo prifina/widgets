@@ -203,7 +203,6 @@ const OuraHeart = (props) => {
 
   console.log("period", period);
 
-  console.log("processed async result", result);
   return (
     <Container>
       <Flex alignItems="center" mb={21}>
