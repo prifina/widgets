@@ -106,7 +106,7 @@ const OuraHeart = (props) => {
         payload.data.dataconnector === "Oura/queryReadinessSummariesAsync" &&
         payload.data.content.length > 1
       ) {
-        processedAsyncData(payload.data.content);
+        processAsyncData(payload.data.content);
       }
       console.log("PAYLOAD DATA", payload);
     }
@@ -147,7 +147,6 @@ const OuraHeart = (props) => {
 
     const result = await API[appID].Oura.queryReadinessSummary({
       filter: filter,
-      // fields: "awake,light,rem,deep",
     });
 
     const ddd = d.setDate(d.getDate() - 14);

@@ -58,7 +58,7 @@ let falseData = [
 const FitbitSleep = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
-  const [processedData, setProcessedData] = useState({});
+  const [processedData, setProcessedData] = useState();
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
@@ -78,12 +78,12 @@ const FitbitSleep = (props) => {
       payload.hasOwnProperty("data") &&
       payload.data.hasOwnProperty("content")
     ) {
-      if (
-        payload.data.dataconnector === "Fitbit/querySleepSummariesAsync" &&
-        payload.data.content.length > 1
-      ) {
-        processData(payload.data.content);
-      }
+      // if (
+      //   payload.data.dataconnector === "Fitbit/querySleepSummariesAsync" &&
+      //   payload.data.content.length > 1
+      // ) {
+      //   processData(payload.data.content);
+      // }
       console.log("PAYLOAD DATA", payload);
     }
   };
