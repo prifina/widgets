@@ -71,8 +71,6 @@ const OuraHeart = (props) => {
 
   const [processedData, setProcessedData] = useState({});
 
-  const [processedData2, setProcessedData2] = useState({});
-
   const [processedAsyncData, setProcessedAsyncData] = useState([]);
 
   // let stage = "dev";
@@ -80,19 +78,17 @@ const OuraHeart = (props) => {
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
 
-    let newData = [data];
-    let newData2 = data;
+    let newData = data;
+
     console.log("newData", newData);
-    console.log("newData2", newData2);
 
     if (stage === "dev") {
-      setProcessedData2({
+      setProcessedData({
         score_resting_hr: 44,
       });
     } else {
-      setProcessedData2(newData2);
+      setProcessedData(newData);
     }
-    setProcessedData(newData);
   };
 
   const processAsyncData = (data) => {
@@ -193,7 +189,7 @@ const OuraHeart = (props) => {
     console.log("async result", asyncResult);
 
     processData(result.data.getDataObject.content[0]);
-  }, [day]);
+  }, [day, period]);
 
   console.log("day", day);
 
@@ -229,6 +225,7 @@ const OuraHeart = (props) => {
                 border: 0,
                 borderRadius: 10,
                 padding: 3,
+                outline: "none",
               }}
             >
               <option value={6}>Week</option>
@@ -268,12 +265,12 @@ const OuraHeart = (props) => {
           </Flex>
         </Flex>
         <Box
-          height={300}
           style={{
             background: "rgba(251, 242, 242, 0.3)",
             borderBottomLeftRadius: 8,
             borderBottomRightRadius: 8,
-            paddingTop: 40,
+            paddingTop: 10,
+            paddingBottom: 10,
           }}
         >
           <Flex
@@ -282,57 +279,10 @@ const OuraHeart = (props) => {
             style={{ paddingRight: 55, paddingLeft: 55 }}
           >
             <Text as="b" fontSize={48} color="#FFF500">
-              {processedData2.score_resting_hr}
+              {processedData.score_resting_hr}
             </Text>
           </Flex>
-          <ResponsiveContainer width="100%" height="50%">
-            {/* <LineChart
-              style={{ cursor: "pointer" }}
-              data={result}
-              margin={{
-                top: 0,
-                right: 15,
-                left: -15,
-                bottom: 0,
-              }}
-            >
-              <CartesianGrid strokeDasharray="none" stroke="null" />
-              <XAxis
-                dataKey="summary_date"
-                tickLine={false}
-                fontSize={8}
-                stroke="white"
-              />
-              <YAxis
-                dataKey="score_resting_hr"
-                axisLine={false}
-                tickLine={false}
-                label={{
-                  value: "RESTING HR",
-                  angle: -90,
-                  stroke: "white",
-                  fontSize: 10,
-                }}
-                stroke="white"
-                fontSize={10}
-              />
-              <Tooltip
-                cursor={{ fill: "transparent" }}
-                contentStyle={{
-                  // background: "transparent",
-                  padding: 5,
-                  border: 0,
-                }}
-                itemStyle={{ fontSize: 10 }}
-              />
-              <Line
-                // type="monotoneX"
-                dataKey="samm"
-                // stroke="#FFF500"
-                strokeWidth={3}
-                activeDot={{ r: 3 }}
-              />
-            </LineChart> */}
+          <ResponsiveContainer width="100%" height="35%">
             <LineChart
               width={500}
               height={100}
