@@ -54,11 +54,11 @@ let asyncFalseData = [
   "98",
   "98",
   "98",
+  "25",
   "98",
   "98",
   "98",
-  "98",
-  "98",
+  "34",
   "98",
   "98",
   "98",
@@ -75,6 +75,8 @@ const OuraHeart = (props) => {
 
   const [processedAsyncData, setProcessedAsyncData] = useState([]);
 
+  let stage = "dev";
+
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
 
@@ -83,14 +85,20 @@ const OuraHeart = (props) => {
     console.log("newData", newData);
     console.log("newData2", newData2);
 
-    setProcessedData2(newData2);
+    if (stage === "dev") {
+      setProcessedData2({
+        score_resting_hr: 44,
+      });
+    } else {
+      setProcessedData2(newData2);
+    }
     setProcessedData(newData);
   };
 
   const processAsyncData = (data) => {
     console.log("ORIGINAL PROCESS ASYNC DATA", data);
 
-    let newData = [data];
+    let newData = data;
     console.log("newData ASYNC", newData);
 
     setProcessedAsyncData(newData);
@@ -119,6 +127,7 @@ const OuraHeart = (props) => {
 
   const [day, setDay] = useState(1);
   const [date, setDate] = useState();
+  const [period, setPeriod] = useState(6);
 
   useEffect(async () => {
     // init callback function for background updates/notifications
@@ -152,7 +161,7 @@ const OuraHeart = (props) => {
       filter: filter,
     });
 
-    const ddd = d.setDate(d.getDate() - 14);
+    const ddd = d.setDate(d.getDate() - period);
 
     const asyncDateStr = new Date(ddd).toISOString().split("T")[0];
 
@@ -164,7 +173,7 @@ const OuraHeart = (props) => {
 
     const asyncResult = await API[appID].Oura.queryReadinessSummariesAsync({
       filter: asyncFilter,
-      fields: "score_resting_hr",
+      fields: "summary_date, score_resting_hr",
     });
 
     console.log("result", result);
@@ -172,15 +181,9 @@ const OuraHeart = (props) => {
     console.log("async result", asyncResult);
 
     processData(result.data.getDataObject.content[0]);
-
-    // if (stage === "dev") {
-    //   processData(result.data.getDataObject.content[1].score[1]);
-    // }
   }, [day]);
 
   console.log("day", day);
-
-  const [period, setPeriod] = useState(7);
 
   const handleChange = (e) => {
     setPeriod(e.target.value);
@@ -190,25 +193,16 @@ const OuraHeart = (props) => {
 
   asyncFalseData.shift();
 
-  const arrOfNum = asyncFalseData.map((str) => {
-    return Number(str);
+  asyncFalseData = asyncFalseData.map((dataLine) => dataLine.split(",")).flat();
+
+  const result = [];
+  asyncFalseData.forEach((item) => {
+    result.push({
+      score_resting_hr: Number(item),
+    });
   });
 
-  console.log("async false data", arrOfNum);
-
-  let blank = arrOfNum.map((item) => ({
-    summ: item,
-  }));
-
-  function renameProperty(obj, oldName, newName) {
-    obj[newName] = obj[oldName];
-    delete obj[oldName];
-  }
-
-  let array = renameProperty(arrOfNum, "", "value");
-
-  console.log("async false data2222", array);
-
+  console.log("processed async result", result);
   return (
     <Container>
       <Flex alignItems="center" mb={21}>
@@ -227,7 +221,7 @@ const OuraHeart = (props) => {
           borderTopRightRadius={8}
           borderTopLeftRadius={8}
         >
-          <form>
+          <>
             <select
               onChange={handleChange}
               style={{
@@ -240,8 +234,7 @@ const OuraHeart = (props) => {
               <option value={6}>Week</option>
               <option value={29}>Month</option>
             </select>
-          </form>
-
+          </>
           <Flex>
             <IconButton
               style={{
@@ -275,7 +268,7 @@ const OuraHeart = (props) => {
           </Flex>
         </Flex>
         <Box
-          height={200}
+          height={300}
           style={{
             background: "rgba(251, 242, 242, 0.3)",
             borderBottomLeftRadius: 8,
@@ -293,11 +286,11 @@ const OuraHeart = (props) => {
             </Text>
           </Flex>
           <ResponsiveContainer width="100%" height="50%">
-            <LineChart
+            {/* <LineChart
               style={{ cursor: "pointer" }}
-              data={arrOfNum}
+              data={result}
               margin={{
-                top: 20,
+                top: 0,
                 right: 15,
                 left: -15,
                 bottom: 0,
@@ -326,6 +319,35 @@ const OuraHeart = (props) => {
               <Tooltip
                 cursor={{ fill: "transparent" }}
                 contentStyle={{
+                  // background: "transparent",
+                  padding: 5,
+                  border: 0,
+                }}
+                itemStyle={{ fontSize: 10 }}
+              />
+              <Line
+                // type="monotoneX"
+                dataKey="samm"
+                // stroke="#FFF500"
+                strokeWidth={3}
+                activeDot={{ r: 3 }}
+              />
+            </LineChart> */}
+            <LineChart
+              width={500}
+              height={100}
+              data={result}
+              margin={{
+                top: 10,
+                right: 15,
+                left: -15,
+                bottom: 0,
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <Tooltip
+                cursor={{ fill: "transparent" }}
+                contentStyle={{
                   background: "transparent",
                   padding: 5,
                   border: 0,
@@ -334,10 +356,30 @@ const OuraHeart = (props) => {
               />
               <Line
                 type="monotoneX"
-                dataKey="key"
+                dataKey="score_resting_hr"
                 stroke="#FFF500"
-                strokeWidth={1}
+                strokeWidth={3}
                 activeDot={{ r: 3 }}
+              />
+
+              <XAxis
+                dataKey="summary_date"
+                tickLine={false}
+                fontSize={8}
+                stroke="white"
+              />
+              <YAxis
+                // dataKey="score_resting_hr"
+                axisLine={false}
+                tickLine={false}
+                label={{
+                  value: "RESTING HR",
+                  angle: -90,
+                  stroke: "white",
+                  fontSize: 10,
+                }}
+                stroke="white"
+                fontSize={10}
               />
             </LineChart>
           </ResponsiveContainer>
