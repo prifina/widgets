@@ -130,7 +130,6 @@ const OuraActivity = (props) => {
 
     const result = await API[appID].Oura.queryActivitySummary({
       filter: filter,
-      // fields: "awake,light,rem,deep",
     });
 
     console.log("THE NEW BUILD result", result);
