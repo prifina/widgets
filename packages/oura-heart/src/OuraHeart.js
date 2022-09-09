@@ -47,20 +47,23 @@ let falseData = [
 ];
 
 let asyncFalseData = [
-  {
-    summary_date: "2016-09-03",
-    score_resting_hr: 93,
-  },
-  {
-    summary_date: "2016-09-04",
-
-    score_resting_hr: 55,
-  },
-  {
-    summary_date: "2016-09-05",
-
-    score_resting_hr: 82,
-  },
+  "score_resting_hr",
+  "98",
+  "98",
+  "98",
+  "98",
+  "98",
+  "98",
+  "98",
+  "98",
+  "98",
+  "98",
+  "98",
+  "98",
+  "98",
+  "98",
+  "98",
+  "98",
 ];
 
 const OuraHeart = (props) => {
@@ -183,13 +186,28 @@ const OuraHeart = (props) => {
     setPeriod(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    setPeriod(e.target.value);
-
-    e.preventDefault();
-  };
-
   console.log("period", period);
+
+  asyncFalseData.shift();
+
+  const arrOfNum = asyncFalseData.map((str) => {
+    return Number(str);
+  });
+
+  console.log("async false data", arrOfNum);
+
+  let blank = arrOfNum.map((item) => ({
+    summ: item,
+  }));
+
+  function renameProperty(obj, oldName, newName) {
+    obj[newName] = obj[oldName];
+    delete obj[oldName];
+  }
+
+  let array = renameProperty(arrOfNum, "", "value");
+
+  console.log("async false data2222", array);
 
   return (
     <Container>
@@ -209,21 +227,20 @@ const OuraHeart = (props) => {
           borderTopRightRadius={8}
           borderTopLeftRadius={8}
         >
-          <select
-            style={{
-              background: "#FFF500",
-              border: 0,
-              borderRadius: 10,
-              padding: 3,
-            }}
-          >
-            <option value={6} onChange={handleChange}>
-              Week
-            </option>
-            <option value={29} onChange={handleChange}>
-              Month
-            </option>
-          </select>
+          <form>
+            <select
+              onChange={handleChange}
+              style={{
+                background: "#FFF500",
+                border: 0,
+                borderRadius: 10,
+                padding: 3,
+              }}
+            >
+              <option value={6}>Week</option>
+              <option value={29}>Month</option>
+            </select>
+          </form>
 
           <Flex>
             <IconButton
@@ -272,13 +289,13 @@ const OuraHeart = (props) => {
             style={{ paddingRight: 55, paddingLeft: 55 }}
           >
             <Text as="b" fontSize={48} color="#FFF500">
-              {/* {processedData2.score_resting_hr} */}
+              {processedData2.score_resting_hr}
             </Text>
           </Flex>
           <ResponsiveContainer width="100%" height="50%">
             <LineChart
               style={{ cursor: "pointer" }}
-              data={processedAsyncData}
+              data={arrOfNum}
               margin={{
                 top: 20,
                 right: 15,
@@ -317,7 +334,7 @@ const OuraHeart = (props) => {
               />
               <Line
                 type="monotoneX"
-                dataKey="score_resting_hr"
+                dataKey="key"
                 stroke="#FFF500"
                 strokeWidth={1}
                 activeDot={{ r: 3 }}
