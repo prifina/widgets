@@ -40,69 +40,25 @@ const Container = styled.div`
 // unique appID for the widget....
 const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
-let falseData = [
-  {
-    score_resting_hr: 93,
-  },
-];
+const falseData = {
+  score_resting_hr: 93,
+};
 
 const asyncFalseData = [
-  [
-    {
-      score_resting_hr: null,
-    },
-    {
-      score_resting_hr: 98,
-    },
-    {
-      score_resting_hr: null,
-    },
-    {
-      score_resting_hr: 98,
-    },
-    {
-      score_resting_hr: null,
-    },
-    {
-      score_resting_hr: 98,
-    },
-    {
-      score_resting_hr: null,
-    },
-    {
-      score_resting_hr: 98,
-    },
-    {
-      score_resting_hr: null,
-    },
-    {
-      score_resting_hr: 98,
-    },
-    {
-      score_resting_hr: null,
-    },
-    {
-      score_resting_hr: 98,
-    },
-    {
-      score_resting_hr: null,
-    },
-    {
-      score_resting_hr: 98,
-    },
-    {
-      score_resting_hr: null,
-    },
-    {
-      score_resting_hr: 98,
-    },
-  ],
+  "summary_date,score_resting_hr",
+  "2022-09-04,98",
+  "2022-09-05,98",
+  "2022-09-06,98",
+  "2022-09-07,98",
+  "2022-09-08,98",
+  "2022-09-09,98",
+  "2022-09-10,98",
 ];
 
 const OuraHeart = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
-  const stage = props.stage;
+  const stage = "dev";
 
   const [processedData, setProcessedData] = useState({});
 
@@ -131,22 +87,50 @@ const OuraHeart = (props) => {
   const processAsyncData = (data) => {
     console.log("ORIGINAL PROCESS ASYNC DATA", data);
 
-    let newData = data;
-    console.log("newData ASYNC", newData);
+    // let newData = data;
+    // console.log("newData ASYNC", newData);
 
-    newData.shift();
+    // newData.shift();
 
-    newData = newData.map((dataLine) => dataLine.split(",")).flat();
+    // newData = newData.map((dataLine) => dataLine.split(",")).flat();
+
+    // const result = [];
+    // newData.forEach((item) => {
+    //   result.push({
+    //     summary_date: item.summary_date,
+    //     score_resting_hr: Number(item.score_resting_hr),
+    //   });
+    // });
+
+    // setProcessedAsyncData(result);
+
+    let data2 = asyncFalseData;
+
+    const keys = data2[0].split(",");
+
+    console.log("hehe keys", keys);
+
+    data2.shift();
+
+    data2 = data2.map((dataLine) => dataLine.split(",")).flat();
+
+    const chunkSize = 2;
+    const dataChunks = [];
+    for (let i = 0; i < data2.length; i += chunkSize) {
+      const chunk = data2.slice(i, i + chunkSize);
+      dataChunks.push(chunk);
+    }
 
     const result = [];
-    newData.forEach((item) => {
+    dataChunks.forEach((dataChunk) => {
       result.push({
-        summary_date: item.summary_date,
-        score_resting_hr: Number(item.score_resting_hr),
+        [keys[0]]: dataChunk[0],
+        [keys[1]]: dataChunk[1],
       });
     });
-
     setProcessedAsyncData(result);
+
+    console.log("hehe", result);
   };
 
   console.log("processed data", processedData);
@@ -176,19 +160,13 @@ const OuraHeart = (props) => {
   const [period, setPeriod] = useState(6);
 
   useEffect(async () => {
-    // init callback function for background updates/notifications
     onUpdate(appID, dataUpdate);
-    // register datasource modules
     registerHooks(appID, [Oura]);
 
     let d = new Date();
-
     const dd = d.setDate(d.getDate() - day);
-
     currentDate.current = dd;
-
     const dateStr = new Date(dd).toISOString().split("T")[0];
-
     setDate(dateStr);
     console.log("datestr", dateStr);
 
@@ -197,14 +175,16 @@ const OuraHeart = (props) => {
         [Op.eq]: dateStr,
       },
     };
-
     console.log("FILTER", filter);
 
     const result = await API[appID].Oura.queryReadinessSummary({
       filter: filter,
     });
-
     processData(result.data.getDataObject.content[0]);
+
+    if (stage === "dev") {
+      processData(falseData);
+    }
   }, [day]);
 
   useEffect(async () => {
@@ -231,6 +211,10 @@ const OuraHeart = (props) => {
     });
 
     console.log("async result", asyncResult);
+
+    if (stage === "dev") {
+      processAsyncData(asyncFalseData);
+    }
   }, [period]);
 
   console.log("day", day);
@@ -306,12 +290,12 @@ const OuraHeart = (props) => {
           </Flex>
         </Flex>
         <Box
-          height={300}
+          height={210}
           style={{
             background: "rgba(251, 242, 242, 0.3)",
             borderBottomLeftRadius: 8,
             borderBottomRightRadius: 8,
-            paddingTop: 40,
+            paddingTop: 10,
           }}
         >
           <Flex
@@ -323,14 +307,12 @@ const OuraHeart = (props) => {
               {processedData.score_resting_hr}
             </Text>
           </Flex>
-          <ResponsiveContainer width="100%" height="50%">
+          <ResponsiveContainer width="100%" height="55%">
             <LineChart
-              width={500}
-              height={100}
               data={processedAsyncData}
               margin={{
                 top: 10,
-                right: 15,
+                right: 25,
                 left: -15,
                 bottom: 0,
               }}
@@ -360,7 +342,6 @@ const OuraHeart = (props) => {
                 stroke="white"
               />
               <YAxis
-                // dataKey="score_resting_hr"
                 axisLine={false}
                 tickLine={false}
                 label={{
