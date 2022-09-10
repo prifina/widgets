@@ -40,10 +40,6 @@ const Container = styled.div`
 // unique appID for the widget....
 const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
-const falseData = {
-  score_resting_hr: 93,
-};
-
 const asyncFalseData = [
   "summary_date,score_resting_hr",
   "2022-09-04,98",
@@ -52,64 +48,40 @@ const asyncFalseData = [
   "2022-09-07,98",
   "2022-09-08,98",
   "2022-09-09,98",
+  "2022-09-10,78",
+  "2022-09-04,98",
+  "2022-09-05,38",
+  "2022-09-06,68",
+  "2022-09-07,58",
+  "2022-09-08,34",
+  "2022-09-09,98",
   "2022-09-10,98",
+  "2022-09-04,57",
+  "2022-09-05,98",
+  "2022-09-06,88",
+  "2022-09-07,93",
+  "2022-09-08,98",
+  "2022-09-09,92",
+  "2022-09-10,95",
 ];
 
 const OuraHeart = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
-  // const stage = "dev";
-
-  const [processedData, setProcessedData] = useState({});
+  const stage = props.stage;
 
   const [processedAsyncData, setProcessedAsyncData] = useState([]);
-
-  // let stage = "dev";
-
-  const processData = (data) => {
-    console.log("ORIGINAL PROCESS DATA", data);
-
-    let newData = data;
-
-    console.log("newData", newData);
-
-    if (stage === "dev") {
-      setProcessedData({
-        score_resting_hr: 44,
-      });
-    } else {
-      setProcessedData(newData);
-    }
-  };
-
-  console.log("newest build");
+  const [period, setPeriod] = useState(6);
+  const [avg, setAvg] = useState();
 
   const processAsyncData = (data) => {
     console.log("ORIGINAL PROCESS ASYNC DATA", data);
-
-    // let newData = data;
-    // console.log("newData ASYNC", newData);
-
-    // newData.shift();
-
-    // newData = newData.map((dataLine) => dataLine.split(",")).flat();
-
-    // const result = [];
-    // newData.forEach((item) => {
-    //   result.push({
-    //     summary_date: item.summary_date,
-    //     score_resting_hr: Number(item.score_resting_hr),
-    //   });
-    // });
-
-    // setProcessedAsyncData(result);
 
     let data2 = asyncFalseData;
 
     const keys = data2[0].split(",");
 
     console.log("hehe keys", keys);
-
     data2.shift();
 
     data2 = data2.map((dataLine) => dataLine.split(",")).flat();
@@ -125,15 +97,20 @@ const OuraHeart = (props) => {
     dataChunks.forEach((dataChunk) => {
       result.push({
         [keys[0]]: dataChunk[0],
-        [keys[1]]: dataChunk[1],
+        [keys[1]]: Number(dataChunk[1]),
       });
     });
     setProcessedAsyncData(result);
 
     console.log("hehe", result);
+
+    let avg = result.reduce((acc, val) => {
+      return acc + val.score_resting_hr / result.length;
+    }, 0);
+
+    setAvg(Math.ceil(avg));
   };
 
-  console.log("processed data", processedData);
   console.log("processed async data", processedAsyncData);
 
   const dataUpdate = async (payload) => {
@@ -152,40 +129,6 @@ const OuraHeart = (props) => {
       console.log("PAYLOAD DATA", payload);
     }
   };
-
-  const currentDate = useRef(new Date());
-
-  const [day, setDay] = useState(1);
-  const [date, setDate] = useState();
-  const [period, setPeriod] = useState(6);
-
-  useEffect(async () => {
-    onUpdate(appID, dataUpdate);
-    registerHooks(appID, [Oura]);
-
-    let d = new Date();
-    const dd = d.setDate(d.getDate() - day);
-    currentDate.current = dd;
-    const dateStr = new Date(dd).toISOString().split("T")[0];
-    setDate(dateStr);
-    console.log("datestr", dateStr);
-
-    const filter = {
-      ["s3::date"]: {
-        [Op.eq]: dateStr,
-      },
-    };
-    console.log("FILTER", filter);
-
-    const result = await API[appID].Oura.queryReadinessSummary({
-      filter: filter,
-    });
-    processData(result.data.getDataObject.content[0]);
-
-    if (stage === "dev") {
-      processData(falseData);
-    }
-  }, [day]);
 
   useEffect(async () => {
     onUpdate(appID, dataUpdate);
@@ -216,8 +159,6 @@ const OuraHeart = (props) => {
       processAsyncData(asyncFalseData);
     }
   }, [period]);
-
-  console.log("day", day);
 
   const handleChange = (e) => {
     setPeriod(e.target.value);
@@ -257,7 +198,7 @@ const OuraHeart = (props) => {
               <option value={28}>Month</option>
             </select>
           </>
-          {/* <Box
+          <Box
             bg="#FFF500"
             p={4}
             borderRadius={4}
@@ -265,38 +206,7 @@ const OuraHeart = (props) => {
             textAlign="center"
           >
             RHR
-          </Box> */}
-          <Flex>
-            <IconButton
-              style={{
-                background: "transparent",
-                border: 0,
-                cursor: "pointer",
-                fontSize: 19,
-              }}
-              aria-label="Search database"
-              icon={<ChevronLeftIcon />}
-              onClick={async () => {
-                setDay(day + 1);
-              }}
-            />
-            <Text>{date}</Text>
-
-            <IconButton
-              disabled={day === 1 ? true : false}
-              style={{
-                background: "transparent",
-                border: 0,
-                cursor: "pointer",
-                fontSize: 19,
-              }}
-              aria-label="Search database"
-              icon={<ChevronRightIcon />}
-              onClick={async () => {
-                setDay(day - 1);
-              }}
-            />
-          </Flex>
+          </Box>
         </Flex>
         <Box
           height={210}
@@ -312,9 +222,30 @@ const OuraHeart = (props) => {
             justifyContent="center"
             style={{ paddingRight: 55, paddingLeft: 55 }}
           >
-            <Text as="b" fontSize={48} color="#FFF500">
-              {processedData.score_resting_hr || 0}
-            </Text>
+            <Box
+              width={71}
+              height={75}
+              bg="rgba(118, 110, 86, 0.44)"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                borderRadius: 8,
+                position: "relative",
+              }}
+            >
+              <Text as="b" fontSize={48} color="#FFF500">
+                {avg}
+              </Text>
+              <Text
+                fontSize={12}
+                color="white"
+                position="absolute"
+                bottom="5px"
+              >
+                AVG RHR
+              </Text>
+            </Box>
           </Flex>
           <ResponsiveContainer width="100%" height="65%">
             <LineChart
@@ -330,11 +261,12 @@ const OuraHeart = (props) => {
               <Tooltip
                 cursor={{ fill: "transparent" }}
                 contentStyle={{
-                  background: "transparent",
+                  background: "#FFA654",
                   padding: 5,
                   border: 0,
+                  borderRadius: 8,
                 }}
-                itemStyle={{ fontSize: 10 }}
+                itemStyle={{ fontSize: 12 }}
               />
               <Line
                 type="monotoneX"
