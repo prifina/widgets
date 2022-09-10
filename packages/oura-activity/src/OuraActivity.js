@@ -37,19 +37,12 @@ const Container = styled.div`
 // unique appID for the widget....
 const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
-const falseData = {
-  summary_date: "2022-09-09",
-  cal_total: 2197,
-  steps: 1675,
-  daily_movement: 4187,
-};
-
 const OuraActivity = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
   const stage = "dev";
 
-  const [displayData, setDisplayData] = useState([]);
+  const [displayData, setDisplayData] = useState();
 
   const [processedData, setProcessedData] = useState();
 
@@ -120,12 +113,12 @@ const OuraActivity = (props) => {
       filter: filter,
     });
 
-    console.log("THE NEW BUILD result", result);
+    console.log("RESULT", result);
 
     processData(result.data.getDataObject.content[0]);
 
     if (stage === "dev") {
-      processData(falseData);
+      processData(result.data.getDataObject.content);
     }
   }, [day]);
 
@@ -196,23 +189,19 @@ const OuraActivity = (props) => {
             <Flex alignItems="center">
               <FireIcon color="#FFA654" />
               <Text ml={3} color="#FFA654">
-                {processedData.cal_total === undefined
-                  ? 0
-                  : processedData.cal_total}
+                {processedData === undefined ? 0 : processedData.cal_total}
               </Text>
             </Flex>
             <Flex alignItems="center">
               <StepsIcon color="#FFE9D5" />
               <Text ml={3} color="#FFE9D5">
-                {processedData.steps === undefined ? 0 : processedData.steps}
+                {processedData === undefined ? 0 : processedData.steps}
               </Text>
             </Flex>
             <Flex alignItems="center">
               <DistanceIcon color="#F8F043" />
               <Text ml={3} color="#F8F043">
-                {processedData.daily_movement === undefined
-                  ? 0
-                  : processedData.daily_movement}
+                {processedData === undefined ? 0 : processedData.daily_movement}
               </Text>
             </Flex>
           </Flex>
