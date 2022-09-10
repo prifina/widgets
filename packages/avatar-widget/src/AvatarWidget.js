@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import { usePrifina, Op } from "@prifina/hooks";
 
@@ -10,17 +10,19 @@ import ReactThreeVisor from "./components/ReactThreeVisor";
 const appID = "ujWBeKugg514AVaE4UyaDq";
 
 const AvatarWidget = (props) => {
+  // const stage = "dev";
+
   const { onUpdate, API, registerHooks } = usePrifina();
 
-  const [ouraScore, setOuraScore] = useState("");
+  const { score } = props;
+
+  const [ouraScore, setOuraScore] = useState();
 
   const processData = (data) => {
     console.log("OURA SCORE PROCESS DATA", data);
 
     let newData = data;
     console.log("OURA SCORE PROCESSED NEW DATA", newData);
-
-    ("newest");
 
     setOuraScore(newData[1]);
   };
@@ -48,8 +50,7 @@ const AvatarWidget = (props) => {
     registerHooks(appID, [Oura]);
 
     const d = new Date();
-    const dd = d.setDate(d.getDate() - 5);
-
+    const dd = d.setDate(d.getDate() - 1);
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
     const filter = {
@@ -57,12 +58,17 @@ const AvatarWidget = (props) => {
         [Op.gte]: dateStr,
       },
     };
-
     const activityResult = await API[appID].Oura.queryReadinessSummariesAsync({
       filter: filter,
       fields: "score",
     });
     console.log("activityResult", activityResult);
+
+    // processData(activityResult.data.getDataObject.content.score);
+
+    if (stage === "dev") {
+      processData(activityResult.data.getDataObject.content);
+    }
   }, []);
 
   const superCharged =
@@ -109,6 +115,10 @@ const AvatarWidget = (props) => {
       color = "gray";
   }
 
+  console.log("status", status);
+
+  console.log("color", color);
+
   let cameraPosition = {
     x: 0,
     y: 95,
@@ -131,6 +141,7 @@ const AvatarWidget = (props) => {
         cameraPosition={cameraPosition}
         url={status}
         backgroundColor={color}
+        ouraScore={ouraScore}
       />
       <div
         style={{
