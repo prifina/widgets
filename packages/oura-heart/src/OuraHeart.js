@@ -91,6 +91,8 @@ const OuraHeart = (props) => {
     }
   };
 
+  console.log("newest build");
+
   const processAsyncData = (data) => {
     console.log("ORIGINAL PROCESS ASYNC DATA", data);
 
@@ -181,7 +183,7 @@ const OuraHeart = (props) => {
 
     const asyncResult = await API[appID].Oura.queryReadinessSummariesAsync({
       filter: asyncFilter,
-      fields: "score_resting_hr",
+      fields: "summary_date,score_resting_hr",
     });
 
     console.log("result", result);
@@ -282,53 +284,6 @@ const OuraHeart = (props) => {
             </Text>
           </Flex>
           <ResponsiveContainer width="100%" height="50%">
-            {/* <LineChart
-              style={{ cursor: "pointer" }}
-              data={result}
-              margin={{
-                top: 0,
-                right: 15,
-                left: -15,
-                bottom: 0,
-              }}
-            >
-              <CartesianGrid strokeDasharray="none" stroke="null" />
-              <XAxis
-                dataKey="summary_date"
-                tickLine={false}
-                fontSize={8}
-                stroke="white"
-              />
-              <YAxis
-                dataKey="score_resting_hr"
-                axisLine={false}
-                tickLine={false}
-                label={{
-                  value: "RESTING HR",
-                  angle: -90,
-                  stroke: "white",
-                  fontSize: 10,
-                }}
-                stroke="white"
-                fontSize={10}
-              />
-              <Tooltip
-                cursor={{ fill: "transparent" }}
-                contentStyle={{
-                  // background: "transparent",
-                  padding: 5,
-                  border: 0,
-                }}
-                itemStyle={{ fontSize: 10 }}
-              />
-              <Line
-                // type="monotoneX"
-                dataKey="samm"
-                // stroke="#FFF500"
-                strokeWidth={3}
-                activeDot={{ r: 3 }}
-              />
-            </LineChart> */}
             <LineChart
               width={500}
               height={100}
