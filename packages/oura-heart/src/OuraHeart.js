@@ -68,7 +68,7 @@ const asyncFalseData = [
 const OuraHeart = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
-  const stage = props.stage;
+  const stage = "dev";
 
   const [processedAsyncData, setProcessedAsyncData] = useState([]);
   const [period, setPeriod] = useState(6);
@@ -77,19 +77,19 @@ const OuraHeart = (props) => {
   const processAsyncData = (data) => {
     console.log("ORIGINAL PROCESS ASYNC DATA", data);
 
-    let data2 = asyncFalseData;
+    let filterData = data;
 
-    const keys = data2[0].split(",");
+    const keys = filterData[0].split(",");
 
     console.log("hehe keys", keys);
-    data2.shift();
+    filterData.shift();
 
-    data2 = data2.map((dataLine) => dataLine.split(",")).flat();
+    filterData = filterData.map((dataLine) => dataLine.split(",")).flat();
 
     const chunkSize = 2;
     const dataChunks = [];
-    for (let i = 0; i < data2.length; i += chunkSize) {
-      const chunk = data2.slice(i, i + chunkSize);
+    for (let i = 0; i < filterData.length; i += chunkSize) {
+      const chunk = filterData.slice(i, i + chunkSize);
       dataChunks.push(chunk);
     }
 
@@ -102,7 +102,7 @@ const OuraHeart = (props) => {
     });
     setProcessedAsyncData(result);
 
-    console.log("hehe", result);
+    console.log("process result", result);
 
     let avg = result.reduce((acc, val) => {
       return acc + val.score_resting_hr / result.length;
@@ -234,7 +234,7 @@ const OuraHeart = (props) => {
                 position: "relative",
               }}
             >
-              <Text as="b" fontSize={48} color="#FFF500">
+              <Text as="b" fontSize={48} color="#FFF500" lineHeight={1.1}>
                 {avg}
               </Text>
               <Text
