@@ -194,17 +194,13 @@ const OuraHeart = (props) => {
                 padding: 3,
               }}
             >
-              <option value={5}>Week</option>
-              <option value={28}>Month</option>
+              <option value={6}>Last week</option>
+              <option value={14}>Last 15 days</option>
+              <option value={28}>Last Month</option>
+              <option value={89}>Last 3 Months</option>
             </select>
           </>
-          <Box
-            bg="#FFF500"
-            p={4}
-            borderRadius={4}
-            width={50}
-            textAlign="center"
-          >
+          <Box bg="#FFF500" borderRadius={4} width={50} textAlign="center">
             RHR
           </Box>
         </Flex>
@@ -273,7 +269,7 @@ const OuraHeart = (props) => {
                 dataKey="score_resting_hr"
                 stroke="#FFF500"
                 strokeWidth={3}
-                activeDot={{ r: 3 }}
+                activeDot={{ r: 2 }}
               />
 
               <XAxis
