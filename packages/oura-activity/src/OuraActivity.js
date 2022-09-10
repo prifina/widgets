@@ -49,7 +49,7 @@ const OuraActivity = (props) => {
 
   const stage = "dev";
 
-  const [displayData, setDisplayData] = useState();
+  const [displayData, setDisplayData] = useState([]);
 
   const [processedData, setProcessedData] = useState();
 
@@ -60,7 +60,9 @@ const OuraActivity = (props) => {
 
     console.log("newData", newData);
 
-    setDisplayData([newData]);
+    let arr = [data];
+
+    setDisplayData(arr);
     setProcessedData(newData);
   };
 
