@@ -22,12 +22,10 @@ import FitbitIcon from "./assets/fitbit.svg";
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -45,38 +43,10 @@ const Container = styled.div`
 `;
 
 // unique appID for the widget....
-
-const sleepSummary = {
-  deep: {
-    count: 4,
-    minutes: 27,
-    thirtyDayAvgMinutes: 67,
-  },
-  light: {
-    count: 20,
-    minutes: 277,
-    thirtyDayAvgMinutes: 228,
-  },
-  rem: {
-    count: 5,
-    minutes: 78,
-    thirtyDayAvgMinutes: 109,
-  },
-  wake: {
-    count: 17,
-    minutes: 78,
-    thirtyDayAvgMinutes: 77,
-  },
-  minutesAsleep: 382,
-  minutesAwake: 78,
-};
+const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
 const FitbitSleep = (props) => {
-  const stage = props.stage || "prod";
-
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
-
-  const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
   const [processedData, setProcessedData] = useState({});
 
@@ -88,6 +58,8 @@ const FitbitSleep = (props) => {
     console.log("newData", newData);
 
     setProcessedData(newData);
+
+    console.log("new 17");
   };
 
   console.log("processed data", processedData);
@@ -99,12 +71,12 @@ const FitbitSleep = (props) => {
       payload.data.hasOwnProperty("content")
     ) {
       // process async data
-      if (
-        payload.data.dataconnector === "Fitbit/querySleepSummariesAsync" &&
-        payload.data.content.length > 1
-      ) {
-        processData(payload.data.content);
-      }
+      // if (
+      //   payload.data.dataconnector === "Fitbit/querySleepSummariesAsync" &&
+      //   payload.data.content.length > 1
+      // ) {
+      //   processData(payload.data.content);
+      // }
       console.log("PAYLOAD DATA", payload);
     }
   };
@@ -135,6 +107,12 @@ const FitbitSleep = (props) => {
 
     console.log("datestr", dateStr);
 
+    const dateStr2 = new Date(currentDate.current).toISOString().split("T")[0];
+    const dateStr3 = new Date(dd).toISOString().split("T")[0];
+
+    console.log("currendate current", dateStr2);
+    console.log("currendate dd", dateStr3);
+
     const filter = {
       ["s3::date"]: {
         [Op.eq]: dateStr,
@@ -151,17 +129,17 @@ const FitbitSleep = (props) => {
 
     processData(result.data.getDataObject.content[0]);
 
-    if (stage === "dev") {
-      processData([sleepSummary]);
-    }
+    // if (stage === "dev") {
+    //   processData(result.data.getDataObject.content[1].score[1]);
+    // }
   }, [day]);
 
   console.log("day", day);
 
-  function secondsToTime(secs) {
-    var hours = Math.floor(secs / (60 * 60));
+  function secondsToTime(min) {
+    var hours = Math.floor(min / 60);
 
-    var divisor_for_minutes = secs % (60 * 60);
+    var divisor_for_minutes = min % (60 * 60);
     var minutes = Math.floor(divisor_for_minutes / 60);
 
     var obj = hours + "h " + minutes + "m";
@@ -170,7 +148,7 @@ const FitbitSleep = (props) => {
 
   return (
     <Container>
-      <Flex alignItems="center" mb={11}>
+      <Flex alignItems="center" mb={8}>
         <Text fontSize={16} color="white" fontWeight={700} ml={9} mr={110}>
           Sleep widget
         </Text>
@@ -181,7 +159,7 @@ const FitbitSleep = (props) => {
           h={32}
           justifyContent="space-between"
           alignItems="center"
-          bg="#D4D7F2"
+          bg="#D4D7F2CC"
           padding="0px 65px 0px 65px"
           borderTopRightRadius={8}
           borderTopLeftRadius={8}
@@ -221,13 +199,15 @@ const FitbitSleep = (props) => {
           style={{
             background: "rgba(251, 242, 242, 0.3)",
 
-            borderBottomLeftRadius: 8,
-            borderBottomRightRadius: 8,
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
           }}
         >
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              data={processData}
+              width={200}
+              height={202}
+              data={processedData}
               margin={{
                 top: 20,
                 right: 30,
@@ -265,11 +245,11 @@ const FitbitSleep = (props) => {
                 allowDecimals={false}
                 type="number"
                 tickFormatter={(total) => {
-                  return Math.floor(total / 3600);
+                  return Math.floor(total / 60);
                 }}
-                domain={[0, "dataMax + 3600"]}
+                // domain={[0, "dataMax + 3600"]}
                 stroke="white"
-                // dataKey="total"
+                dataKey="minutesAsleep"
               />
 
               <Tooltip
@@ -285,30 +265,36 @@ const FitbitSleep = (props) => {
                   return secondsToTime(awake);
                 }}
               />
+              <Bar
+                barSize={45}
+                name="Total sleep"
+                dataKey="minutesAsleep"
+                fill="#FFE9D5"
+              />
 
               <Bar
                 barSize={45}
                 name="Awake"
-                dataKey="awake.minutes"
-                fill="#FFE9D5"
+                dataKey="wake.minutes"
+                fill="#DDB7F4"
               />
               <Bar
                 barSize={45}
                 name="Light"
                 dataKey="light.minutes"
-                fill="#FFA654"
+                fill="#294BC1"
               />
               <Bar
                 barSize={45}
                 name="Deep"
                 dataKey="deep.minutes"
-                fill="#B96314"
+                fill="#2A2E9C"
               />
               <Bar
                 barSize={45}
                 name="REM"
                 dataKey="rem.minutes"
-                fill="#6D3D10"
+                fill="#222671"
               />
             </BarChart>
           </ResponsiveContainer>
