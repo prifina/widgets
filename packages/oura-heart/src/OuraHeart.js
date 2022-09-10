@@ -69,7 +69,7 @@ let asyncFalseData = [
 const OuraHeart = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
-  const [processedData, setProcessedData] = useState();
+  const [processedData, setProcessedData] = useState({});
 
   const [processedAsyncData, setProcessedAsyncData] = useState([]);
 
@@ -225,7 +225,6 @@ const OuraHeart = (props) => {
                 border: 0,
                 borderRadius: 10,
                 padding: 3,
-                outline: "none",
               }}
             >
               <option value={6}>Week</option>
@@ -279,7 +278,7 @@ const OuraHeart = (props) => {
             style={{ paddingRight: 55, paddingLeft: 55 }}
           >
             <Text as="b" fontSize={48} color="#FFF500">
-              {/* {processedData.score_resting_hr} */}
+              {processedData.score_resting_hr}
             </Text>
           </Flex>
           <ResponsiveContainer width="100%" height="35%">
@@ -308,7 +307,7 @@ const OuraHeart = (props) => {
                 type="monotoneX"
                 dataKey="score_resting_hr"
                 stroke="#FFF500"
-                strokeWidth={2}
+                strokeWidth={3}
                 activeDot={{ r: 3 }}
               />
 
