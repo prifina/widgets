@@ -1,31 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
 
 import Oura from "@prifina/oura";
 
-import {
-  Flex,
-  Text,
-  Box,
-  Image,
-  IconButton,
-  Icon,
-  Select,
-} from "@chakra-ui/react";
-
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { Flex, Text, Box, Image } from "@chakra-ui/react";
 
 import OuraIcon from "./assets/oura.svg";
+import Heart from "./assets/heart.svg";
 
 import {
   LineChart,
   Line,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -67,7 +56,7 @@ const OuraHeart = (props) => {
 
     const keys = filterData[0].split(",");
 
-    console.log("hehe keys", keys);
+    console.log("keys", keys);
     filterData.shift();
 
     filterData = filterData.map((dataLine) => dataLine.split(",")).flat();
@@ -192,12 +181,15 @@ const OuraHeart = (props) => {
           </Box>
         </Flex>
         <Box
-          height={210}
+          height={200}
           style={{
             background: "rgba(251, 242, 242, 0.3)",
             borderBottomLeftRadius: 8,
             borderBottomRightRadius: 8,
             paddingTop: 10,
+            backgroundImage: `url(${Heart})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right",
           }}
         >
           <Flex
