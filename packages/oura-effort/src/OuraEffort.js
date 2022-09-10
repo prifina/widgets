@@ -60,7 +60,7 @@ const OuraHeart = (props) => {
 
     filterData = filterData.map((dataLine) => dataLine.split(",")).flat();
 
-    const chunkSize = 4;
+    const chunkSize = 6;
     const dataChunks = [];
     for (let i = 0; i < filterData.length; i += chunkSize) {
       const chunk = filterData.slice(i, i + chunkSize);
@@ -74,6 +74,8 @@ const OuraHeart = (props) => {
         [keys[1]]: Number(dataChunk[1]),
         [keys[2]]: Number(dataChunk[2]),
         [keys[3]]: Number(dataChunk[3]),
+        [keys[4]]: Number(dataChunk[4]),
+        [keys[5]]: Number(dataChunk[5]),
       });
     });
     setProcessedAsyncData(result);
@@ -120,7 +122,7 @@ const OuraHeart = (props) => {
 
     const asyncResult = await API[appID].Oura.queryActivitySummariesAsync({
       filter: asyncFilter,
-      fields: "inactive,low,medium,high",
+      fields: "summary_date,inactive,low,medium,high,score",
     });
 
     console.log("async result", asyncResult);
