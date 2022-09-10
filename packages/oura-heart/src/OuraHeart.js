@@ -257,6 +257,15 @@ const OuraHeart = (props) => {
               <option value={28}>Month</option>
             </select>
           </>
+          {/* <Box
+            bg="#FFF500"
+            p={4}
+            borderRadius={4}
+            width={50}
+            textAlign="center"
+          >
+            RHR
+          </Box> */}
           <Flex>
             <IconButton
               style={{
@@ -304,10 +313,10 @@ const OuraHeart = (props) => {
             style={{ paddingRight: 55, paddingLeft: 55 }}
           >
             <Text as="b" fontSize={48} color="#FFF500">
-              {processedData.score_resting_hr}
+              {processedData.score_resting_hr || 0}
             </Text>
           </Flex>
-          <ResponsiveContainer width="100%" height="55%">
+          <ResponsiveContainer width="100%" height="65%">
             <LineChart
               data={processedAsyncData}
               margin={{
@@ -355,17 +364,6 @@ const OuraHeart = (props) => {
               />
             </LineChart>
           </ResponsiveContainer>
-          <Flex width="100%" justifyContent="center">
-            <Box
-              bg="#FFA654"
-              p={4}
-              borderRadius={4}
-              width={50}
-              textAlign="center"
-            >
-              RHR
-            </Box>
-          </Flex>
         </Box>
       </Box>
     </Container>
