@@ -1,11 +1,11 @@
-# `fitbit-heart`
+# `avatar-widget`
 
 > TODO: description
 
 ## Usage
 
 ```
-const ouraHeart = require('fitbit-heart');
+const avatar-widget = require('avatar-widget');
 
 // TODO: DEMONSTRATE API
 ```

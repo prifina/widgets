@@ -45,21 +45,17 @@ const Container = styled.div`
 // unique appID for the widget....
 const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
-const FitbitEffort = (props) => {
+const FitbitHeart = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
   const [processedData, setProcessedData] = useState({});
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
-
-    let newData = [data];
+    let newData = data;
 
     console.log("newData", newData);
-
     setProcessedData(newData);
-
-    console.log("new 17");
   };
 
   console.log("processed data", processedData);
@@ -81,8 +77,6 @@ const FitbitEffort = (props) => {
     }
   };
 
-  const currentDate = useRef(new Date());
-
   const [day, setDay] = useState(1);
   const [date, setDate] = useState();
 
@@ -92,26 +86,15 @@ const FitbitEffort = (props) => {
     // register datasource modules
     registerHooks(appID, [Fitbit]);
 
-    // const d = currentDate.current;
     let d = new Date();
 
-    // d = currentDate.current;
-
     const dd = d.setDate(d.getDate() - day);
-
-    currentDate.current = dd;
 
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
     setDate(dateStr);
 
     console.log("datestr", dateStr);
-
-    const dateStr2 = new Date(currentDate.current).toISOString().split("T")[0];
-    const dateStr3 = new Date(dd).toISOString().split("T")[0];
-
-    console.log("currendate current", dateStr2);
-    console.log("currendate dd", dateStr3);
 
     const filter = {
       ["s3::date"]: {
@@ -125,28 +108,18 @@ const FitbitEffort = (props) => {
       filter: filter,
     });
 
-    console.log("THE NEW BUILD result", result);
+    console.log("RESULT", result);
 
     processData(result.data.getDataObject.content[0]);
   }, [day]);
 
   console.log("day", day);
 
-  function secondsToTime(min) {
-    var hours = Math.floor(min / 60);
-
-    var divisor_for_minutes = min % 60;
-    var minutes = Math.floor(divisor_for_minutes);
-
-    var obj = hours + "h " + minutes + "m";
-    return obj;
-  }
-
   return (
     <Container>
       <Flex alignItems="center" mb={8}>
         <Text fontSize={16} color="white" fontWeight={700} ml={9} mr={110}>
-          Effort widget
+          Heart widget
         </Text>
         <Image src={FitbitIcon} />
       </Flex>
@@ -190,8 +163,9 @@ const FitbitEffort = (props) => {
             }}
           />
         </Flex>
-        <Box
+        <Flex
           height={202}
+          alignItems="center"
           style={{
             background: "rgba(251, 242, 242, 0.3)",
 
@@ -199,99 +173,51 @@ const FitbitEffort = (props) => {
             borderBottomRightRadius: 10,
           }}
         >
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              width={200}
-              height={202}
-              data={processedData}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 0,
-                bottom: 0,
+          <Flex
+            width="100%"
+            justifyContent="center"
+            style={{ paddingRight: 55, paddingLeft: 55 }}
+          >
+            <Box
+              width={140}
+              height={140}
+              bg="rgba(212, 215, 242, 0.2)"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                borderRadius: 8,
+                position: "relative",
               }}
-              style={{ cursor: "pointer" }}
             >
-              <CartesianGrid
-                strokeDasharray="none"
-                vertical={false}
-                stroke="rgba(0, 0, 0, 0.12)"
-              />
-              <XAxis
-                tickLine={false}
-                dataKey="0"
-                stroke="rgba(0, 0, 0, 0.12)"
-                label={{
-                  value: "DAY",
-                  position: "bottom",
-                  offset: -20,
-                  stroke: "white",
-                  fontSize: 10,
-                }}
-              />
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                label={{
-                  value: "HOURS ASLEEP",
-                  angle: -90,
-                  stroke: "white",
-                  fontSize: 10,
-                }}
-                allowDecimals={false}
-                type="number"
-                tickFormatter={(total) => {
-                  return Math.floor(total / 60);
-                }}
-                stroke="white"
-              />
-
-              <Tooltip
-                cursor={{ fill: "transparent" }}
-                contentStyle={{
-                  background: "rgba(128, 128, 255, 0.9)",
-                  padding: 5,
-                  border: "none",
-                  borderRadius: 8,
-                }}
-                itemStyle={{ fontSize: 14 }}
-                formatter={(awake) => {
-                  return secondsToTime(awake);
-                }}
-              />
-              <Bar
-                barSize={45}
-                name="Sedentary"
-                dataKey="sedentaryMinutes"
-                fill="#D4D7F2CC"
-              />
-
-              <Bar
-                barSize={45}
-                name="Light"
-                dataKey="lightlyActiveMinutes"
-                fill="#DDB7F4"
-              />
-              <Bar
-                barSize={45}
-                name="Fairly"
-                dataKey="fairlyActiveMinutes"
-                fill="#2A2E9C"
-              />
-              <Bar
-                barSize={45}
-                name="Very Active"
-                dataKey="veryActiveMinutes"
-                fill="#222671"
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </Box>
+              <Text
+                as="b"
+                fontSize={72}
+                color="#D4D7F2"
+                lineHeight={1.1}
+                position="absolute"
+                top="5px"
+              >
+                {processedData === undefined
+                  ? 0
+                  : processedData.restingHeartRate}
+              </Text>
+              <Text
+                fontSize={16}
+                color="#DDB7F4"
+                position="absolute"
+                bottom="5px"
+              >
+                RESTING HR
+              </Text>
+            </Box>
+          </Flex>
+        </Flex>
       </Box>
     </Container>
   );
 };
 
-FitbitEffort.displayName = "FitbitEffort";
+FitbitHeart.displayName = "FitbitHeart";
 
-export default FitbitEffort;
+export default FitbitHeart;

@@ -1,9 +1,9 @@
 {
-  "name": "fitbit-heart",
+  "name": "@prifina-widgets/avatar-widget",
   "version": "1.0.0",
-  "description": "Heart widget powered by Fitbit data",
+  "description": "Avatar widget powered by Oura data",
   "author": "hamza <hamzahalilovic.12@gmail.com>",
-  "homepage": "https://github.com/hamzahalilovic/widgets#readme",
+  "license": "MIT",
   "main": "dist/esm/index.js",
   "publishConfig": {
     "access": "public"
@@ -12,13 +12,16 @@
     "dist"
   ],
   "dependencies": {
-    "@chakra-ui/react": "^1.6.7",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "@prifina/fitbit": "^0.0.16",
     "framer-motion": "^4",
-    "moment": "^2.29.1",
-    "recharts": "^2.0.10"
+    "@prifina/oura": "^0.0.19",
+    "@react-three/drei": "^8.19.2",
+    "@react-three/fiber": "^7.0.26",
+    "react-three-fbx-viewer": "*",
+    "three": "^0.94.0",
+    "three-fbxloader-offical": "^1.0.0",
+    "three-orbit-controls": "^82.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.13",
@@ -28,14 +31,14 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
     "@babel/runtime": "^7.12.13",
-    "@prifina/hooks": "^0.0.63",
-    "@storybook/addon-actions": "^6.3.4",
-    "@storybook/addon-docs": "^6.3.4",
-    "@storybook/addon-knobs": "^6.2.9",
-    "@storybook/addon-links": "^6.3.4",
-    "@storybook/addon-viewport": "^6.3.4",
-    "@storybook/addons": "^6.3.4",
-    "@storybook/react": "^6.3.4",
+    "@prifina/hooks": "^0.0.62",
+    "@storybook/addon-actions": "^6.1.17",
+    "@storybook/addon-docs": "^6.1.17",
+    "@storybook/addon-knobs": "^6.1.17",
+    "@storybook/addon-links": "^6.1.17",
+    "@storybook/addon-viewport": "^6.1.17",
+    "@storybook/addons": "^6.1.17",
+    "@storybook/react": "^6.1.17",
     "@svgr/webpack": "^5.5.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-styled-components": "^1.12.0",
@@ -46,8 +49,8 @@
     "html-webpack-plugin": "^5.0.0",
     "https-browserify": "^1.0.0",
     "prop-types": "^15.7.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "stream-http": "^3.1.1",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5",
@@ -63,17 +66,12 @@
     "build": "rm -rf dist && cross-env NODE_ENV=production webpack --mode production --config config/webpack.config.js",
     "build:dev": "cross-env NODE_ENV=development webpack --mode development --config config/webpack.dev-config.js",
     "start": "yarn build:dev && cross-env NODE_ENV=development webpack serve --config ./config/webpack.dev-config.js",
-    "storybook": "start-storybook -p 9009 -s public",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "storybook": "start-storybook -p 9009 -s public"
   },
   "peerDependencies": {
-    "@prifina/hooks": "^0.0.63",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "@prifina/hooks": "^0.0.62",
+    "react": "^17.0.1",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5"
-  },
-  "bugs": {
-    "url": "https://github.com/hamzahalilovic/widgets/issues"
   }
 }
