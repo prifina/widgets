@@ -308,7 +308,7 @@ const OuraEffort = (props) => {
                   value: "MINUTES",
                   angle: -90,
                   stroke: "white",
-                  fontSize: 10,
+                  fontSize: 8,
                 }}
                 stroke="white"
                 fontSize={10}
