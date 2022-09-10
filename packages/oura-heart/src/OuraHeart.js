@@ -42,27 +42,13 @@ const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
 const asyncFalseData = [
   "summary_date,score_resting_hr",
-  "2022-09-04,98",
+  "2022-09-04,86",
   "2022-09-05,98",
-  "2022-09-06,98",
-  "2022-09-07,98",
-  "2022-09-08,98",
-  "2022-09-09,98",
-  "2022-09-10,78",
-  "2022-09-04,98",
-  "2022-09-05,38",
-  "2022-09-06,68",
-  "2022-09-07,58",
-  "2022-09-08,34",
-  "2022-09-09,98",
-  "2022-09-10,98",
-  "2022-09-04,57",
-  "2022-09-05,98",
-  "2022-09-06,88",
-  "2022-09-07,93",
-  "2022-09-08,98",
-  "2022-09-09,92",
-  "2022-09-10,95",
+  "2022-09-06,65",
+  "2022-09-07,78",
+  "2022-09-08,82",
+  "2022-09-09,75",
+  "2022-09-07,88",
 ];
 
 const OuraHeart = (props) => {
@@ -192,6 +178,7 @@ const OuraHeart = (props) => {
                 border: 0,
                 borderRadius: 10,
                 padding: 3,
+                outline: "none",
               }}
             >
               <option value={6}>Last week</option>
@@ -265,11 +252,17 @@ const OuraHeart = (props) => {
                 itemStyle={{ fontSize: 12 }}
               />
               <Line
+                name="Resting HR"
                 type="monotoneX"
                 dataKey="score_resting_hr"
                 stroke="#FFF500"
-                strokeWidth={3}
+                strokeWidth={2}
                 activeDot={{ r: 2 }}
+                dot={{
+                  stroke: "yellow",
+                  strokeWidth: 1,
+                  r: 2,
+                }}
               />
 
               <XAxis
