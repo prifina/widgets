@@ -1,33 +1,24 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
 import Fitbit from "@prifina/fitbit";
 
-// import moment from "moment";
-
-import {
-  Flex,
-  Spacer,
-  Text,
-  Box,
-  Select,
-  Image,
-  IconButton,
-} from "@chakra-ui/react";
+import { Flex, Text, Box, Image, IconButton } from "@chakra-ui/react";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 import FitbitIcon from "./assets/fitbit.svg";
+import Heart from "./assets/heart.svg";
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+// import {
+//   BarChart,
+//   Bar,
+//   XAxis,
+//   YAxis,
+//   CartesianGrid,
+//   Tooltip,
+//   ResponsiveContainer,
+// } from "recharts";
 
 const Container = styled.div`
   height: 300px;
@@ -43,7 +34,7 @@ const Container = styled.div`
 `;
 
 // unique appID for the widget....
-const appID = "6dyqsLq4MEJC2sT9WNBGUs";
+const appID = "hBSvGRkA6yNWt5MAhXmi56";
 
 const FitbitHeart = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
@@ -168,9 +159,11 @@ const FitbitHeart = (props) => {
           alignItems="center"
           style={{
             background: "rgba(251, 242, 242, 0.3)",
-
-            borderBottomLeftRadius: 10,
-            borderBottomRightRadius: 10,
+            borderBottomLeftRadius: 8,
+            borderBottomRightRadius: 8,
+            backgroundImage: `url(${Heart})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right",
           }}
         >
           <Flex

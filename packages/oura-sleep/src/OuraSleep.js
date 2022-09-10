@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
 import Fitbit from "@prifina/fitbit";
@@ -45,76 +45,6 @@ const Container = styled.div`
 // unique appID for the widget....
 const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
-let falseData = [
-  {
-    summary_date: "2022-09-04",
-    period_id: 0,
-    is_longest: 1,
-    timezone: 0,
-    bedtime_start: "2022-09-04T22:52:00+00:00",
-    bedtime_end: "2022-09-05T03:55:00+00:00",
-    score: 62,
-    score_total: 57,
-    score_disturbances: 83,
-    score_efficiency: 99,
-    score_latency: 88,
-    score_rem: 97,
-    score_deep: 59,
-    score_alignment: 31,
-    total: 16891,
-    duration: 18180,
-    awake: 1289,
-    light: 11655,
-    rem: 12876,
-    deep: 2722,
-    onset_latency: 480,
-    restless: 39,
-    efficiency: 94,
-    midpoint_time: 11010,
-    hr_lowest: 49,
-    hr_average: 56.375,
-    rmssd: 54,
-    breath_average: 13,
-    temperature_delta: -0.06,
-    hypnogram_5min:
-      "443432222211222333321112222222222111133333322221112233333333332232222334",
-  },
-];
-
-let newD = {
-  summary_date: "2022-09-06",
-  period_id: 0,
-  is_longest: 1,
-  timezone: 0,
-  bedtime_start: "2022-09-06T23:02:00+00:00",
-  bedtime_end: "2022-09-07T05:32:00+00:00",
-  score: 65,
-  score_total: 57,
-  score_disturbances: 83,
-  score_efficiency: 99,
-  score_latency: 88,
-  score_rem: 97,
-  score_deep: 59,
-  score_alignment: 31,
-  total: 21826,
-  duration: 23400,
-  awake: 1574,
-  light: 10913,
-  rem: 4475,
-  deep: 6438,
-  onset_latency: 480,
-  restless: 39,
-  efficiency: 94,
-  midpoint_time: 11010,
-  hr_lowest: 49,
-  hr_average: 56.375,
-  rmssd: 54,
-  breath_average: 13,
-  temperature_delta: -0.06,
-  hypnogram_5min:
-    "443432222211222333321112222222222111133333322221112233333333332232222334",
-};
-
 const OuraSleep = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
@@ -128,8 +58,6 @@ const OuraSleep = (props) => {
     console.log("newData", newData);
 
     setProcessedData(newData);
-
-    console.log("new 17");
   };
 
   console.log("processed data", processedData);
@@ -141,17 +69,15 @@ const OuraSleep = (props) => {
       payload.data.hasOwnProperty("content")
     ) {
       // process async data
-      if (
-        payload.data.dataconnector === "Oura/querySleepSummariesAsync" &&
-        payload.data.content.length > 1
-      ) {
-        processData(payload.data.content);
-      }
+      // if (
+      //   payload.data.dataconnector === "Oura/querySleepSummariesAsync" &&
+      //   payload.data.content.length > 1
+      // ) {
+      //   processData(payload.data.content);
+      // }
       console.log("PAYLOAD DATA", payload);
     }
   };
-
-  const currentDate = useRef(new Date());
 
   const [day, setDay] = useState(1);
   const [date, setDate] = useState();
@@ -162,26 +88,15 @@ const OuraSleep = (props) => {
     // register datasource modules
     registerHooks(appID, [Oura]);
 
-    // const d = currentDate.current;
     let d = new Date();
 
-    // d = currentDate.current;
-
     const dd = d.setDate(d.getDate() - day);
-
-    currentDate.current = dd;
 
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
     setDate(dateStr);
 
     console.log("datestr", dateStr);
-
-    const dateStr2 = new Date(currentDate.current).toISOString().split("T")[0];
-    const dateStr3 = new Date(dd).toISOString().split("T")[0];
-
-    console.log("currendate current", dateStr2);
-    console.log("currendate dd", dateStr3);
 
     const filter = {
       ["s3::date"]: {
@@ -193,16 +108,11 @@ const OuraSleep = (props) => {
 
     const result = await API[appID].Oura.querySleepSummary({
       filter: filter,
-      // fields: "awake,light,rem,deep",
     });
 
     console.log("THE NEW BUILD result", result);
 
-    processData(result.data.getDataObject.content[0]);
-
-    // if (stage === "dev") {
-    //   processData(result.data.getDataObject.content[1].score[1]);
-    // }
+    processData(result.data.getDataObject.content);
   }, [day]);
 
   console.log("day", day);
@@ -216,26 +126,6 @@ const OuraSleep = (props) => {
     var obj = hours + "h " + minutes + "m";
     return obj;
   }
-
-  // let awake = processedData[0].awake;
-  // let light = processedData[0].light;
-  // let rem = processedData[0].rem;
-  // let deep = processedData[0].deep;
-
-  // let total = processedData[0].total;
-
-  // let displayData = [
-  //   {
-  //     awake: secondsToTime(awake),
-  //     light: secondsToTime(light),
-  //     rem: secondsToTime(rem),
-  //     deep: secondsToTime(deep),
-  //     total: secondsToTime(total),
-  //   },
-  // ];
-
-  // console.log("total time", total);
-  // console.log("display time", displayData);
 
   return (
     <Container>
@@ -317,7 +207,7 @@ const OuraSleep = (props) => {
                 dataKey="0"
                 stroke="rgba(0, 0, 0, 0.12)"
                 label={{
-                  value: "DAY",
+                  value: "STAGES",
                   position: "bottom",
                   offset: -20,
                   stroke: "white",
@@ -356,8 +246,14 @@ const OuraSleep = (props) => {
                   return secondsToTime(awake);
                 }}
               />
+              <Bar
+                barSize={45}
+                name="Total sleep"
+                dataKey="total"
+                fill="#FFE9D5"
+              />
 
-              <Bar barSize={45} name="Awake" dataKey="awake" fill="#FFE9D5" />
+              <Bar barSize={45} name="Awake" dataKey="awake" fill="#f3f3c2" />
               <Bar barSize={45} name="Light" dataKey="light" fill="#FFA654" />
               <Bar barSize={45} name="Deep" dataKey="deep" fill="#B96314" />
               <Bar barSize={45} name="REM" dataKey="rem" fill="#6D3D10" />

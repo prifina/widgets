@@ -26,7 +26,7 @@ const Container = styled.div`
 `;
 
 // unique appID for the widget....
-const appID = "6dyqsLq4MEJC2sT9WNBGUs";
+const appID = "vKoEqwhCfHXsEZ5TknbSso";
 
 const asyncFalseData = [
   "summary_date,inactive,low,medium,high,score",
@@ -144,6 +144,16 @@ const OuraEffort = (props) => {
 
   console.log("period", period);
 
+  function minutesToTime(min) {
+    var hours = Math.floor(min / 60);
+
+    var divisor_for_minutes = min % 60;
+    var minutes = Math.floor(divisor_for_minutes);
+
+    var obj = hours + "h " + minutes + "m";
+    return obj;
+  }
+
   return (
     <Container>
       <Flex alignItems="center" mb={21}>
@@ -236,12 +246,15 @@ const OuraEffort = (props) => {
               <Tooltip
                 cursor={{ fill: "transparent" }}
                 contentStyle={{
-                  background: "rgba(0, 0, 0, 0.9)",
+                  background: "rgba(0, 0, 0, 0.5)",
                   padding: 5,
                   border: 0,
                   borderRadius: 8,
                 }}
                 itemStyle={{ fontSize: 12 }}
+                formatter={(item) => {
+                  return minutesToTime(item);
+                }}
               />
               <Line
                 name="Inactive"
@@ -305,13 +318,17 @@ const OuraEffort = (props) => {
                 axisLine={false}
                 tickLine={false}
                 label={{
-                  value: "MINUTES",
+                  value: "HOURS",
                   angle: -90,
                   stroke: "white",
                   fontSize: 8,
                 }}
                 stroke="white"
                 fontSize={10}
+                tickFormatter={(total) => {
+                  return Math.floor(total / 60);
+                }}
+                domain={[0, "dataMax +60"]}
               />
             </LineChart>
           </ResponsiveContainer>

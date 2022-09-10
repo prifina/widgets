@@ -1,19 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
 import Fitbit from "@prifina/fitbit";
 
-// import moment from "moment";
-
-import {
-  Flex,
-  Spacer,
-  Text,
-  Box,
-  Select,
-  Image,
-  IconButton,
-} from "@chakra-ui/react";
+import { Flex, Text, Box, Image, IconButton } from "@chakra-ui/react";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
@@ -43,7 +33,7 @@ const Container = styled.div`
 `;
 
 // unique appID for the widget....
-const appID = "6dyqsLq4MEJC2sT9WNBGUs";
+const appID = "wsLFiQzzwNc1ZGC9Mcb83r";
 
 const FitbitEffort = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
@@ -81,8 +71,6 @@ const FitbitEffort = (props) => {
     }
   };
 
-  const currentDate = useRef(new Date());
-
   const [day, setDay] = useState(1);
   const [date, setDate] = useState();
 
@@ -95,19 +83,11 @@ const FitbitEffort = (props) => {
 
     const dd = d.setDate(d.getDate() - day);
 
-    currentDate.current = dd;
-
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
     setDate(dateStr);
 
     console.log("datestr", dateStr);
-
-    const dateStr2 = new Date(currentDate.current).toISOString().split("T")[0];
-    const dateStr3 = new Date(dd).toISOString().split("T")[0];
-
-    console.log("currendate current", dateStr2);
-    console.log("currendate dd", dateStr3);
 
     const filter = {
       ["s3::date"]: {

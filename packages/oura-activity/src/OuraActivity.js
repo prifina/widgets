@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
 
@@ -35,7 +35,7 @@ const Container = styled.div`
 `;
 
 // unique appID for the widget....
-const appID = "6dyqsLq4MEJC2sT9WNBGUs";
+const appID = "csd88KWnuft8fHfMrKSBAD";
 
 const OuraActivity = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
@@ -79,8 +79,6 @@ const OuraActivity = (props) => {
     }
   };
 
-  const currentDate = useRef(new Date());
-
   const [day, setDay] = useState(1);
   const [date, setDate] = useState();
 
@@ -92,8 +90,6 @@ const OuraActivity = (props) => {
     let d = new Date();
 
     const dd = d.setDate(d.getDate() - day);
-
-    currentDate.current = dd;
 
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
@@ -115,11 +111,7 @@ const OuraActivity = (props) => {
 
     console.log("RESULT", result);
 
-    processData(result.data.getDataObject.content[0]);
-
-    if (stage === "dev") {
-      processData(result.data.getDataObject.content);
-    }
+    processData(result.data.getDataObject.content);
   }, [day]);
 
   console.log("day", day);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
 import Fitbit from "@prifina/fitbit";
@@ -43,7 +43,7 @@ const Container = styled.div`
 `;
 
 // unique appID for the widget....
-const appID = "6dyqsLq4MEJC2sT9WNBGUs";
+const appID = "bLoxcgKDvhFM3NkrerUTHH";
 
 const FitbitSleep = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
@@ -81,8 +81,6 @@ const FitbitSleep = (props) => {
     }
   };
 
-  const currentDate = useRef(new Date());
-
   const [day, setDay] = useState(1);
   const [date, setDate] = useState();
 
@@ -99,19 +97,11 @@ const FitbitSleep = (props) => {
 
     const dd = d.setDate(d.getDate() - day);
 
-    currentDate.current = dd;
-
     const dateStr = new Date(dd).toISOString().split("T")[0];
 
     setDate(dateStr);
 
     console.log("datestr", dateStr);
-
-    const dateStr2 = new Date(currentDate.current).toISOString().split("T")[0];
-    const dateStr3 = new Date(dd).toISOString().split("T")[0];
-
-    console.log("currendate current", dateStr2);
-    console.log("currendate dd", dateStr3);
 
     const filter = {
       ["s3::date"]: {
@@ -226,7 +216,7 @@ const FitbitSleep = (props) => {
                 dataKey="0"
                 stroke="rgba(0, 0, 0, 0.12)"
                 label={{
-                  value: "DAY",
+                  value: "STAGES",
                   position: "bottom",
                   offset: -20,
                   stroke: "white",
@@ -247,9 +237,8 @@ const FitbitSleep = (props) => {
                 tickFormatter={(total) => {
                   return Math.floor(total / 60);
                 }}
-                // domain={[0, "dataMax + 3600"]}
+                domain={[0, "dataMax + 60"]}
                 stroke="white"
-                dataKey="minutesAsleep"
               />
 
               <Tooltip
