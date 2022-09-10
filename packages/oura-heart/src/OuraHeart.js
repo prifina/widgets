@@ -218,7 +218,7 @@ const OuraHeart = (props) => {
               }}
             >
               <Text as="b" fontSize={48} color="#FFF500" lineHeight={1.1}>
-                {avg}
+                {isNaN(avg) ? "-" : avg}
               </Text>
               <Text
                 fontSize={12}
