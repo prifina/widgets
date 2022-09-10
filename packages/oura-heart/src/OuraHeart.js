@@ -264,12 +264,12 @@ const OuraHeart = (props) => {
           </Flex>
         </Flex>
         <Box
+          height={300}
           style={{
             background: "rgba(251, 242, 242, 0.3)",
             borderBottomLeftRadius: 8,
             borderBottomRightRadius: 8,
-            paddingTop: 10,
-            paddingBottom: 10,
+            paddingTop: 40,
           }}
         >
           <Flex
@@ -281,7 +281,54 @@ const OuraHeart = (props) => {
               {processedData.score_resting_hr}
             </Text>
           </Flex>
-          <ResponsiveContainer width="100%" height="35%">
+          <ResponsiveContainer width="100%" height="50%">
+            {/* <LineChart
+              style={{ cursor: "pointer" }}
+              data={result}
+              margin={{
+                top: 0,
+                right: 15,
+                left: -15,
+                bottom: 0,
+              }}
+            >
+              <CartesianGrid strokeDasharray="none" stroke="null" />
+              <XAxis
+                dataKey="summary_date"
+                tickLine={false}
+                fontSize={8}
+                stroke="white"
+              />
+              <YAxis
+                dataKey="score_resting_hr"
+                axisLine={false}
+                tickLine={false}
+                label={{
+                  value: "RESTING HR",
+                  angle: -90,
+                  stroke: "white",
+                  fontSize: 10,
+                }}
+                stroke="white"
+                fontSize={10}
+              />
+              <Tooltip
+                cursor={{ fill: "transparent" }}
+                contentStyle={{
+                  // background: "transparent",
+                  padding: 5,
+                  border: 0,
+                }}
+                itemStyle={{ fontSize: 10 }}
+              />
+              <Line
+                // type="monotoneX"
+                dataKey="samm"
+                // stroke="#FFF500"
+                strokeWidth={3}
+                activeDot={{ r: 3 }}
+              />
+            </LineChart> */}
             <LineChart
               width={500}
               height={100}
