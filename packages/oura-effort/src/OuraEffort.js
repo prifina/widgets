@@ -236,7 +236,7 @@ const OuraEffort = (props) => {
               <Tooltip
                 cursor={{ fill: "transparent" }}
                 contentStyle={{
-                  background: "#FFA654",
+                  background: "rgba(0, 0, 0, 0.9)",
                   padding: 5,
                   border: 0,
                   borderRadius: 8,
@@ -247,19 +247,6 @@ const OuraEffort = (props) => {
                 name="Inactive"
                 type="monotoneX"
                 dataKey="inactive"
-                stroke="white"
-                strokeWidth={2}
-                activeDot={{ r: 2 }}
-                dot={{
-                  stroke: "white",
-                  strokeWidth: 1,
-                  r: 2,
-                }}
-              />
-              <Line
-                name="Low Activity"
-                type="monotoneX"
-                dataKey="low"
                 stroke="#FFE9D5"
                 strokeWidth={2}
                 activeDot={{ r: 2 }}
@@ -270,14 +257,27 @@ const OuraEffort = (props) => {
                 }}
               />
               <Line
-                name="Medium Activity"
+                name="Low Activity"
                 type="monotoneX"
-                dataKey="medium"
+                dataKey="low"
                 stroke="#F8F043"
                 strokeWidth={2}
                 activeDot={{ r: 2 }}
                 dot={{
                   stroke: "#F8F043",
+                  strokeWidth: 1,
+                  r: 2,
+                }}
+              />
+              <Line
+                name="Medium Activity"
+                type="monotoneX"
+                dataKey="medium"
+                stroke="#FFA654"
+                strokeWidth={2}
+                activeDot={{ r: 2 }}
+                dot={{
+                  stroke: "#FFA654",
                   strokeWidth: 1,
                   r: 2,
                 }}
@@ -308,7 +308,7 @@ const OuraEffort = (props) => {
                   value: "MINUTES",
                   angle: -90,
                   stroke: "white",
-                  fontSize: 11,
+                  fontSize: 10,
                 }}
                 stroke="white"
                 fontSize={10}

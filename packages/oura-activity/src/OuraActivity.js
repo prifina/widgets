@@ -37,38 +37,34 @@ const Container = styled.div`
 // unique appID for the widget....
 const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
-let falseData = [
-  {
-    summary_date: "2022-09-04",
-    cal_total: 2540,
-    steps: 9206,
-    daily_movement: 7806,
-  },
-];
+const falseData = {
+  summary_date: "2022-09-09",
+  cal_total: 2197,
+  steps: 1675,
+  daily_movement: 4187,
+};
 
 const OuraActivity = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
-  const [processedData, setProcessedData] = useState({});
+  const stage = "dev";
 
-  const [processedData2, setProcessedData2] = useState({});
+  const [displayData, setDisplayData] = useState();
+
+  const [processedData, setProcessedData] = useState();
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
 
-    let newData = [data];
+    let newData = data;
 
     console.log("newData", newData);
 
+    setDisplayData([newData]);
     setProcessedData(newData);
-
-    let newData2 = data;
-
-    console.log("newData2", newData2);
-
-    setProcessedData2(newData2);
   };
 
+  console.log("processed display data", displayData);
   console.log("processed data", processedData);
 
   const dataUpdate = async (payload) => {
@@ -78,12 +74,12 @@ const OuraActivity = (props) => {
       payload.data.hasOwnProperty("content")
     ) {
       // process async data
-      if (
-        payload.data.dataconnector === "Oura/queryActivitySummariesAsync" &&
-        payload.data.content.length > 1
-      ) {
-        processData(payload.data.content);
-      }
+      // if (
+      //   payload.data.dataconnector === "Oura/queryActivitySummariesAsync" &&
+      //   payload.data.content.length > 1
+      // ) {
+      //   processData(payload.data.content);
+      // }
       console.log("PAYLOAD DATA", payload);
     }
   };
@@ -94,15 +90,11 @@ const OuraActivity = (props) => {
   const [date, setDate] = useState();
 
   useEffect(async () => {
-    // init callback function for background updates/notifications
     onUpdate(appID, dataUpdate);
-    // register datasource modules
+
     registerHooks(appID, [Oura]);
 
-    // const d = currentDate.current;
     let d = new Date();
-
-    // d = currentDate.current;
 
     const dd = d.setDate(d.getDate() - day);
 
@@ -130,9 +122,9 @@ const OuraActivity = (props) => {
 
     processData(result.data.getDataObject.content[0]);
 
-    // if (stage === "dev") {
-    //   processData(result.data.getDataObject.content[1].score[1]);
-    // }
+    if (stage === "dev") {
+      processData(falseData);
+    }
   }, [day]);
 
   console.log("day", day);
@@ -199,29 +191,33 @@ const OuraActivity = (props) => {
             justifyContent="space-between"
             style={{ paddingRight: 55, paddingLeft: 55 }}
           >
-            <Flex>
+            <Flex alignItems="center">
               <FireIcon color="#FFA654" />
               <Text ml={3} color="#FFA654">
-                {processedData2.cal_total}
+                {processedData.cal_total === undefined
+                  ? 0
+                  : processedData.cal_total}
               </Text>
             </Flex>
-            <Flex>
+            <Flex alignItems="center">
               <StepsIcon color="#FFE9D5" />
               <Text ml={3} color="#FFE9D5">
-                {processedData2.steps}
+                {processedData.steps === undefined ? 0 : processedData.steps}
               </Text>
             </Flex>
-            <Flex>
+            <Flex alignItems="center">
               <DistanceIcon color="#F8F043" />
               <Text ml={3} color="#F8F043">
-                {processedData2.daily_movement}
+                {processedData.daily_movement === undefined
+                  ? 0
+                  : processedData.daily_movement}
               </Text>
             </Flex>
           </Flex>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               style={{ cursor: "pointer" }}
-              data={processedData}
+              data={displayData}
               margin={{
                 top: 5,
                 right: 0,
