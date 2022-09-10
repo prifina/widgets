@@ -29,17 +29,17 @@ const Container = styled.div`
 const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
 const asyncFalseData = [
-  "summary_date,score_resting_hr",
-  "2022-09-04,86",
-  "2022-09-05,98",
-  "2022-09-06,65",
-  "2022-09-07,78",
-  "2022-09-08,82",
-  "2022-09-09,75",
-  "2022-09-07,88",
+  "summary_date,inactive,low,medium,high,score",
+  "2022-09-04,229,224,49,0,87",
+  "2022-09-05,329,224,49,0,87",
+  "2022-09-06,579,224,49,0,87",
+  "2022-09-07,429,224,49,0,87",
+  "2022-09-08,429,224,49,0,87",
+  "2022-09-09,429,224,49,0,87",
+  "2022-09-10,429,224,49,0,87",
 ];
 
-const OuraHeart = (props) => {
+const OuraEffort = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
   const stage = "dev";
@@ -81,6 +81,12 @@ const OuraHeart = (props) => {
     setProcessedAsyncData(result);
 
     console.log("process result", result);
+
+    let avg = result.reduce((acc, val) => {
+      return acc + val.score / result.length;
+    }, 0);
+
+    setAvg(Math.ceil(avg));
   };
 
   console.log("processed async data", processedAsyncData);
@@ -142,7 +148,7 @@ const OuraHeart = (props) => {
     <Container>
       <Flex alignItems="center" mb={21}>
         <Text fontSize={16} color="white" fontWeight={700} ml={9} mr={110}>
-          Heart widget
+          Effort widget
         </Text>
         <Image src={OuraIcon} />
       </Flex>
@@ -192,7 +198,7 @@ const OuraHeart = (props) => {
             style={{ paddingRight: 55, paddingLeft: 55 }}
           >
             <Box
-              width={71}
+              width={77}
               height={75}
               bg="rgba(118, 110, 86, 0.44)"
               style={{
@@ -212,7 +218,7 @@ const OuraHeart = (props) => {
                 position="absolute"
                 bottom="5px"
               >
-                AVG ACT
+                AVG SCORE
               </Text>
             </Box>
           </Flex>
@@ -225,6 +231,7 @@ const OuraHeart = (props) => {
                 left: -15,
                 bottom: 0,
               }}
+              style={{ cursor: "pointer" }}
             >
               <Tooltip
                 cursor={{ fill: "transparent" }}
@@ -237,19 +244,57 @@ const OuraHeart = (props) => {
                 itemStyle={{ fontSize: 12 }}
               />
               <Line
-                name="Resting HR"
+                name="Inactive"
                 type="monotoneX"
-                dataKey="score_resting_hr"
-                stroke="#FFF500"
+                dataKey="inactive"
+                stroke="white"
                 strokeWidth={2}
                 activeDot={{ r: 2 }}
                 dot={{
-                  stroke: "yellow",
+                  stroke: "white",
                   strokeWidth: 1,
                   r: 2,
                 }}
               />
-
+              <Line
+                name="Low Activity"
+                type="monotoneX"
+                dataKey="low"
+                stroke="#FFE9D5"
+                strokeWidth={2}
+                activeDot={{ r: 2 }}
+                dot={{
+                  stroke: "#FFE9D5",
+                  strokeWidth: 1,
+                  r: 2,
+                }}
+              />
+              <Line
+                name="Medium Activity"
+                type="monotoneX"
+                dataKey="medium"
+                stroke="#F8F043"
+                strokeWidth={2}
+                activeDot={{ r: 2 }}
+                dot={{
+                  stroke: "#F8F043",
+                  strokeWidth: 1,
+                  r: 2,
+                }}
+              />
+              <Line
+                name="High Activity"
+                type="monotoneX"
+                dataKey="high"
+                stroke="#FF5977"
+                strokeWidth={2}
+                activeDot={{ r: 2 }}
+                dot={{
+                  stroke: "#FF5977",
+                  strokeWidth: 1,
+                  r: 2,
+                }}
+              />
               <XAxis
                 dataKey="summary_date"
                 tickLine={false}
@@ -260,10 +305,10 @@ const OuraHeart = (props) => {
                 axisLine={false}
                 tickLine={false}
                 label={{
-                  value: "RESTING HR",
+                  value: "MINUTES",
                   angle: -90,
                   stroke: "white",
-                  fontSize: 10,
+                  fontSize: 11,
                 }}
                 stroke="white"
                 fontSize={10}
@@ -276,6 +321,6 @@ const OuraHeart = (props) => {
   );
 };
 
-OuraHeart.displayName = "OuraHeart";
+OuraEffort.displayName = "OuraEffort";
 
-export default OuraHeart;
+export default OuraEffort;

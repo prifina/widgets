@@ -114,12 +114,6 @@ const OuraActivity = (props) => {
 
     console.log("datestr", dateStr);
 
-    const dateStr2 = new Date(currentDate.current).toISOString().split("T")[0];
-    const dateStr3 = new Date(dd).toISOString().split("T")[0];
-
-    console.log("currendate current", dateStr2);
-    console.log("currendate dd", dateStr3);
-
     const filter = {
       ["s3::date"]: {
         [Op.eq]: dateStr,
