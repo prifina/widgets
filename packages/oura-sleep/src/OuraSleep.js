@@ -48,6 +48,8 @@ const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 const OuraSleep = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
+  const stage = "dev";
+
   const [processedData, setProcessedData] = useState({});
 
   const processData = (data) => {
@@ -112,7 +114,11 @@ const OuraSleep = (props) => {
 
     console.log("THE NEW BUILD result", result);
 
-    processData(result.data.getDataObject.content);
+    processData(result.data.getDataObject.content[0]);
+
+    if (stage === "dev") {
+      processData(result.data.getDataObject.content);
+    }
   }, [day]);
 
   console.log("day", day);
