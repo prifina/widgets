@@ -46,28 +46,63 @@ let falseData = [
   },
 ];
 
-let asyncFalseData = [
-  "score_resting_hr",
-  "98",
-  "98",
-  "98",
-  "98",
-  "98",
-  "98",
-  "25",
-  "98",
-  "98",
-  "98",
-  "34",
-  "98",
-  "98",
-  "98",
-  "98",
-  "98",
+const asyncFalseData = [
+  [
+    {
+      score_resting_hr: null,
+    },
+    {
+      score_resting_hr: 98,
+    },
+    {
+      score_resting_hr: null,
+    },
+    {
+      score_resting_hr: 98,
+    },
+    {
+      score_resting_hr: null,
+    },
+    {
+      score_resting_hr: 98,
+    },
+    {
+      score_resting_hr: null,
+    },
+    {
+      score_resting_hr: 98,
+    },
+    {
+      score_resting_hr: null,
+    },
+    {
+      score_resting_hr: 98,
+    },
+    {
+      score_resting_hr: null,
+    },
+    {
+      score_resting_hr: 98,
+    },
+    {
+      score_resting_hr: null,
+    },
+    {
+      score_resting_hr: 98,
+    },
+    {
+      score_resting_hr: null,
+    },
+    {
+      score_resting_hr: 98,
+    },
+  ],
 ];
 
 const OuraHeart = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
+
+  const stage = props.stage;
 
   const [processedData, setProcessedData] = useState({});
 
@@ -106,7 +141,8 @@ const OuraHeart = (props) => {
     const result = [];
     newData.forEach((item) => {
       result.push({
-        score_resting_hr: Number(item),
+        summary_date: item.summary_date,
+        score_resting_hr: Number(item.score_resting_hr),
       });
     });
 
@@ -145,10 +181,7 @@ const OuraHeart = (props) => {
     // register datasource modules
     registerHooks(appID, [Oura]);
 
-    // const d = currentDate.current;
     let d = new Date();
-
-    // d = currentDate.current;
 
     const dd = d.setDate(d.getDate() - day);
 
@@ -171,6 +204,15 @@ const OuraHeart = (props) => {
       filter: filter,
     });
 
+    processData(result.data.getDataObject.content[0]);
+  }, [day]);
+
+  useEffect(async () => {
+    onUpdate(appID, dataUpdate);
+    registerHooks(appID, [Oura]);
+
+    let d = new Date();
+
     const ddd = d.setDate(d.getDate() - period);
 
     const asyncDateStr = new Date(ddd).toISOString().split("T")[0];
@@ -181,17 +223,15 @@ const OuraHeart = (props) => {
       },
     };
 
+    console.log("ASYNC FILTER", asyncFilter);
+
     const asyncResult = await API[appID].Oura.queryReadinessSummariesAsync({
       filter: asyncFilter,
       fields: "summary_date,score_resting_hr",
     });
 
-    console.log("result", result);
-
     console.log("async result", asyncResult);
-
-    processData(result.data.getDataObject.content[0]);
-  }, [day, period]);
+  }, [period]);
 
   console.log("day", day);
 
@@ -229,8 +269,8 @@ const OuraHeart = (props) => {
                 padding: 3,
               }}
             >
-              <option value={6}>Week</option>
-              <option value={29}>Month</option>
+              <option value={5}>Week</option>
+              <option value={28}>Month</option>
             </select>
           </>
           <Flex>
