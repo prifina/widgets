@@ -40,7 +40,7 @@ const appID = "csd88KWnuft8fHfMrKSBAD";
 const OuraActivity = (props) => {
   const { onUpdate, Prifina, API, registerHooks } = usePrifina();
 
-  const stage = "dev";
+  // const stage = "dev";
 
   const [displayData, setDisplayData] = useState();
 
