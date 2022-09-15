@@ -189,9 +189,6 @@ const OuraEffort = (props) => {
               <option value={89}>Last 3 Months</option>
             </select>
           </>
-          <Box bg="#FFF500" borderRadius={4} width={50} textAlign="center">
-            RHR
-          </Box>
         </Flex>
         <Box
           height={200}
