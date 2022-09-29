@@ -75,7 +75,7 @@ const DryRun = (props) => {
       console.log("DD ", dd);
 
       const parts = dd.split("\t");
-
+      console.log("PARTS ", parts);
       const dayStart = new Date(parts[0]).getTime();
       parts[1].split("").forEach((val, i) => {
         const ts = new Date(dayStart + i * 5 * 60 * 1000);

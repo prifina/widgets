@@ -209,8 +209,8 @@ const HolisticHealth = (props) => {
 
       // 0-index is csv-header..
       for (let i = 1; i < data.length; i++) {
-        // csv data is comma separated...
-        const r = data[i].split(",");
+        // csv data is tab separated...
+        const r = data[i].split("\t");
         //const activityDay = r[0].split("T")[0];
         const activityDay = r[0];
         activityData.push({
