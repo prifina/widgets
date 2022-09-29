@@ -113,15 +113,14 @@ const App = (props) => {
 
       const result = await API[APP_ID].Oura.queryActivitySummary({
         filter: filter,
+        fields: "cal_total,steps,daily_movement"
       });
 
       console.log("RESULT", result);
 
-      processData(result.data.getDataObject.content[0]);
 
-      if (stage === "dev") {
-        processData(result.data.getDataObject.content);
-      }
+      processData(result.data.getDataObject.content);
+
     }
     init();
   }, [day]);
