@@ -1,31 +1,35 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-// import { usePrifina, Op } from "@prifina/hooks";
+
 import { usePrifina, Op, PrifinaContext } from "@prifina/hooks-v2";
 
 import { APP_ID } from "./environment";
 
-import Oura from "@prifina/oura";
+import Fitbit from "@prifina/fitbit";
 
-import { Flex, Text, Box, Image, IconButton, Icon } from "@chakra-ui/react";
+// import moment from "moment";
+
+import {
+  Flex,
+  Spacer,
+  Text,
+  Box,
+  Select,
+  Image,
+  IconButton,
+} from "@chakra-ui/react";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
-import OuraIcon from "./assets/oura.svg";
-
-import { FireIcon } from "./assets/icons";
-import { StepsIcon } from "./assets/icons";
-import { DistanceIcon } from "./assets/icons";
+import FitbitIcon from "./assets/fitbit.svg";
 
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -33,37 +37,32 @@ const Container = styled.div`
   height: 300px;
   width: 300px;
   border-radius: 10px;
-  background: linear-gradient(180deg, #343434 0%, #d3bc69 149.83%);
+  background: linear-gradient(
+    180deg,
+    #082673 30.67%,
+    #644bd0 75.51%,
+    #a56adf 106.47%
+  );
   padding: 11px 8px 0px 8px;
 `;
 
-// unique appID for the widget....
-// const appID = "csd88KWnuft8fHfMrKSBAD";
-
 const App = (props) => {
-
   const { stage, check, onUpdate, API, registerDataConnector } = usePrifina();
 
-  // const stage = "dev";
-
-  const [displayData, setDisplayData] = useState();
-
-  const [processedData, setProcessedData] = useState();
+  const [processedData, setProcessedData] = useState({});
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
 
-    let newData = data;
+    let newData = [data];
 
     console.log("newData", newData);
 
-    let arr = [data];
-
-    setDisplayData(arr);
     setProcessedData(newData);
+
+    console.log("new 17");
   };
 
-  console.log("processed display data", displayData);
   console.log("processed data", processedData);
 
   const dataUpdate = async (payload) => {
@@ -74,7 +73,7 @@ const App = (props) => {
     ) {
       // process async data
       // if (
-      //   payload.data.dataconnector === "Oura/queryActivitySummariesAsync" &&
+      //   payload.data.dataconnector === "Fitbit/querySleepSummariesAsync" &&
       //   payload.data.content.length > 1
       // ) {
       //   processData(payload.data.content);
@@ -87,11 +86,11 @@ const App = (props) => {
   const [date, setDate] = useState();
 
   useEffect(() => {
-
     async function init() {
+      // init callback function for background updates/notifications
       onUpdate(APP_ID, dataUpdate);
 
-      registerDataConnector(APP_ID, [Oura]);
+      registerDataConnector(APP_ID, [Fitbit]);
 
       let d = new Date();
 
@@ -111,36 +110,43 @@ const App = (props) => {
 
       console.log("FILTER", filter);
 
-      const result = await API[APP_ID].Oura.queryActivitySummary({
+      const result = await API[APP_ID].Fitbit.querySleepSummary({
         filter: filter,
-        fields: "cal_total,steps,daily_movement"
       });
 
-      console.log("RESULT", result);
-
+      console.log("THE NEW BUILD result", result);
 
       processData(result.data.getDataObject.content);
-
     }
     init();
   }, [day]);
 
   console.log("day", day);
 
+  function secondsToTime(min) {
+    var hours = Math.floor(min / 60);
+
+    var divisor_for_minutes = min % (60 * 60);
+    var minutes = Math.floor(divisor_for_minutes / 60);
+
+    var obj = hours + "h " + minutes + "m";
+    return obj;
+  }
+
   return (
     <Container>
-      <Flex alignItems="center" mb={21}>
+      <Flex alignItems="center" mb={8}>
         <Text fontSize={16} color="white" fontWeight={700} ml={9} mr={110}>
-          Activity widget
+          Sleep widget
         </Text>
-        <Image src={OuraIcon} />
+        <Image src={FitbitIcon} />
       </Flex>
       <Box>
         <Flex
           h={32}
           justifyContent="space-between"
           alignItems="center"
-          bg="#FFA654"
+          bg="#D4D7F2CC"
           padding="0px 65px 0px 65px"
           borderTopRightRadius={8}
           borderTopLeftRadius={8}
@@ -176,74 +182,105 @@ const App = (props) => {
           />
         </Flex>
         <Box
-          height={190}
+          height={202}
           style={{
             background: "rgba(251, 242, 242, 0.3)",
-            borderBottomLeftRadius: 8,
-            borderBottomRightRadius: 8,
-            paddingTop: 10,
+
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
           }}
         >
-          <Flex
-            width="100%"
-            justifyContent="space-between"
-            style={{ paddingRight: 55, paddingLeft: 55 }}
-          >
-            <Flex alignItems="center">
-              <FireIcon color="#FFA654" />
-              <Text ml={3} color="#FFA654">
-                {processedData === undefined ? 0 : processedData.cal_total}
-              </Text>
-            </Flex>
-            <Flex alignItems="center">
-              <StepsIcon color="#FFE9D5" />
-              <Text ml={3} color="#FFE9D5">
-                {processedData === undefined ? 0 : processedData.steps}
-              </Text>
-            </Flex>
-            <Flex alignItems="center">
-              <DistanceIcon color="#F8F043" />
-              <Text ml={3} color="#F8F043">
-                {processedData === undefined ? 0 : processedData.daily_movement}
-              </Text>
-            </Flex>
-          </Flex>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              style={{ cursor: "pointer" }}
-              data={displayData}
+              width={200}
+              height={202}
+              data={processedData}
               margin={{
-                top: 5,
-                right: 0,
+                top: 20,
+                right: 30,
                 left: 0,
-                bottom: 30,
+                bottom: 0,
               }}
+              style={{ cursor: "pointer" }}
             >
-              <CartesianGrid strokeDasharray="none" stroke="null" />
-              <XAxis hide dataKey="name" />
-              <YAxis hide />
+              <CartesianGrid
+                strokeDasharray="none"
+                vertical={false}
+                stroke="rgba(0, 0, 0, 0.12)"
+              />
+              <XAxis
+                tickLine={false}
+                dataKey="0"
+                stroke="rgba(0, 0, 0, 0.12)"
+                label={{
+                  value: "STAGES",
+                  position: "bottom",
+                  offset: -20,
+                  stroke: "white",
+                  fontSize: 10,
+                }}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                label={{
+                  value: "HOURS ASLEEP",
+                  angle: -90,
+                  stroke: "white",
+                  fontSize: 10,
+                }}
+                allowDecimals={false}
+                type="number"
+                tickFormatter={(total) => {
+                  return Math.floor(total / 60);
+                }}
+                domain={[0, "dataMax + 60"]}
+                stroke="white"
+              />
+
               <Tooltip
                 cursor={{ fill: "transparent" }}
                 contentStyle={{
                   background: "rgba(0, 0, 0, 0.9)",
                   padding: 5,
                   border: 0,
+                  // width: 85,
                 }}
                 itemStyle={{ fontSize: 14 }}
+                formatter={(awake) => {
+                  return secondsToTime(awake);
+                }}
               />
               <Bar
                 barSize={45}
-                name="Calories"
-                dataKey="cal_total"
-                fill="#FFA654"
+                name="Total sleep"
+                dataKey="minutesAsleep"
+                fill="#FFE9D5"
               />
-              <Bar barSize={45} name="Steps" dataKey="steps" fill="#FFE9D5" />
 
               <Bar
                 barSize={45}
-                name="Distance"
-                dataKey="daily_movement"
-                fill="#F8F043"
+                name="Awake"
+                dataKey="wake.minutes"
+                fill="#DDB7F4"
+              />
+              <Bar
+                barSize={45}
+                name="Light"
+                dataKey="light.minutes"
+                fill="#294BC1"
+              />
+              <Bar
+                barSize={45}
+                name="Deep"
+                dataKey="deep.minutes"
+                fill="#2A2E9C"
+              />
+              <Bar
+                barSize={45}
+                name="REM"
+                dataKey="rem.minutes"
+                fill="#222671"
               />
             </BarChart>
           </ResponsiveContainer>
@@ -253,6 +290,6 @@ const App = (props) => {
   );
 };
 
-// App.displayName = "OuraActivity";
+App.displayName = "FitbitSleep";
 
 export default App;

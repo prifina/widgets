@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-// import { usePrifina, Op } from "@prifina/hooks";
+
 import { usePrifina, Op, PrifinaContext } from "@prifina/hooks-v2";
 
 import { APP_ID } from "./environment";
 
-import Oura from "@prifina/oura";
+import Fitbit from "@prifina/fitbit";
 
 import { Flex, Text, Box, Image, IconButton, Icon } from "@chakra-ui/react";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
-import OuraIcon from "./assets/oura.svg";
+import FitbitIcon from "./assets/fitbit.svg";
 
 import { FireIcon } from "./assets/icons";
 import { StepsIcon } from "./assets/icons";
@@ -20,12 +20,10 @@ import { DistanceIcon } from "./assets/icons";
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -33,22 +31,23 @@ const Container = styled.div`
   height: 300px;
   width: 300px;
   border-radius: 10px;
-  background: linear-gradient(180deg, #343434 0%, #d3bc69 149.83%);
+  background: linear-gradient(
+    180deg,
+    #082673 30.67%,
+    #644bd0 75.51%,
+    #a56adf 106.47%
+  );
   padding: 11px 8px 0px 8px;
 `;
 
-// unique appID for the widget....
-// const appID = "csd88KWnuft8fHfMrKSBAD";
-
 const App = (props) => {
-
   const { stage, check, onUpdate, API, registerDataConnector } = usePrifina();
 
-  // const stage = "dev";
-
-  const [displayData, setDisplayData] = useState();
+  const [displayData, setDisplayData] = useState([]);
 
   const [processedData, setProcessedData] = useState();
+
+  const [distance, setDistance] = useState();
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
@@ -57,10 +56,19 @@ const App = (props) => {
 
     console.log("newData", newData);
 
-    let arr = [data];
+    let sumDistance = newData.distances.reduce((acc, val) => {
+      return acc + val.distance;
+    }, 0);
+
+    setProcessedData(newData);
+
+    setDistance(sumDistance.toFixed(4) * 1000);
+
+    Object.assign(newData, { distance: Number(sumDistance.toFixed(4) * 1000) });
+
+    let arr = [newData];
 
     setDisplayData(arr);
-    setProcessedData(newData);
   };
 
   console.log("processed display data", displayData);
@@ -74,7 +82,7 @@ const App = (props) => {
     ) {
       // process async data
       // if (
-      //   payload.data.dataconnector === "Oura/queryActivitySummariesAsync" &&
+      //   payload.data.dataconnector === "Fitbit/queryActivitySummariesAsync" &&
       //   payload.data.content.length > 1
       // ) {
       //   processData(payload.data.content);
@@ -87,11 +95,10 @@ const App = (props) => {
   const [date, setDate] = useState();
 
   useEffect(() => {
-
     async function init() {
       onUpdate(APP_ID, dataUpdate);
 
-      registerDataConnector(APP_ID, [Oura]);
+      registerDataConnector(APP_ID, [Fitbit]);
 
       let d = new Date();
 
@@ -111,36 +118,36 @@ const App = (props) => {
 
       console.log("FILTER", filter);
 
-      const result = await API[APP_ID].Oura.queryActivitySummary({
+      const result = await API[APP_ID].Fitbit.queryActivitySummary({
         filter: filter,
-        fields: "cal_total,steps,daily_movement"
+        fields: "caloriesOut,steps,distances",
       });
 
       console.log("RESULT", result);
 
-
       processData(result.data.getDataObject.content);
-
     }
     init();
   }, [day]);
 
   console.log("day", day);
 
+  console.log("day", displayData);
+
   return (
     <Container>
       <Flex alignItems="center" mb={21}>
-        <Text fontSize={16} color="white" fontWeight={700} ml={9} mr={110}>
+        <Text fontSize={16} color="white" fontWeight={700} ml={9} mr={95}>
           Activity widget
         </Text>
-        <Image src={OuraIcon} />
+        <Image src={FitbitIcon} />
       </Flex>
       <Box>
         <Flex
           h={32}
           justifyContent="space-between"
           alignItems="center"
-          bg="#FFA654"
+          bg="#D4D7F2CC"
           padding="0px 65px 0px 65px"
           borderTopRightRadius={8}
           borderTopLeftRadius={8}
@@ -190,21 +197,21 @@ const App = (props) => {
             style={{ paddingRight: 55, paddingLeft: 55 }}
           >
             <Flex alignItems="center">
-              <FireIcon color="#FFA654" />
-              <Text ml={3} color="#FFA654">
-                {processedData === undefined ? 0 : processedData.cal_total}
+              <FireIcon color="#222671" />
+              <Text ml={3} color="#222671">
+                {processedData === undefined ? 0 : processedData.caloriesOut}
               </Text>
             </Flex>
             <Flex alignItems="center">
-              <StepsIcon color="#FFE9D5" />
-              <Text ml={3} color="#FFE9D5">
+              <StepsIcon color="#DDB7F4" />
+              <Text ml={3} color="#DDB7F4">
                 {processedData === undefined ? 0 : processedData.steps}
               </Text>
             </Flex>
             <Flex alignItems="center">
-              <DistanceIcon color="#F8F043" />
-              <Text ml={3} color="#F8F043">
-                {processedData === undefined ? 0 : processedData.daily_movement}
+              <DistanceIcon color="#2A2E9C" />
+              <Text ml={3} color="#2A2E9C">
+                {processedData === undefined ? 0 : distance}
               </Text>
             </Flex>
           </Flex>
@@ -225,25 +232,26 @@ const App = (props) => {
               <Tooltip
                 cursor={{ fill: "transparent" }}
                 contentStyle={{
-                  background: "rgba(0, 0, 0, 0.9)",
+                  background: "rgba(255, 255, 255, 0.9)",
                   padding: 5,
                   border: 0,
+                  borderRadius: 8,
                 }}
                 itemStyle={{ fontSize: 14 }}
               />
               <Bar
                 barSize={45}
                 name="Calories"
-                dataKey="cal_total"
-                fill="#FFA654"
+                dataKey="caloriesOut"
+                fill="#222671"
               />
-              <Bar barSize={45} name="Steps" dataKey="steps" fill="#FFE9D5" />
+              <Bar barSize={45} name="Steps" dataKey="steps" fill="#DDB7F4" />
 
               <Bar
                 barSize={45}
-                name="Distance"
-                dataKey="daily_movement"
-                fill="#F8F043"
+                name="Distance (m)"
+                dataKey="distance"
+                fill="#2A2E9C"
               />
             </BarChart>
           </ResponsiveContainer>
@@ -253,6 +261,6 @@ const App = (props) => {
   );
 };
 
-// App.displayName = "OuraActivity";
+App.displayName = "FitbitActivity";
 
 export default App;

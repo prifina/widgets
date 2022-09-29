@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import App from "../src/App";
 
-export default { title: "OuraActivity" };
+export default { title: "App" };
 
 export const app = () => {
   return <App stage="dev" />;
