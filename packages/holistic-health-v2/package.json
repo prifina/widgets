@@ -1,16 +1,16 @@
 {
-  "name": "@prifina-widgets/webpack-starter",
-  "version": "0.0.0",
-  "description": "Prifina Widget webpack starter",
-  "author": "Tero <tero@prifina.com>",
+  "name": "holistic-health",
+  "version": "0.0.1",
+  "description": "A health widget which interprets information from wearables to give users insights in to their health measured against goals they set",
+  "author": "hamza <hamzahalilovic.12@gmail.com>",
+  "homepage": "https://github.com/hamzahalilovic/widgets#readme",
   "license": "MIT",
   "main": "dist/esm/index.js",
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "devDependencies": {
     "graphql": "^16.6.0",
@@ -57,6 +57,12 @@
     "core-js": "3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-test-renderer": "^18.2.0"
+    "react-test-renderer": "^18.2.0",
+    "@chakra-ui/react": "^1.6.7",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@prifina/oura": "^0.0.21",
+    "framer-motion": "^4",
+    "recharts": "^2.0.10"
   }
 }

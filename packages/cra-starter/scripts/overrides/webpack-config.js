@@ -4,29 +4,33 @@ const webpackConfigPath = "react-scripts/config/webpack.config";
 const webpackConfig = require(webpackConfigPath);
 const path = require('path');
 
-let override=undefined;
-if (process.env.NODE_ENV!=='production') {
+//console.log(process.env);
+let override = undefined;
+if (process.env.NODE_ENV !== 'production') {
 
-override = config => {
-  config.entry.main= path.resolve(__dirname, "./src") + "/index-dev.js";
+  override = config => {
+    config.entry = path.resolve(__dirname, "../../src") + "/index-dev.js";
 
-config.mode= "development";
-//config.devServer.static.directory=path.join(__dirname, "build");
-//config.devServer.port=3003;
-config.output.publicPath = "auto";
-config.output.clean=true;
-return config;
+    config.mode = "development";
+    //config.devServer.static.directory=path.join(__dirname, "build");
+    //config.devServer.port=3003;
+    //config.output.publicPath = "auto";
+    //config.plugins.push(new ModuleFederationPlugin(require("../../modulefederation.config.js")));
 
-}  
+    config.devtool = 'eval-cheap-module-source-map';
+    config.output.clean = true;
+    return config;
+
+  }
 }
 
 
-if (process.env.NODE_ENV==='production') {
+if (process.env.NODE_ENV === 'production') {
   override = config => {
     config.plugins.push(new ModuleFederationPlugin(require("../../modulefederation.config.js")));
     config.output.publicPath = "auto";
-    config.output.uniqueName= process.env.REACT_APP_ID+"_";
-    config.output.clean=true;
+    config.output.uniqueName = process.env.REACT_APP_ID + "_";
+    config.output.clean = true;
     return config;
   };
 }
