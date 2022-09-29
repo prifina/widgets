@@ -7929,6 +7929,13 @@
   dependencies:
     "@dynamic-data/oura-data" "^0.0.6"
 
+"@prifina/oura@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@prifina/oura/-/oura-0.0.21.tgz#9fbbade5a3b48d9785e7f16d6a0fdda862fb40cd"
+  integrity sha512-5OMJMYbPDHrbQIFRK/VJlfPvK4cvvZ0NZlCCL15PXc+VeS4sH/YofJEjhRWgR+W6h1j16JohCFloPIZ0L5pqOA==
+  dependencies:
+    "@dynamic-data/oura-data" "^0.0.6"
+
 "@reach/alert@0.13.2":
   version "0.13.2"
   resolved "https://registry.yarnpkg.com/@reach/alert/-/alert-0.13.2.tgz#71c4a848d51341f1d6d9eaae060975391c224870"

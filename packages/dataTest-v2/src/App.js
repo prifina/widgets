@@ -5,6 +5,7 @@ import Fitbit from "@prifina/fitbit";
 import Oura from "@prifina/oura";
 import Garmin from "@prifina/garmin";
 import GoogleTimeline from "@prifina/google-timeline";
+import {APP_ID} from "./environment";
 
 import 'regenerator-runtime/runtime';
 
@@ -21,7 +22,7 @@ const Container = styled.div`
 `;
 
 // unique appID for the widget....
-const appID = "x866fscSq5Ae7bPgUtb6ffB";
+//const appID = "x866fscSq5Ae7bPgUtb6ffB";
 
 const UseFetch = (initialUrl) => {
   // create state variables
@@ -120,22 +121,22 @@ const App = (props) => {
    
 
     // init callback function for background updates/notifications
-    onUpdate(appID, dataUpdate);
+    onUpdate(APP_ID, dataUpdate);
     // register datasource modules
-    registerDataConnector(appID, [Fitbit, Oura, Garmin, GoogleTimeline]);
+    registerDataConnector(APP_ID, [Fitbit, Oura, Garmin, GoogleTimeline]);
     
 
-    const fitbitFunctions = Object.keys(API[appID].Fitbit).map((s) => {
+    const fitbitFunctions = Object.keys(API[APP_ID].Fitbit).map((s) => {
       return "Fitbit." + s;
     });
-    const ouraFunctions = Object.keys(API[appID].Oura).map((s) => {
+    const ouraFunctions = Object.keys(API[APP_ID].Oura).map((s) => {
       return "Oura." + s;
     });
-    const garminFunctions = Object.keys(API[appID].Garmin).map((s) => {
+    const garminFunctions = Object.keys(API[APP_ID].Garmin).map((s) => {
       return "Garmin." + s;
     });
 
-    const googleFunctions = Object.keys(API[appID].GoogleTimeline).map((s) => {
+    const googleFunctions = Object.keys(API[APP_ID].GoogleTimeline).map((s) => {
       return "GoogleTimeline." + s;
     });
     setFunctions(
@@ -214,7 +215,7 @@ const App = (props) => {
             const query = connectorFunction.split(".");
             console.log(query);
             //console.log("QUERY", API[appID][query[0]][query[1]]);
-            const result = await API[appID][query[0]][query[1]]({
+            const result = await API[APP_ID][query[0]][query[1]]({
               filter,
               fields,
             });

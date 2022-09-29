@@ -7,4 +7,10 @@ lerna-debug.log
 
 /backups
 
+# package builds
+packages/*/dist
+
+# yarn.lock instead...
+package-lock.json
+
 # packages/imessage/stories/Messaging.stories.js

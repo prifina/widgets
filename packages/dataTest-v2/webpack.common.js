@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin =
   require("webpack").container.ModuleFederationPlugin;
-//const webpack = require("webpack");
+const webpack = require("webpack");
 
 const deps = require('./package.json').dependencies;
 require('dotenv').config()
@@ -42,50 +42,34 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.EnvironmentPlugin([ 'DEBUG','REACT_APP_ID']),
     new ModuleFederationPlugin({
       name: process.env.REACT_APP_ID,
       filename: "remoteEntry.js",
       exposes: {
         "./App": "./src/App",
       },
-      shared: 
-        {
-          react:{singleton: true,requiredVersion: deps.react},
-          "react-dom":{singleton: true,requiredVersion: deps["react-dom"]},
-          '@prifina/hooks-v2': {
-              import: '@prifina/hooks-v2'
-            }  
-            
-          //react: {},
-          //"react-dom": {},
-          //"react-dom/client": {}
-
-        }
       
-      /*
-
-      shared: [
-        'react',
-        'react-dom',
-        {
-          '@shared-context/shared-library': {
-            import: '@shared-context/shared-library',
-            requiredVersion: require('../shared-library/package.json').version,
-          },
+      shared: {
+        'react': {
+          import: 'react', // the "react" package will be used a provided and fallback module
+          singleton: true, // only a single version of the shared module is allowed
+          requiredVersion: deps.react
         },
-      ],
-      shared: [
-        
-        {
-          react: { singleton: true, requiredVersion: deps['react'] },
-          "react-dom/client": { singleton: true,requiredVersion: deps['react-dom'] },
+        'react-dom/client': {
+          import: 'react-dom/client', // the "react" package will be used a provided and fallback module
+          singleton: true, // only a single version of the shared module is allowed
+          requiredVersion: deps["react-dom"]
         },
-        
-      ],
-      */
+         
+            '@prifina/hooks-v2': {
+                import: '@prifina/hooks-v2'
+              }  
+              
+          }
+      
     }),
     new HtmlWebpackPlugin({
-      title: process.env.REACT_APP_ID,
       template: './public/index.html',
     }),
     /*

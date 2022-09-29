@@ -6,7 +6,7 @@
  import App from "./App";
  import React from "react";
  
- import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
  import { PrifinaProvider, PrifinaContext } from "@prifina/hooks-v2";
 
 
@@ -19,9 +19,9 @@
     
   );
 };
- 
- ReactDOM.render(<LocalComponent />, document.getElementById("root"));
-
+const container = document.getElementById('root');
+const root = createRoot(container); // createRoot(container!) if you use TypeScript
+root.render(<LocalComponent />);
 
 /* 
 // react 18

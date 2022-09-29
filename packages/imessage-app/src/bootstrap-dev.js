@@ -8,7 +8,6 @@
  
 
 import { createRoot } from 'react-dom/client';
-
  import { PrifinaProvider, PrifinaContext } from "@prifina/hooks-v2";
 
 
@@ -16,18 +15,15 @@ import { createRoot } from 'react-dom/client';
  
   return (
     <PrifinaProvider activeApp={"WIDGET"} stage={"dev"} Context={PrifinaContext}>
-     <App {...props} />
+      <App {...props} />
      </PrifinaProvider>
     
   );
 };
-
-
+ 
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
 root.render(<LocalComponent />);
-
- //ReactDOM.render(<LocalComponent />, document.getElementById(config.appId));
 
 
 /* 
