@@ -105,7 +105,7 @@ const App = (props) => {
 
       const result = await API[APP_ID].Garmin.queryDailiesData({
         filter: filter,
-        fields: "calendardate,restingHeartRate, restingheartrateinbeatsperminute, averageheartrateinbeatsperminute, minheartrateinbeatsperminute, maxheartrateinbeatsperminute",
+        fields: "calendardate,restingheartrateinbeatsperminute,averageheartrateinbeatsperminute,minheartrateinbeatsperminute,maxheartrateinbeatsperminute",
       });
 
       console.log("RESULT", result);

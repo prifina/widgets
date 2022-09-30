@@ -101,8 +101,7 @@ const App = (props) => {
 
       const result = await API[APP_ID].Garmin.queryDailiesData({
         filter: filter,
-        fields:
-          "calendardate, durationinseconds, intensitydurationgoalinseconds, moderateintensitydurationinseconds, vigorousintensitydurationinseconds",
+        fields: "calendardate,durationinseconds,intensitydurationgoalinseconds,moderateintensitydurationinseconds,vigorousintensitydurationinseconds",
       });
 
       console.log("THE NEW BUILD result", result);

@@ -2589,10 +2589,10 @@
   dependencies:
     graphql-tag "^2.12.6"
 
-"@prifina/hooks-v2@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@prifina/hooks-v2/-/hooks-v2-0.0.3.tgz#07781882e0c702d7e2376d0df3e4296fd163d064"
-  integrity sha512-fBvNo6BrdnLEjMKoA3WTYQM3UTdGKEsIwLG33r+yAE+yznmd+FB7XGsPZahdMF4TQpjdnutldfYW8GjPMYD5XA==
+"@prifina/hooks-v2@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@prifina/hooks-v2/-/hooks-v2-0.0.4.tgz#589aa27ec3de19390e94c61a15862e57edfeaded"
+  integrity sha512-6DnjswjM6to+K/ED7tWJoAudUjBsJdUmrWs/+Vx5TExuOBL+RxvEv2SsVOQnMAQRZjfVrtm3tKYdxO6RWJzzww==
   dependencies:
     graphql-tag "^2.12.6"
 

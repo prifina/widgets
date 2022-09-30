@@ -6,17 +6,16 @@ packages='avatar-widget-v2 dataTest-v2 dry-run-v2 fitbit-activity-v2 fitbit-effo
 for FOLDER in $packages
 do
 pushd packages/$FOLDER
-sed -i '' 's/0.0.2\",/0.0.3\",/g' package.json
+sed -i '' 's/\"^0.0.3\",/\"^0.0.4\",/g' package.json >out.tro
 popd 
 
 done
-
 
 #sed -i '' 's/=dev/=prod/g' env-tro
 
 # find . -type f -name '*.txt' -exec sed -i '' s/this/that/g {} +
 
-
+#"@prifina/hooks-v2": "^0.0.3",
 #@prifina/hooks-v2@0.0.3
 
 #find . -type f -name 'package.json' -exec sed -i '' s/0.0.2",/0.0.3",/g {} +

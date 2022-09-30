@@ -118,7 +118,7 @@ const App = (props) => {
 
       const result = await API[APP_ID].Garmin.querySleepsData({
         filter: filter,
-        fields: "calenrardate, deepsleepdurationinseconds, durationinseconds, lightsleepdurationinseconds, awakedurationinseconds, deepsleepdurationinseconds, remsleepinseconds",
+        fields: "calendardate,deepsleepdurationinseconds,durationinseconds,lightsleepdurationinseconds,awakedurationinseconds,deepsleepdurationinseconds,remsleepinseconds",
       });
 
       console.log("THE NEW BUILD result", result);
