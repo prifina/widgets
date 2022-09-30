@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import { usePrifina, Op, PrifinaContext } from "@prifina/hooks-v2";
@@ -42,6 +42,7 @@ const App = (props) => {
 
   const [processedData, setProcessedData] = useState({});
 
+  const prifinaInit = useRef();
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
     let newData = data;
@@ -77,6 +78,14 @@ const App = (props) => {
       onUpdate(APP_ID, dataUpdate);
 
       registerDataConnector(APP_ID, [Fitbit]);
+      prifinaInit.current = true;
+    }
+    if (!prifinaInit.current) {
+      init();
+    }
+  }, []);
+  useEffect(() => {
+    async function getData() {
 
       let d = new Date();
 
@@ -105,7 +114,7 @@ const App = (props) => {
 
       processData(result.data.getDataObject.content);
     }
-    init();
+    getData();
   }, [day]);
 
   console.log("day", day);

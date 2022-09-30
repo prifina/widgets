@@ -13,10 +13,10 @@
     "src"
   ],
   "dependencies": {
-    "@prifina/fitbit": "^0.0.16",
-    "@prifina/garmin": "^0.0.7",
+    "@prifina/fitbit": "^0.0.19",
+    "@prifina/garmin": "^0.0.9",
     "@prifina/google-timeline": "^0.0.18",
-    "@prifina/oura": "^0.0.21",
+    "@prifina/oura": "^0.0.23",
     "dotenv": "^16.0.1",
     "styled-components": "^5.3.5"
   },

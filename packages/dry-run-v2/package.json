@@ -1,5 +1,5 @@
 {
-  "name": "dry-run",
+  "name": "@prifina-widgets/dry-run",
   "version": "0.0.1",
   "description": "Gives recommendations for the best time to exercise based on exercise history (Fitbit, Oura, Strave, Nike+, etc.) combined with local weather data.",
   "author": "hamza <hamzahalilovic.12@gmail.com>",
@@ -61,7 +61,7 @@
     "@chakra-ui/react": "^1.6.7",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "@prifina/oura": "^0.0.21",
+    "@prifina/oura": "^0.0.23",
     "framer-motion": "^4",
     "moment": "^2.29.1",
     "recharts": "^2.0.10"

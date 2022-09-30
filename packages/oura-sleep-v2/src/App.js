@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import { usePrifina, Op, PrifinaContext } from "@prifina/hooks-v2";
@@ -42,12 +42,14 @@ const Container = styled.div`
 `;
 
 // unique appID for the widget....
-const appID = "6dyqsLq4MEJC2sT9WNBGUs";
+//const appID = "6dyqsLq4MEJC2sT9WNBGUs";
 
 const App = (props) => {
   const { stage, check, onUpdate, API, registerDataConnector } = usePrifina();
 
   const [processedData, setProcessedData] = useState({});
+
+  const prifinaInit = useRef();
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
@@ -86,6 +88,15 @@ const App = (props) => {
       onUpdate(APP_ID, dataUpdate);
 
       registerDataConnector(APP_ID, [Oura]);
+      prifinaInit.current = true;
+    }
+    if (!prifinaInit.current) {
+      init();
+    }
+  }, []);
+
+  useEffect(() => {
+    async function getData() {
 
       let d = new Date();
 
@@ -107,14 +118,14 @@ const App = (props) => {
 
       const result = await API[APP_ID].Oura.querySleepData({
         filter: filter,
-        fields: "awake,light,deep,rem",
+        fields: "summary_date,awake,light,deep,rem",
       });
 
       console.log("THE NEW BUILD result", result);
 
       processData(result.data.getDataObject.content);
     }
-    init();
+    getData();
   }, [day]);
 
   console.log("day", day);

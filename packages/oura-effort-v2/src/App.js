@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { usePrifina, Op, PrifinaContext } from "@prifina/hooks-v2";
 
@@ -28,7 +28,7 @@ const Container = styled.div`
 `;
 
 // unique appID for the widget....
-const appID = "vKoEqwhCfHXsEZ5TknbSso";
+//const appID = "vKoEqwhCfHXsEZ5TknbSso";
 
 const asyncFalseData = [
   "summary_date,inactive,low,medium,high,score",
@@ -48,42 +48,69 @@ const App = (props) => {
   const [period, setPeriod] = useState(6);
   const [avg, setAvg] = useState();
 
+  const prifinaInit = useRef();
+
   const processAsyncData = (data) => {
     console.log("ORIGINAL PROCESS ASYNC DATA", data);
 
     let filterData = data;
 
-    const keys = filterData[0].split(",");
+    //const keys = filterData[0].split("\t");
+    const keys = "summary_date,inactive,low,medium,high,score".split(",");
+    let newArray = [];
+    //console.log("keys", keys);
+    if (stage === "dev") {
+      const header = filterData[0].split("\t");
+      const rowData = filterData[1].split("\t");
+      const newData = [];
+      keys.forEach(m => {
+        const k = header.indexOf(m);
+        if (k > -1) {
+          newData.push(rowData[k]);
+        }
 
-    console.log("keys", keys);
-    filterData.shift();
+      })
+      //console.log(newData)
 
-    filterData = filterData.map((dataLine) => dataLine.split(",")).flat();
+      const newDataObj = {
+        "summary_date": newData[0], "inactive": parseInt(newData[1]),
+        "low": parseInt(newData[2]), "medium": parseInt(newData[3]), "high": parseInt(newData[4]), "score": parseInt(newData[5]),
+      };
 
-    const chunkSize = 6;
-    const dataChunks = [];
-    for (let i = 0; i < filterData.length; i += chunkSize) {
-      const chunk = filterData.slice(i, i + chunkSize);
-      dataChunks.push(chunk);
+      let newDate = new Date(newDataObj.summary_date);
+
+      newArray.push(newDataObj);
+      for (let i = 0; i < period; i++) {
+        const yesterdayTS = newDate.setDate(newDate.getDate() - 1);
+        let newDayData = Object.assign({}, newDataObj);
+        newDayData.summary_date = new Date(yesterdayTS).toISOString().split("T")[0];
+        newArray.push(newDayData);
+        newDate = new Date(yesterdayTS);
+      }
+      ;
+      console.log("new data", newArray);
+
+    } else {
+      filterData.shift();
+      filterData.forEach((r) => {
+        const row = r.split("\t");
+        newArray.push({
+          [keys[0]]: row[0],
+          [keys[1]]: Number(row[1]),
+          [keys[2]]: Number(row[2]),
+          [keys[3]]: Number(row[3]),
+          [keys[4]]: Number(row[4]),
+          [keys[5]]: Number(row[5]),
+        });
+      });
     }
 
-    const result = [];
-    dataChunks.forEach((dataChunk) => {
-      result.push({
-        [keys[0]]: dataChunk[0],
-        [keys[1]]: Number(dataChunk[1]),
-        [keys[2]]: Number(dataChunk[2]),
-        [keys[3]]: Number(dataChunk[3]),
-        [keys[4]]: Number(dataChunk[4]),
-        [keys[5]]: Number(dataChunk[5]),
-      });
-    });
-    setProcessedAsyncData(result);
+    setProcessedAsyncData(newArray);
 
-    console.log("process result", result);
+    console.log("process result", newArray);
 
-    let avg = result.reduce((acc, val) => {
-      return acc + val.score / result.length;
+    let avg = newArray.reduce((acc, val) => {
+      return acc + val.score / newArray.length;
     }, 0);
 
     setAvg(Math.ceil(avg));
@@ -113,6 +140,15 @@ const App = (props) => {
       onUpdate(APP_ID, dataUpdate);
 
       registerDataConnector(APP_ID, [Oura]);
+      prifinaInit.current = true;
+    }
+    if (!prifinaInit.current) {
+      init();
+    }
+  }, []);
+  useEffect(() => {
+    async function getData() {
+
       let d = new Date();
 
       const ddd = d.setDate(d.getDate() - period);
@@ -127,14 +163,17 @@ const App = (props) => {
 
       console.log("ASYNC FILTER", asyncFilter);
 
+
       const asyncResult = await API[APP_ID].Oura.queryActivitySummariesAsync({
         filter: asyncFilter,
         fields: "summary_date,inactive,low,medium,high,score",
       });
-
-      console.log("async result", asyncResult);
+      if (stage === "dev") {
+        console.log("async result", asyncResult);
+        processAsyncData(asyncResult.data.getDataObject.content);
+      }
     }
-    init();
+    getData();
   }, [period]);
 
   const handleChange = (e) => {
