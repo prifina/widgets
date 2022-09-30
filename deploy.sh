@@ -20,6 +20,3 @@ aws s3 sync garmin-heart-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/br9sb
 aws s3 sync garmin-sleep-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/hbxxw7d5d5BLq5Sv9DgRa1m/0.0.1/ --region eu-west-1 --profile prifina-123
 
 
-
-
-
