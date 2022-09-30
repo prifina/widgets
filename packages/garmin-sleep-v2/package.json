@@ -1,5 +1,5 @@
 {
-  "name": "garmin-sleep-v2",
+  "name": "@prifina-widgets/garmin-sleep-v2",
   "version": "1.0.0",
   "description": "Sleep widget powered by Garmin data",
   "author": "hamza <hamzahalilovic.12@gmail.com>",
@@ -87,12 +87,5 @@
     "start": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "serve": "serve dist -p 3003"
-  },
-  "peerDependencies": {
-    "styled-components": "^5.2.1",
-    "styled-system": "^5.1.5"
-  },
-  "bugs": {
-    "url": "https://github.com/hamzahalilovic/widgets/issues"
   }
 }

@@ -12,3 +12,14 @@ aws s3 sync oura-activity-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/jFbb
 aws s3 sync oura-effort-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/J2Q3FoSU1BKmCemMwTUWEbg/0.0.1/ --region eu-west-1 --profile prifina-123
 aws s3 sync oura-heart-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/Pm35HnTPCc9C1EdR72uZFuD/0.0.1/ --region eu-west-1 --profile prifina-123
 aws s3 sync oura-sleep-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/Ami8CwNxgrHGTRdhbxLgABi/0.0.1/ --region eu-west-1 --profile prifina-123
+
+
+aws s3 sync garmin-activity-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/ok63eyGnSmHTj8MinS5p4n3/0.0.1/ --region eu-west-1 --profile prifina-123
+aws s3 sync garmin-effort-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/GcdetsnxiS6URzLKzakM8at/0.0.1/ --region eu-west-1 --profile prifina-123
+aws s3 sync garmin-heart-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/br9sbQ6hRfa4LArDqih3s68/0.0.1/ --region eu-west-1 --profile prifina-123
+aws s3 sync garmin-sleep-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/hbxxw7d5d5BLq5Sv9DgRa1m/0.0.1/ --region eu-west-1 --profile prifina-123
+
+
+
+
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 // import { usePrifina, Op } from "@prifina/hooks";
 import { usePrifina, Op, PrifinaContext } from "@prifina/hooks-v2";
@@ -87,11 +87,22 @@ const App = (props) => {
   const [day, setDay] = useState(1);
   const [date, setDate] = useState();
 
+
+  const prifinaInit = useRef();
   useEffect(() => {
     async function init() {
       onUpdate(APP_ID, dataUpdate);
 
       registerDataConnector(APP_ID, [Garmin]);
+      prifinaInit.current = true;
+    }
+    if (!prifinaInit.current) {
+      init();
+    }
+  }, []);
+
+  useEffect(() => {
+    async function getData() {
 
       let d = new Date();
 
@@ -113,13 +124,14 @@ const App = (props) => {
 
       const result = await API[APP_ID].Garmin.queryDailiesData({
         filter: filter,
+        fields: "calendardate,bmrkilocalories,steps,distanceinmeters"
       });
 
       console.log("RESULT", result);
 
       processData(result.data.getDataObject.content);
     }
-    init();
+    getData();
   }, [day]);
 
   console.log("day", day);
