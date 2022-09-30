@@ -8,7 +8,7 @@ lerna-debug.log
 /backups
 
 # package builds
-packages/*/dist
+#packages/*/dist
 
 # yarn.lock instead...
 package-lock.json

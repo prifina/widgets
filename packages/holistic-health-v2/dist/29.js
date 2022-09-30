@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_prifina_widgets_holistic_health=self.webpackChunk_prifina_widgets_holistic_health||[]).push([[29,354],{7029:(t,e,a)=>{var h=a(8316);e.createRoot=h.createRoot,e.hydrateRoot=h.hydrateRoot}}]);

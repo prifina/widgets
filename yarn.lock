@@ -2582,13 +2582,6 @@
   dependencies:
     "@dynamic-data/google-data" "^0.0.6"
 
-"@prifina/hooks-v2@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@prifina/hooks-v2/-/hooks-v2-0.0.2.tgz#c27edc5b57e7db6c35569a0191750cce5fb54720"
-  integrity sha512-sfGSLe4VVtaVw65ihQDMfAzpnewnCeqxSFB2rB3Kq3BzOeTWbtzPZL8ENO6A0LpzUXivNmW3ylsvK/va3GkBjw==
-  dependencies:
-    graphql-tag "^2.12.6"
-
 "@prifina/hooks-v2@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@prifina/hooks-v2/-/hooks-v2-0.0.4.tgz#589aa27ec3de19390e94c61a15862e57edfeaded"

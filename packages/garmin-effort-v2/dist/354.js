@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_prifina_widgets_garmin_effort_v2=self.webpackChunk_prifina_widgets_garmin_effort_v2||[]).push([[354,29],{7029:(e,t,r)=>{var a=r(8316);t.createRoot=a.createRoot,t.hydrateRoot=a.hydrateRoot}}]);

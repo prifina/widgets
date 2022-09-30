@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_prifina_widgets_oura_effort_v2=self.webpackChunk_prifina_widgets_oura_effort_v2||[]).push([[29,354],{7029:(e,t,o)=>{var r=o(8316);t.createRoot=r.createRoot,t.hydrateRoot=r.hydrateRoot}}]);

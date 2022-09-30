@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_prifina_widgets_weather_v2=self.webpackChunk_prifina_widgets_weather_v2||[]).push([[354,29],{7029:(e,t,a)=>{var r=a(8316);t.createRoot=r.createRoot,t.hydrateRoot=r.hydrateRoot}}]);
