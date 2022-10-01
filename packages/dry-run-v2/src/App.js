@@ -118,7 +118,7 @@ const class_5min =
 
   //console.log("CHECK CONNECTOR", connectorData);
 
-  let defaultCity = city;
+  let defaultCity = city || "london";
   if (
     typeof data !== "undefined" &&
     data.hasOwnProperty("settings") &&
