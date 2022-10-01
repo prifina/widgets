@@ -52,17 +52,17 @@ const DryRun = (props) => {
     let newArray = [];
     if (stage === "dev") {
       //let mockup = Object.assign({}, data);
-      const parts = data.split("\t");
+      const parts = data.split(",");
       // datamodel has all attributes
       const mockup = { day_start: parts[2], class_5min: parts[28] };
       console.log(mockup);
       let newDate = new Date(mockup.day_start);
-      newArray.push(["day_start", "class_5min"].join("\t"));
+      newArray.push(["day_start", "class_5min"].join(","));
       for (let i = 0; i < 7; i++) {
         const yesterdayTS = newDate.setDate(newDate.getDate() - 1);
         let newData = Object.assign({}, mockup);
         newData.day_start = new Date(yesterdayTS).toISOString();
-        newArray.push([newData.day_start, newData.class_5min].join("\t"));
+        newArray.push([newData.day_start, newData.class_5min].join(","));
         newDate = new Date(yesterdayTS);
       }
     } else {
@@ -74,7 +74,7 @@ const DryRun = (props) => {
     newArray.forEach((dd) => {
       console.log("DD ", dd);
 
-      const parts = dd.split("\t");
+      const parts = dd.split(",");
       console.log("PARTS ", parts);
       const dayStart = new Date(parts[0]).getTime();
       parts[1].split("").forEach((val, i) => {

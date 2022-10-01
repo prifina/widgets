@@ -55,13 +55,13 @@ const App = (props) => {
 
     let filterData = data;
 
-    //const keys = filterData[0].split("\t");
+    //const keys = filterData[0].split(",");
     const keys = "summary_date,inactive,low,medium,high,score".split(",");
     let newArray = [];
     //console.log("keys", keys);
     if (stage === "dev") {
-      const header = filterData[0].split("\t");
-      const rowData = filterData[1].split("\t");
+      const header = filterData[0].split(",");
+      const rowData = filterData[1].split(",");
       const newData = [];
       keys.forEach(m => {
         const k = header.indexOf(m);
@@ -93,7 +93,7 @@ const App = (props) => {
     } else {
       filterData.shift();
       filterData.forEach((r) => {
-        const row = r.split("\t");
+        const row = r.split(",");
         newArray.push({
           [keys[0]]: row[0],
           [keys[1]]: Number(row[1]),

@@ -178,8 +178,8 @@ const HolisticHealth = (props) => {
       //fields: "summary_date,cal_total,steps",
 
       //create 7 days of data from one day data model
-      const headerData = data[0].split("\t");
-      const rowData = data[1].split("\t");
+      const headerData = data[0].split(",");
+      const rowData = data[1].split(",");
       const newData = [];
       headerData.forEach((m, i) => {
         const idx = ["summary_date", "cal_total", "steps"].indexOf(m);
@@ -210,7 +210,7 @@ const HolisticHealth = (props) => {
       // 0-index is csv-header..
       for (let i = 1; i < data.length; i++) {
         // csv data is tab separated...
-        const r = data[i].split("\t");
+        const r = data[i].split(",");
         //const activityDay = r[0].split("T")[0];
         const activityDay = r[0];
         activityData.push({
@@ -255,8 +255,8 @@ const HolisticHealth = (props) => {
     let newArray = [];
     if (stage === "dev") {
       //fields: "summary_date,total,awake,rem,deep,light",
-      const headerData = data[0].split("\t");
-      const rowData = data[1].split("\t");
+      const headerData = data[0].split(",");
+      const rowData = data[1].split(",");
       const newData = [];
       headerData.forEach((m, i) => {
         const idx = ["summary_date", "total", "awake", "rem", "deep", "light"].indexOf(m);
@@ -273,7 +273,7 @@ const HolisticHealth = (props) => {
           'hr_average', 'rmssd', 'breath_average', 'temperature_delta', 'hypnogram_5min', 'hr_5min', 'rmssd_5min']
       
         */
-      //const parts = data.split("\t");
+      //const parts = data.split(",");
       //create 7 days of data from one day data model
 
       const newDataObj = { "summary_date": newData[0], "total": parseInt(newData[1]), "awake": parseInt(newData[2]), "rem": parseInt(newData[3]), "deep": parseInt(newData[4]), "light": parseInt(newData[5]) };
@@ -296,7 +296,7 @@ const HolisticHealth = (props) => {
       // 0-index is csv-header..
       for (let i = 1; i < data.length; i++) {
         // csv data is comma separated...
-        const r = data[i].split("\t");
+        const r = data[i].split(",");
         //const sleepDay = r[0].split("T")[0];
 
         const sleepDay = r[0];
