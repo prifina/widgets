@@ -129,6 +129,7 @@ const class_5min =
     defaultCity = data.settings.city;
   }
 
+  console.log("DEFAULT CITY ", defaultCity);
   const [searchCity, setCity] = useState(defaultCity);
 
   const dataUpdate = async (payload) => {
