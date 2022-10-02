@@ -118,7 +118,7 @@ const App = (props) => {
 
       const result = await API[APP_ID].Oura.querySleepData({
         filter: filter,
-        fields: "summary_date,awake,light,deep,rem",
+        fields: "summary_date,awake,light,deep,rem,total",
       });
 
       console.log("THE NEW BUILD result", result);

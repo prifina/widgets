@@ -1,9 +1,9 @@
 #!/bin/bash 
 
-aws s3 sync dataTest-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/x866fscSq5Ae7bPgUtb6ffB/0.0.1/ --region eu-west-1 --profile prifina-123
-aws s3 sync dry-run-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/x3LSdcSs1kcPskBWBJvqGto/0.0.1/ --region eu-west-1 --profile prifina-123
-aws s3 sync holistic-health-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/sCUiMz2m9JsRSnRJ5favnP/0.0.1/ --region eu-west-1 --profile prifina-123
-aws s3 sync weather-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/o3CH1e2kbrLgBxjbG2iLzd/0.0.1/ --region eu-west-1 --profile prifina-123
+# aws s3 sync dataTest-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/x866fscSq5Ae7bPgUtb6ffB/0.0.1/ --region eu-west-1 --profile prifina-123
+# aws s3 sync dry-run-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/x3LSdcSs1kcPskBWBJvqGto/0.0.1/ --region eu-west-1 --profile prifina-123
+# aws s3 sync holistic-health-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/sCUiMz2m9JsRSnRJ5favnP/0.0.1/ --region eu-west-1 --profile prifina-123
+# aws s3 sync weather-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/o3CH1e2kbrLgBxjbG2iLzd/0.0.1/ --region eu-west-1 --profile prifina-123
 
 #aws s3 sync avatar-widget-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/ujWBeKugg514AVaE4UyaDx/0.0.1/ --region eu-west-1 --profile prifina-123
 #aws s3 sync fitbit-activity-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/aW5R354gKsH5PzJQnLzxKZ/0.0.1/ --region eu-west-1 --profile prifina-123
@@ -23,10 +23,10 @@ aws s3 sync weather-v2/dist/ s3://prifina-apps-352681697435-eu-west-1/o3CH1e2kbr
 
 
 #s3://prifina-apps-429117803886-us-east-1/sCUiMz2m9JsRSnRJ5favnP/0.0.1/
-#aws s3 sync dataTest-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x866fscSq5Ae7bPgUtb6ffB/0.0.1/ --region us-east-1 --profile prifina_dev
-#aws s3 sync dry-run-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x3LSdcSs1kcPskBWBJvqGto/0.0.1/ --region us-east-1 --profile prifina_dev
-#aws s3 sync weather-v2/dist/ s3://prifina-apps-429117803886-us-east-1/o3CH1e2kbrLgBxjbG2iLzd/0.0.1/ --region us-east-1 --profile prifina_dev
-#aws s3 sync holistic-health-v2/dist/ s3://prifina-apps-429117803886-us-east-1/sCUiMz2m9JsRSnRJ5favnP/0.0.1/ --region us-east-1 --profile prifina_dev
+aws s3 sync dataTest-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x866fscSq5Ae7bPgUtb6ffB/0.0.1/ --region us-east-1 --profile prifina_dev
+aws s3 sync dry-run-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x3LSdcSs1kcPskBWBJvqGto/0.0.1/ --region us-east-1 --profile prifina_dev
+aws s3 sync weather-v2/dist/ s3://prifina-apps-429117803886-us-east-1/o3CH1e2kbrLgBxjbG2iLzd/0.0.1/ --region us-east-1 --profile prifina_dev
+aws s3 sync holistic-health-v2/dist/ s3://prifina-apps-429117803886-us-east-1/sCUiMz2m9JsRSnRJ5favnP/0.0.1/ --region us-east-1 --profile prifina_dev
 
 # aws s3 sync avatar-widget-v2/dist/ s3://prifina-apps-429117803886-us-east-1/q5jvWQ9MXhUnUFyotc6L2t/0.0.1/ --region us-east-1 --profile prifina_dev
 # aws s3 sync fitbit-activity-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x7LsKDxoBPyY7ywEX2y32qS/0.0.1/ --region us-east-1 --profile prifina_dev
