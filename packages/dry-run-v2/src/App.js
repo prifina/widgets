@@ -136,13 +136,18 @@ const class_5min =
     console.log("UPDATE ", payload);
     if (
       payload.hasOwnProperty("settings") &&
-      typeof data.settings === "object" &&
+      typeof payload.settings === "object" &&
       payload.settings.hasOwnProperty("city")
     ) {
+      //console.log("UPDATE SETTINGS:...", payload.settings);
+      // wrong... http://api.weatherapi.com/data/2.5/onecall?q=Helsinki&units=metric&appid=e72f4e2b049a4ca7918223846212007
+      //ok http://api.weatherapi.com/v1/forecast.json?key=e72f4e2b049a4ca7918223846212007&q=london&days=7&aqi=no&alerts=no
+
       setCity(payload.settings.city);
       setUrl(
-        `${API_BASE_URL}/data/2.5/onecall?q=${data.settings.city}&units=metric&appid=${API_KEY}`
+        `${API_BASE_URL}/v1/forecast.json?key=${API_KEY}&q=${searchCity}&days=7&aqi=no&alerts=no`
       );
+
     }
 
     if (
