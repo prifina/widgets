@@ -339,7 +339,7 @@ const class_5min =
             domain={[0, amountOfExcersises]}
           />
           <Tooltip />
-          <CartesianGrid stroke="#f5f5f5" stroke="none" />
+          <CartesianGrid stroke="#f5f5f5" />
           <Bar
             dataKey="chance_of_rain"
             yAxisId="left"
