@@ -63,7 +63,8 @@ const App = (props) => {
     }
   };
 
-  const [day, setDay] = useState(1);
+  // garmin has notification, so this can be current day 
+  const [day, setDay] = useState(0);
   const [date, setDate] = useState();
 
   useEffect(() => {
@@ -77,7 +78,9 @@ const App = (props) => {
       init();
     }
   }, []);
-
+  const toIsoDate = (date) => {
+    return [date.getFullYear(), (date.getMonth() + 1).toString().padStart(2, "0"), date.getDate().toString().padStart(2, "0")].join("-")
+  }
   useEffect(() => {
     async function getData() {
 
@@ -85,7 +88,8 @@ const App = (props) => {
 
       const dd = d.setDate(d.getDate() - day);
 
-      const dateStr = new Date(dd).toISOString().split("T")[0];
+      //const dateStr = new Date(dd).toISOString().split("T")[0];
+      const dateStr = toIsoDate(new Date(dd));
 
       setDate(dateStr);
 

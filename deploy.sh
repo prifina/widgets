@@ -23,24 +23,27 @@
 
 
 #s3://prifina-apps-429117803886-us-east-1/sCUiMz2m9JsRSnRJ5favnP/0.0.1/
-aws s3 sync dataTest-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x866fscSq5Ae7bPgUtb6ffB/0.0.1/ --region us-east-1 --profile prifina_dev
-aws s3 sync dry-run-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x3LSdcSs1kcPskBWBJvqGto/0.0.1/ --region us-east-1 --profile prifina_dev
-aws s3 sync weather-v2/dist/ s3://prifina-apps-429117803886-us-east-1/o3CH1e2kbrLgBxjbG2iLzd/0.0.1/ --region us-east-1 --profile prifina_dev
-aws s3 sync holistic-health-v2/dist/ s3://prifina-apps-429117803886-us-east-1/sCUiMz2m9JsRSnRJ5favnP/0.0.1/ --region us-east-1 --profile prifina_dev
+#aws s3 sync dataTest-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x866fscSq5Ae7bPgUtb6ffB/0.0.1/ --region us-east-1 --profile prifina_dev
+#aws s3 sync dry-run-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x3LSdcSs1kcPskBWBJvqGto/0.0.1/ --region us-east-1 --profile prifina_dev
+#aws s3 sync weather-v2/dist/ s3://prifina-apps-429117803886-us-east-1/o3CH1e2kbrLgBxjbG2iLzd/0.0.1/ --region us-east-1 --profile prifina_dev
+#aws s3 sync holistic-health-v2/dist/ s3://prifina-apps-429117803886-us-east-1/sCUiMz2m9JsRSnRJ5favnP/0.0.1/ --region us-east-1 --profile prifina_dev
 
 # aws s3 sync avatar-widget-v2/dist/ s3://prifina-apps-429117803886-us-east-1/q5jvWQ9MXhUnUFyotc6L2t/0.0.1/ --region us-east-1 --profile prifina_dev
-# aws s3 sync fitbit-activity-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x7LsKDxoBPyY7ywEX2y32qS/0.0.1/ --region us-east-1 --profile prifina_dev
-# aws s3 sync fitbit-effort-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x7ock7Q11H34aafmBuWXV7v/0.0.1/ --region us-east-1 --profile prifina_dev
-# aws s3 sync fitbit-heart-v2/dist/ s3://prifina-apps-429117803886-us-east-1/oJAcUyzR61BfhErkxWZsAE/0.0.1/ --region us-east-1 --profile prifina_dev
-# aws s3 sync fitbit-sleep-v2/dist/ s3://prifina-apps-429117803886-us-east-1/cMgc1LGPM5h28jbTkHKC6C/0.0.1/ --region us-east-1 --profile prifina_dev
+
+aws s3 sync fitbit-activity-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x7LsKDxoBPyY7ywEX2y32qS/1/ --region us-east-1 --profile prifina_dev
+aws s3 sync fitbit-effort-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x7ock7Q11H34aafmBuWXV7v/1/ --region us-east-1 --profile prifina_dev
+
+aws s3 sync fitbit-heart-v2/dist/ s3://prifina-apps-429117803886-us-east-1/oJAcUyzR61BfhErkxWZsAE/1/ --region us-east-1 --profile prifina_dev
+aws s3 sync fitbit-sleep-v2/dist/ s3://prifina-apps-429117803886-us-east-1/cMgc1LGPM5h28jbTkHKC6C/1/ --region us-east-1 --profile prifina_dev
+
 # aws s3 sync oura-activity-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x7B9cQVF1KBiKYjwXpb5pAe/0.0.1/ --region us-east-1 --profile prifina_dev
 # aws s3 sync oura-effort-v2/dist/ s3://prifina-apps-429117803886-us-east-1/iGypDtJmrX9p9eTGryhobr/0.0.1/ --region us-east-1 --profile prifina_dev
 # aws s3 sync oura-heart-v2/dist/ s3://prifina-apps-429117803886-us-east-1/nsEjj21WhsSAhPigePiLSY/0.0.1/ --region us-east-1 --profile prifina_dev
 # aws s3 sync oura-sleep-v2/dist/ s3://prifina-apps-429117803886-us-east-1/cECGHdLTCpjaimqviz7N2s/0.0.1/ --region us-east-1 --profile prifina_dev
 
                                      
-# aws s3 sync garmin-activity-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x7z3C1ZMdzbrkBtPg3cFLNz/0.0.1/ --region us-east-1 --profile prifina_dev
-# aws s3 sync garmin-effort-v2/dist/ s3://prifina-apps-429117803886-us-east-1/eacWDz3U5yLYJ9s9Wutatr/0.0.1/ --region us-east-1 --profile prifina_dev
-# aws s3 sync garmin-heart-v2/dist/ s3://prifina-apps-429117803886-us-east-1/p2gFogX3eQXPtbHYo4PRrB/0.0.1/ --region us-east-1 --profile prifina_dev
-# aws s3 sync garmin-sleep-v2/dist/ s3://prifina-apps-429117803886-us-east-1/erqEj3oUNcm9a1mSpBPXwt/0.0.1/ --region us-east-1 --profile prifina_dev
+aws s3 sync garmin-activity-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x7z3C1ZMdzbrkBtPg3cFLNz/1/ --region us-east-1 --profile prifina_dev
+aws s3 sync garmin-effort-v2/dist/ s3://prifina-apps-429117803886-us-east-1/eacWDz3U5yLYJ9s9Wutatr/1/ --region us-east-1 --profile prifina_dev
+aws s3 sync garmin-heart-v2/dist/ s3://prifina-apps-429117803886-us-east-1/p2gFogX3eQXPtbHYo4PRrB/1/ --region us-east-1 --profile prifina_dev
+aws s3 sync garmin-sleep-v2/dist/ s3://prifina-apps-429117803886-us-east-1/erqEj3oUNcm9a1mSpBPXwt/1/ --region us-east-1 --profile prifina_dev
 
