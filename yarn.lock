@@ -2589,10 +2589,10 @@
   dependencies:
     graphql-tag "^2.12.6"
 
-"@prifina/oura@^0.0.23":
-  version "0.0.23"
-  resolved "https://registry.yarnpkg.com/@prifina/oura/-/oura-0.0.23.tgz#aa6985760e3e02db58d629d228f1f1e43368bfc4"
-  integrity sha512-Gbb5aYch7XodZ0YLed3G/YJRhwaGbehT+LMfrH7jw33WSJJCUp8S3G9Pms9pvYju/3Emi+Z+JD1sC7aN/1BVfg==
+"@prifina/oura@^0.0.24":
+  version "0.0.24"
+  resolved "https://registry.yarnpkg.com/@prifina/oura/-/oura-0.0.24.tgz#08d6e4cef884ed8865e68b92cd8ea021ac17376a"
+  integrity sha512-4SAuyxF9knfeTWOjxdvYbC//wyYG14noRndHWDZIWEXP+QowZ0os49rn0qtAfGeZ1WvYdjmQHecZiyBtHEWK9w==
   dependencies:
     "@dynamic-data/oura-data" "^0.0.9"
 

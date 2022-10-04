@@ -99,6 +99,9 @@ const App = (props) => {
       init();
     }
   }, []);
+  const toIsoDate = (date) => {
+    return [date.getFullYear(), (date.getMonth() + 1).toString().padStart(2, "0"), date.getDate().toString().padStart(2, "0")].join("-")
+  }
   useEffect(() => {
 
     async function getData() {
@@ -108,7 +111,8 @@ const App = (props) => {
 
       const dd = d.setDate(d.getDate() - day);
 
-      const dateStr = new Date(dd).toISOString().split("T")[0];
+      //const dateStr = new Date(dd).toISOString().split("T")[0];
+      const dateStr = toIsoDate(new Date(dd));
 
       setDate(dateStr);
 
@@ -124,7 +128,7 @@ const App = (props) => {
 
       const result = await API[APP_ID].Oura.queryActivitySummary({
         filter: filter,
-        fields: "cal_total,steps,daily_movement"
+        fields: "summary_date,cal_total,steps,daily_movement"
       });
 
       console.log("RESULT", result);

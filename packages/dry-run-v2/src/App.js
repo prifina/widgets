@@ -163,7 +163,9 @@ const class_5min =
       }
     }
   };
-
+  const toIsoDate = (date) => {
+    return [date.getFullYear(), (date.getMonth() + 1).toString().padStart(2, "0"), date.getDate().toString().padStart(2, "0")].join("-")
+  }
   useEffect(() => {
     async function init() {
       // init callback function for background updates/notifications
@@ -174,7 +176,9 @@ const class_5min =
       const d = new Date();
 
       const dd = d.setDate(d.getDate() - 14);
-      const dateStr = new Date(dd).toISOString().split("T")[0];
+      //const dateStr = new Date(dd).toISOString().split("T")[0];
+      const dateStr = toIsoDate(new Date(dd));
+
 
       const filter = {
         ["s3::date"]: {

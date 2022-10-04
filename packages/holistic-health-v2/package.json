@@ -61,7 +61,7 @@
     "@chakra-ui/react": "^1.6.7",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "@prifina/oura": "^0.0.23",
+    "@prifina/oura": "^0.0.24",
     "framer-motion": "^4",
     "recharts": "^2.0.10"
   }

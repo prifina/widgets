@@ -140,14 +140,20 @@ const App = (props) => {
       init();
     }
   }, []);
+  const toIsoDate = (date) => {
+    return [date.getFullYear(), (date.getMonth() + 1).toString().padStart(2, "0"), date.getDate().toString().padStart(2, "0")].join("-")
+  }
   useEffect(() => {
     async function getData() {
 
       let d = new Date();
 
-      const ddd = d.setDate(d.getDate() - period);
+      const dd = d.setDate(d.getDate() - period);
 
-      const asyncDateStr = new Date(ddd).toISOString().split("T")[0];
+      //const asyncDateStr = new Date(ddd).toISOString().split("T")[0];
+
+      const asyncDateStr = toIsoDate(new Date(dd));
+
 
       const asyncFilter = {
         ["s3::date"]: {
