@@ -34,7 +34,7 @@ const Container = styled.div`
 // const appID = "4TunCi3rwTFsN814u2BDqa";
 
 const asyncFalseData = [
-  "summary_date,score_resting_hr",
+  "summary_date,score_resting_hr",  // hr_lowest instead
   "2022-09-04,86",
   "2022-09-05,98",
   "2022-09-06,65",
@@ -58,7 +58,7 @@ const App = (props) => {
     let filterData = data;
 
     //const keys = filterData[0].split(",");
-    const keys = "summary_date,score_resting_hr".split(",");
+    const keys = "summary_date,hr_lowest".split(",");
     let newArray = [];
     //console.log("keys", keys);
     if (stage === "dev") {
@@ -74,7 +74,7 @@ const App = (props) => {
       })
       //console.log(newData)
 
-      const newDataObj = { "summary_date": newData[0], "score_resting_hr": parseInt(newData[1]), };
+      const newDataObj = { "summary_date": newData[0], "hr_lowest": parseInt(newData[1]), };
 
       let newDate = new Date(newDataObj.summary_date);
 
@@ -104,7 +104,7 @@ const App = (props) => {
     console.log("process result", newArray);
 
     let avg = newArray.reduce((acc, val) => {
-      return acc + val.score_resting_hr / newArray.length;
+      return acc + val.hr_lowest / newArray.length;
     }, 0);
 
     setAvg(Math.ceil(avg));
@@ -163,9 +163,9 @@ const App = (props) => {
 
       console.log("ASYNC FILTER", asyncFilter);
 
-      const asyncResult = await API[APP_ID].Oura.queryReadinessSummariesAsync({
+      const asyncResult = await API[APP_ID].Oura.querySleepDataAsync({
         filter: asyncFilter,
-        fields: "summary_date,score_resting_hr",
+        fields: "summary_date,hr_lowest",
       });
       if (stage === "dev") {
 
@@ -287,7 +287,7 @@ const App = (props) => {
               <Line
                 name="Resting HR"
                 type="monotoneX"
-                dataKey="score_resting_hr"
+                dataKey="hr_lowest"
                 stroke="#FFF500"
                 strokeWidth={2}
                 activeDot={{ r: 2 }}

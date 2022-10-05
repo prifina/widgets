@@ -155,7 +155,7 @@ const App = (props) => {
           <Text color="white">{date}</Text>
 
           <IconButton
-            disabled={day === 1 ? true : false}
+            disabled={day === 0 ? true : false}
             style={{
               background: "transparent",
               border: 0,

@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk_prifina_widgets_oura_sleep_v2=self.webpackChunk_prifina_widgets_oura_sleep_v2||[]).push([[807],{4807:(M,e,D)=>{D.r(e);var t=D(7900),N=D.n(t),g=D(4149),j=D(2734);const a="cECGHdLTCpjaimqviz7N2s";var z=D(9996),I=D(6827),u=D(8703),c=D(8445),i=D(6656),r=D(3258),n=D(4912),A=D(5484),y=D(5556),l=D(3131),o=D(2655),L=D(2418);const T=g.ZP.div`
+"use strict";(self.webpackChunk_prifina_widgets_oura_sleep_v2=self.webpackChunk_prifina_widgets_oura_sleep_v2||[]).push([[807],{4807:(M,e,D)=>{D.r(e);var t=D(7900),N=D.n(t),g=D(4149),j=D(2734);const a="cECGHdLTCpjaimqviz7N2s";var z=D(3280),I=D(6827),u=D(8703),c=D(8445),i=D(6656),r=D(3258),n=D(4912),A=D(5484),y=D(5556),l=D(3131),o=D(2655),L=D(2418);const T=g.ZP.div`
   height: 300px;
   width: 300px;
   border-radius: 10px;

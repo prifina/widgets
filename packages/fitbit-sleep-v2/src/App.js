@@ -83,7 +83,8 @@ const App = (props) => {
     }
   };
 
-  const [day, setDay] = useState(1);
+  // fitbit has notification, so this can be current day 
+  const [day, setDay] = useState(0);
   const [date, setDate] = useState();
 
   useEffect(() => {
@@ -179,7 +180,7 @@ const App = (props) => {
           <Text>{date}</Text>
 
           <IconButton
-            disabled={day === 1 ? true : false}
+            disabled={day === 0 ? true : false}
             style={{
               background: "transparent",
               border: 0,

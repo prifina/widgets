@@ -39,7 +39,8 @@ aws s3 sync fitbit-sleep-v2/dist/ s3://prifina-apps-429117803886-us-east-1/cMgc1
 # aws s3 sync oura-activity-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x7B9cQVF1KBiKYjwXpb5pAe/0.0.1/ --region us-east-1 --profile prifina_dev
 # aws s3 sync oura-effort-v2/dist/ s3://prifina-apps-429117803886-us-east-1/iGypDtJmrX9p9eTGryhobr/0.0.1/ --region us-east-1 --profile prifina_dev
 # aws s3 sync oura-heart-v2/dist/ s3://prifina-apps-429117803886-us-east-1/nsEjj21WhsSAhPigePiLSY/0.0.1/ --region us-east-1 --profile prifina_dev
-# aws s3 sync oura-sleep-v2/dist/ s3://prifina-apps-429117803886-us-east-1/cECGHdLTCpjaimqviz7N2s/0.0.1/ --region us-east-1 --profile prifina_dev
+
+aws s3 sync oura-sleep-v2/dist/ s3://prifina-apps-429117803886-us-east-1/cECGHdLTCpjaimqviz7N2s/0.0.1/ --region us-east-1 --profile prifina_dev
 
                                      
 aws s3 sync garmin-activity-v2/dist/ s3://prifina-apps-429117803886-us-east-1/x7z3C1ZMdzbrkBtPg3cFLNz/1/ --region us-east-1 --profile prifina_dev
