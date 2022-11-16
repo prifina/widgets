@@ -13,6 +13,8 @@ const SideContainer = styled.div`
   width: ${props => props.width};
 `;
 const Form = styled(Sidebar)`
+height:100;
+
   .sidebar {
     flex: 0.35;
     /* height: 100vh; */
