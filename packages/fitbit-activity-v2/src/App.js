@@ -56,16 +56,17 @@ const App = (props) => {
     let newData = data;
 
     console.log("newData", newData);
-
+    /*
     let sumDistance = newData.distances.reduce((acc, val) => {
       return acc + val.distance;
     }, 0);
-
+    */
+    const sumDistance = newData.distances.total;
     setProcessedData(newData);
 
-    setDistance(sumDistance.toFixed(4) * 1000);
+    setDistance(sumDistance);
 
-    Object.assign(newData, { distance: Number(sumDistance.toFixed(4) * 1000) });
+    Object.assign(newData, { distance: sumDistance });
 
     let arr = [newData];
 

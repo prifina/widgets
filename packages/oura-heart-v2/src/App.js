@@ -120,7 +120,7 @@ const App = (props) => {
     ) {
       // process async data
       if (
-        payload.data.dataconnector === "Oura/queryReadinessSummariesAsync" &&
+        payload.data.dataconnector === "Oura/querySleepDataAsync" &&
         payload.data.content.length > 1
       ) {
         processAsyncData(payload.data.content);
