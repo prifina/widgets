@@ -383,7 +383,7 @@ sender: "tero"
 
   return (
     <ChatContainer width={mode === 1 ? "60%" : "100%"}>
-      <div className={className}>
+      <div className={className} style={{ "height": "100%" }}>
         <div className="chat">
           <div className="chat__nav">
             {mode === 3 &&
@@ -458,7 +458,7 @@ sender: "tero"
 
 export default Form;
   /*
-  data:
+data:
 chatId: "hamza-id"
 message: "hi"
 receiver: "hamza-id"

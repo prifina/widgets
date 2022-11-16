@@ -217,10 +217,12 @@ const IMessage = (props) => {
     <>
 
       {!loading && <AppContainer>
+        {/* 
         <div>
           <button onClick={addMsg}>New Message</button>
           <button onClick={addMsg2}>New Message2</button>
         </div>
+        */}
         {(mode === 1 || mode === 2) && <Sidebar />}
         {(mode === 1 || mode === 3) && <Chat newChats={newChats} />}
       </AppContainer>}

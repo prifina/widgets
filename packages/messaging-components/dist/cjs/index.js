@@ -1580,7 +1580,10 @@ function Chat(_ref) {
   return /*#__PURE__*/React__default["default"].createElement(ChatContainer, {
     width: mode === 1 ? "60%" : "100%"
   }, /*#__PURE__*/React__default["default"].createElement("div", {
-    className: className
+    className: className,
+    style: {
+      "height": "100%"
+    }
   }, /*#__PURE__*/React__default["default"].createElement("div", {
     className: "chat"
   }, /*#__PURE__*/React__default["default"].createElement("div", {
@@ -1716,7 +1719,10 @@ function SidebarChat(_ref) {
     className: className
   }, /*#__PURE__*/React__default["default"].createElement("div", {
     className: "sidebarChat",
-    "data-chatid": id
+    "data-chatid": id,
+    style: {
+      "height": "100%"
+    }
   }, /*#__PURE__*/React__default["default"].createElement(core.Avatar, {
     src: (_info$ = info[0]) === null || _info$ === void 0 ? void 0 : _info$.photo
   }), /*#__PURE__*/React__default["default"].createElement("div", {
@@ -1766,7 +1772,10 @@ function Sidebar(_ref) {
   return /*#__PURE__*/React__default["default"].createElement(SideContainer, {
     width: mode === 1 ? "40%" : "100%"
   }, /*#__PURE__*/React__default["default"].createElement("div", {
-    className: className
+    className: className,
+    style: {
+      "height": "100%"
+    }
   }, /*#__PURE__*/React__default["default"].createElement("div", {
     className: "sidebar"
   }, /*#__PURE__*/React__default["default"].createElement("div", {
@@ -1841,11 +1850,11 @@ var IMessage = function IMessage(props) {
       init = _useStore.init,
       check = _useStore.check,
       chats = _useStore.chats,
-      newChats = _useStore.newChats,
-      currentChat = _useStore.currentChat,
-      createTestMessage = _useStore.createTestMessage,
-      currentUser = _useStore.currentUser;
+      newChats = _useStore.newChats;
 
+  _useStore.currentChat;
+  _useStore.createTestMessage;
+  _useStore.currentUser;
   var initRef = React.useRef(false); // const datamodels = [];
   // init();
 
@@ -1867,211 +1876,7 @@ var IMessage = function IMessage(props) {
   React.useEffect(function () {
     console.log("NEW CHATS ", newChats);
   }, [newChats]);
-  /*
-  // init hook and get provider api services...
-  const {
-    currentUser,
-    onUpdate,
-    API,
-    registerDataConnector,
-    unSubscribe,
-    check,
-  } = usePrifina();
-  const [hooksReady, setHooks] = useState(false);
-  const [newChat, setNewChat] = useState(0);
-  const chat = useRef({});
-  const subscriptionHandler = useRef(null);
-  const [newMessage, setNewMessage] = useState([]);
-  const [newChatMessage, setNewChatMessage] = useState([]);
-  */
-
-  /*
-    const dataUpdate = (payload) => {
-      console.log(
-        "UPDATE TEST PAYLOAD",
-        new Date().toISOString(),
-        payload,
-        chat.current
-      );
-  
-      if (payload?.error !== undefined) {
-        // what kind of error....
-        if (
-          payload.error?.errors !== undefined &&
-          Array.isArray(payload.error.errors)
-        ) {
-          // possible subscription expiration error...
-          if (payload.error.errors.length > 0) {
-            let errorCodes = {};
-            payload.error.errors.forEach((err) => {
-              // identity token that was passed is expired or is not valid.
-              if (
-                err?.message !== undefined &&
-                err.message.indexOf("service#ExpiredTokenException") > -1
-              ) {
-                errorCodes["SUBSCRIPTION_EXPIRED"] = true;
-              }
-            });
-  
-            if (errorCodes?.SUBSCRIPTION_EXPIRED) {
-              console.log(check());
-              unSubscribe(appID, subscriptionHandler.current);
-              alert("Reload page...");
-            }
-          }
-        }
-      }
-    
-      if (payload?.addMessage !== undefined) {
-        const statusRes = JSON.parse(payload.addMessage.result);
-        if (statusRes.cnt > 0) {
-         
-          API[appID].Messaging.queryGetUnreadMessages({}).then((m) => {
-            console.log("UNREAD ", m);
-  
-            // console.log("UNREAD ", m.data);
-            //console.log("UNREAD ", Object.keys(m.data));
-  
-            let newChatMessages = [];
-            let newMessages = [];
-            if (m.data.getUnreadMsgs.length > 0) {
-              m.data.getUnreadMsgs.forEach((mm) => {
-                console.log("UNREAD UPDATE ", chat.current, mm);
-  
-                if (
-                  chat.current?.chatId !== undefined &&
-                  (mm.sender === chat.current.chatId ||
-                    m.chatId === currentUser.uuid)
-                ) {
-                  newChatMessages.push(mm);
-                }
-  
-                newMessages.push(mm);
-              });
-            }
-            if (newMessages.length > 0) {
-              setNewMessage(newMessages);
-            }
-            if (newChatMessages.length > 0) {
-              setNewChatMessage(newChatMessages);
-            }
-  
-            //setNewMessage(m.data.queryGetUnreadMessages);
-            //setNewChatMessage(m.data.queryGetUnreadMessages);
-          });
-          //}
-        }
-      }
-    };
-    useEffect(() => {
-      // init callback function for background updates/notifications
-      console.log("SUBS HANDLER ", subscriptionHandler.current);
-      const onUpdateID = onUpdate(appID, dataUpdate);
-      // register datasource modules
-      registerDataConnector(appID, [IM]);
-      //registerClient([data.appSyncClient]);
-  
-      API[appID].Messaging.subscribeMessagingStatus({
-        variables: {
-          receiver: currentUser.uuid,
-        },
-      }).then(() => {
-        subscriptionHandler.current = onUpdateID;
-        setHooks(true);
-      });
-  
-      return () => {
-        console.log("HOOK UNLOAD....");
-        unSubscribe(appID, subscriptionHandler.current);
-      };
-    }, []);
-  
-    const initChat = (receiver) => {
-      console.log("CHAT ", receiver, newChat);
-      chat.current = receiver;
-      setNewChat(newChat + 1);
-    };
-    */
-
-  var addMsg = /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var newMsg;
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              if (!((currentChat === null || currentChat === void 0 ? void 0 : currentChat.chatId) !== undefined)) {
-                _context.next = 6;
-                break;
-              }
-
-              newMsg = prompt("Please enter msg");
-
-              if (!(newMsg !== null && newMsg !== "")) {
-                _context.next = 6;
-                break;
-              } //const chats = document.querySelectorAll("div[data-chatId]");
-              //const firstChat = chats[0].dataset["chatid"];
-
-
-              console.log("MSG ", newMsg);
-              _context.next = 6;
-              return createTestMessage(newMsg, currentChat.chatId, currentUser.uuid, currentChat.chatId);
-
-            case 6:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }));
-
-    return function addMsg() {
-      return _ref.apply(this, arguments);
-    };
-  }();
-
-  var addMsg2 = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var newMsg, _chats, chatId;
-
-      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              newMsg = prompt("Please enter msg");
-
-              if (!(newMsg !== null && newMsg !== "")) {
-                _context2.next = 7;
-                break;
-              }
-
-              _chats = document.querySelectorAll("div[data-chatId]");
-              console.log("MSG2 ", _chats, newMsg);
-              chatId = _chats[3].dataset["chatid"]; //const firstChat = chats[0].dataset["chatid"];
-              //(msg,msgSender,msgReceiver,msgChatId)=
-
-              _context2.next = 7;
-              return createTestMessage(newMsg, chatId, currentUser.uuid, chatId);
-
-            case 7:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    }));
-
-    return function addMsg2() {
-      return _ref2.apply(this, arguments);
-    };
-  }();
-
-  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, !loading && /*#__PURE__*/React__default["default"].createElement(AppContainer, null, /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("button", {
-    onClick: addMsg
-  }, "New Message"), /*#__PURE__*/React__default["default"].createElement("button", {
-    onClick: addMsg2
-  }, "New Message2")), (mode === 1 || mode === 2) && /*#__PURE__*/React__default["default"].createElement(Form, null), (mode === 1 || mode === 3) && /*#__PURE__*/React__default["default"].createElement(Form$2, {
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, !loading && /*#__PURE__*/React__default["default"].createElement(AppContainer, null, (mode === 1 || mode === 2) && /*#__PURE__*/React__default["default"].createElement(Form, null), (mode === 1 || mode === 3) && /*#__PURE__*/React__default["default"].createElement(Form$2, {
     newChats: newChats
   })), loading && /*#__PURE__*/React__default["default"].createElement("div", null, "Loading"));
 };

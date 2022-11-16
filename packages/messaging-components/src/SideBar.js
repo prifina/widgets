@@ -91,7 +91,7 @@ function Sidebar({ className }) {
   */
   return (
     <SideContainer width={mode === 1 ? "40%" : "100%"}>
-      <div className={className}>
+      <div className={className} style={{ "height": "100%" }}>
         <div className="sidebar">
           <div className="sidebar__header">
             <Avatar src={currentUser?.image || ""} className="sidebar__avatar" />

@@ -30,16 +30,16 @@ const Form = styled(SidebarChat)`
 `;
 
 function SidebarChat({ id, chatName, info, className }) {
-/*
-  const { currentUser,chats,chatInfo } = useStore(
-    (state) => ({ currentUser: state.currentUser, chats: state.chats,chatInfo:state.chatInfo }),
-    shallow
-  )
-
-  const { appID, API, receiver, initChat, newMessage } = useAppContext();
-  //console.log("RECEIVER ", receiver);
-  const [chatInfo, setChatInfo] = useState([]);
-*/
+  /*
+    const { currentUser,chats,chatInfo } = useStore(
+      (state) => ({ currentUser: state.currentUser, chats: state.chats,chatInfo:state.chatInfo }),
+      shallow
+    )
+  
+    const { appID, API, receiver, initChat, newMessage } = useAppContext();
+    //console.log("RECEIVER ", receiver);
+    const [chatInfo, setChatInfo] = useState([]);
+  */
   /*
       if (id !== "") {
        
@@ -61,48 +61,49 @@ function SidebarChat({ id, chatName, info, className }) {
         );
       }
       */
+
+  /*      
+    useEffect(() => {
+      if (newMessage.length === 0) {
+        
+        setChatInfo([info]);
+      } else {
+        console.log("SIDEBAR NEW MSGS from Context", id, newMessage);
+        let newMessages = [];
+        newMessage.forEach((m) => {
+          if (m.sender === id) {
+            const mIdx = newMessages.findIndex((mi) => mi.sender === m.sender);
   
-/*      
-  useEffect(() => {
-    if (newMessage.length === 0) {
-      
-      setChatInfo([info]);
-    } else {
-      console.log("SIDEBAR NEW MSGS from Context", id, newMessage);
-      let newMessages = [];
-      newMessage.forEach((m) => {
-        if (m.sender === id) {
-          const mIdx = newMessages.findIndex((mi) => mi.sender === m.sender);
-
-          if (mIdx === -1) {
-            newMessages.push(m);
-          } else {
-            //newMessages[mIdx] = m;
+            if (mIdx === -1) {
+              newMessages.push(m);
+            } else {
+              //newMessages[mIdx] = m;
+            }
           }
+        });
+        const lastIndex = newMessages.length - 1;
+        console.log("MSG IDX ", lastIndex, newMessages[lastIndex]);
+        if (lastIndex > -1) {
+          setChatInfo([
+            {
+              message: newMessages[lastIndex].body,
+              timestamp: newMessages[lastIndex].createdAt,
+            },
+          ]);
         }
-      });
-      const lastIndex = newMessages.length - 1;
-      console.log("MSG IDX ", lastIndex, newMessages[lastIndex]);
-      if (lastIndex > -1) {
-        setChatInfo([
-          {
-            message: newMessages[lastIndex].body,
-            timestamp: newMessages[lastIndex].createdAt,
-          },
-        ]);
       }
-    }
-  }, [id, newMessage]);
-
-   // onClick={() => initChat({ chatId: id, name: chatName })}
-  */
+    }, [id, newMessage]);
+  
+     // onClick={() => initChat({ chatId: id, name: chatName })}
+    */
 
   return (
     <div className={className}>
       <div
-       
+
         className="sidebarChat"
         data-chatid={id}
+        style={{ "height": "100%" }}
       >
         <Avatar src={info[0]?.photo} />
         <div className="sidebarChat__info">
