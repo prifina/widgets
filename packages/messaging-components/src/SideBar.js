@@ -76,7 +76,7 @@ function Sidebar({ className }) {
     shallow
   )
 
-  console.log("SIDEBAR ", chats, chatInfo);
+  console.log("SIDEBAR 1", chats, chatInfo);
   /*
     const addChat = () => {
       const chatName = prompt("Please enter a chat name");

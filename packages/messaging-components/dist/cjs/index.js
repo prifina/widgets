@@ -1749,7 +1749,7 @@ function Sidebar(_ref) {
       chatInfo = _useStore.chatInfo,
       initChat = _useStore.initChat;
 
-  console.log("SIDEBAR ", chats, chatInfo);
+  console.log("SIDEBAR 1", chats, chatInfo);
   /*
     const addChat = () => {
       const chatName = prompt("Please enter a chat name");
