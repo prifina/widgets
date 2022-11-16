@@ -3,20 +3,22 @@
  * This file is not bundled with the library during the build process.
  */
 
- import App from "./App";
- import React from "react";
- 
+import App from "./App";
+import React from "react";
+
 import { createRoot } from 'react-dom/client';
- import { PrifinaProvider, PrifinaContext } from "@prifina/hooks-v2";
+import { PrifinaProvider, PrifinaContext } from "@prifina/hooks-v2";
 
 
- const LocalComponent = (props) => {
- 
+const LocalComponent = (props) => {
+
   return (
     <PrifinaProvider activeApp={"WIDGET"} stage={"dev"} Context={PrifinaContext}>
-      <App {...props} />
-     </PrifinaProvider>
-    
+      <div style={{ border: "1px solid black", margin: "100px", height: "600px", "width": "300px" }}>
+        <App {...props} />
+      </div>
+    </PrifinaProvider>
+
   );
 };
 const container = document.getElementById('root');

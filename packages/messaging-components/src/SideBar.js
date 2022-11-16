@@ -15,7 +15,8 @@ const SideContainer = styled.div`
 const Form = styled(Sidebar)`
   .sidebar {
     flex: 0.35;
-    height: 100vh;
+    /* height: 100vh; */
+    height:100%;
     display: flex;
     flex-direction: column;
     background-color: #f5f5f5;
@@ -68,30 +69,30 @@ const Form = styled(Sidebar)`
 
 function Sidebar({ className }) {
 
-  const { mode,currentUser,chats,chatInfo,initChat } = useStore(
-    (state) => ({ mode:state.mode,currentUser: state.currentUser, chats: state.chats,chatInfo:state.chatInfo,initChat:state.initChat }),
+  const { mode, currentUser, chats, chatInfo, initChat } = useStore(
+    (state) => ({ mode: state.mode, currentUser: state.currentUser, chats: state.chats, chatInfo: state.chatInfo, initChat: state.initChat }),
     shallow
   )
 
-  console.log("SIDEBAR ",chats,chatInfo);
-/*
-  const addChat = () => {
-    const chatName = prompt("Please enter a chat name");
-    
-    // if (chatName) {
-    //   db.collection("chats").add({
-    //     chatName: chatName,
-    //   });
-    // }
-    
-  };
-*/
+  console.log("SIDEBAR ", chats, chatInfo);
+  /*
+    const addChat = () => {
+      const chatName = prompt("Please enter a chat name");
+      
+      // if (chatName) {
+      //   db.collection("chats").add({
+      //     chatName: chatName,
+      //   });
+      // }
+      
+    };
+  */
   return (
-    <SideContainer width={mode===1?"40%":"100%"}>
+    <SideContainer width={mode === 1 ? "40%" : "100%"}>
       <div className={className}>
         <div className="sidebar">
           <div className="sidebar__header">
-            <Avatar src={currentUser?.image||""} className="sidebar__avatar" />
+            <Avatar src={currentUser?.image || ""} className="sidebar__avatar" />
             <div className="sidebar__input">
               <SearchIcon />
               <input placeholder="Search" />
@@ -105,12 +106,12 @@ function Sidebar({ className }) {
 
           <div className="sidebar__chats">
             {chats.map(({ chatId, name }) => (
-              <div key={chatId} onClick={async () => await initChat({ chatId,name })}>
-              <SidebarChat
-                id={chatId}
-                info={chatInfo[chatId]||[]}
-                chatName={name}
-              />
+              <div key={chatId} onClick={async () => await initChat({ chatId, name })}>
+                <SidebarChat
+                  id={chatId}
+                  info={chatInfo[chatId] || []}
+                  chatName={name}
+                />
               </div>
             ))}
           </div>

@@ -1238,7 +1238,7 @@ var _templateObject$3, _templateObject2$1;
 var ChatContainer = styled__default["default"].div(_templateObject$3 || (_templateObject$3 = _taggedTemplateLiteral(["\n  /* */\n  width: ", ";\n"])), function (props) {
   return props.width;
 });
-var Form$2 = styled__default["default"](Chat)(_templateObject2$1 || (_templateObject2$1 = _taggedTemplateLiteral(["\n  .chat {\n    display: flex;\n    flex-direction: column;\n    flex: 0.65;\n    height: 100vh;\n    background-color: white;\n  }\n  .chat__nav {\n    height:20px;\n    background-color: #f5f5f5;\n  }\n  .nav__icon {\n    padding:0px;\n  }\n  .chat__header {\n    padding: 10px;\n    padding-top:0px;\n    padding-bottom:0px;\n    display: flex;\n    justify-content: space-between;\n    border-bottom: 1px solid lightgray;\n    background-color: #f5f5f5;\n  }\n\n  .chat__header > h4 {\n    font-weight: 500;\n    color: gray;\n  }\n\n  .chat__name {\n    color: black;\n  }\n\n  .chat__input {\n    display: flex;\n    align-items: center;\n    padding: 10px 20px;\n    border-top: 1px solid lightgray;\n    background-color: #f5f5f5;\n  }\n\n  .chat__input > form {\n    flex: 1;\n  }\n\n  .chat__messages {\n    flex: 1;\n    overflow: scroll;\n  }\n\n  /* Hide scrollbar for Chrome, Safari and Opera */\n  .chat__messages::-webkit-scrollbar {\n    display: none;\n  }\n\n  /* Hide scrollbar for IE, Edge and Firefox */\n  .chat__messages {\n    -ms-overflow-style: none; /* IE and Edge */\n    scrollbar-width: none; /* Firefox */\n  }\n\n  .chat__input > form > input {\n    width: 98%;\n    outline-width: 0;\n    border: 1px solid lightgray;\n    border-radius: 999px;\n    padding: 5px;\n  }\n\n  .chat__input > form > button {\n    display: none;\n  }\n"])));
+var Form$2 = styled__default["default"](Chat)(_templateObject2$1 || (_templateObject2$1 = _taggedTemplateLiteral(["\n  .chat {\n    display: flex;\n    flex-direction: column;\n    flex: 0.65;\n    /* height: 100vh; */\n    height:100%;\n    background-color: white;\n  }\n  .chat__nav {\n    height:20px;\n    background-color: #f5f5f5;\n  }\n  .nav__icon {\n    padding:0px;\n  }\n  .chat__header {\n    padding: 10px;\n    padding-top:0px;\n    padding-bottom:0px;\n    display: flex;\n    justify-content: space-between;\n    border-bottom: 1px solid lightgray;\n    background-color: #f5f5f5;\n  }\n\n  .chat__header > h4 {\n    font-weight: 500;\n    color: gray;\n  }\n\n  .chat__name {\n    color: black;\n  }\n\n  .chat__input {\n    display: flex;\n    align-items: center;\n    padding: 10px 20px;\n    border-top: 1px solid lightgray;\n    background-color: #f5f5f5;\n  }\n\n  .chat__input > form {\n    flex: 1;\n  }\n\n  .chat__messages {\n    flex: 1;\n    overflow: scroll;\n  }\n\n  /* Hide scrollbar for Chrome, Safari and Opera */\n  .chat__messages::-webkit-scrollbar {\n    display: none;\n  }\n\n  /* Hide scrollbar for IE, Edge and Firefox */\n  .chat__messages {\n    -ms-overflow-style: none; /* IE and Edge */\n    scrollbar-width: none; /* Firefox */\n  }\n\n  .chat__input > form > input {\n    width: 98%;\n    outline-width: 0;\n    border: 1px solid lightgray;\n    border-radius: 999px;\n    padding: 5px;\n  }\n\n  .chat__input > form > button {\n    display: none;\n  }\n"])));
 
 function useIsMountedRef() {
   var isMountedRef = React.useRef(null);
@@ -1622,7 +1622,7 @@ function Chat(_ref) {
   }))))));
 }
 /*
-    data:
+data:
 chatId: "hamza-id"
 message: "hi"
 receiver: "hamza-id"
@@ -1729,7 +1729,7 @@ var _templateObject$1, _templateObject2;
 var SideContainer = styled__default["default"].div(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral(["\n  /* */\n  width: ", ";\n"])), function (props) {
   return props.width;
 });
-var Form = styled__default["default"](Sidebar)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  .sidebar {\n    flex: 0.35;\n    height: 100vh;\n    display: flex;\n    flex-direction: column;\n    background-color: #f5f5f5;\n    border-right: 1px solid lightgray;\n  }\n\n  .sidebar__header {\n    display: flex;\n    align-items: center;\n    padding: 10px;\n    height: 50px;\n  }\n\n  .sidebar__avatar {\n    cursor: pointer;\n    margin: 10px;\n  }\n\n  .sidebar__input {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    flex: 1;\n    background-color: #e1e1e1;\n    color: gray;\n    border-radius: 5px;\n  }\n\n  .sidebar__input > input {\n    border: none;\n    background: transparent;\n    outline-width: 0;\n  }\n\n  .sidebar__chats {\n    overflow: scroll;\n  }\n\n  /* Hide scrollbar for Chrome, Safari and Opera */\n  .sidebar__chats::-webkit-scrollbar {\n    display: none;\n  }\n\n  /* Hide scrollbar for IE, Edge and Firefox */\n  .sidebar__chats {\n    -ms-overflow-style: none; /* IE and Edge */\n    scrollbar-width: none; /* Firefox */\n  }\n"])));
+var Form = styled__default["default"](Sidebar)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  .sidebar {\n    flex: 0.35;\n    /* height: 100vh; */\n    height:100%;\n    display: flex;\n    flex-direction: column;\n    background-color: #f5f5f5;\n    border-right: 1px solid lightgray;\n  }\n\n  .sidebar__header {\n    display: flex;\n    align-items: center;\n    padding: 10px;\n    height: 50px;\n  }\n\n  .sidebar__avatar {\n    cursor: pointer;\n    margin: 10px;\n  }\n\n  .sidebar__input {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    flex: 1;\n    background-color: #e1e1e1;\n    color: gray;\n    border-radius: 5px;\n  }\n\n  .sidebar__input > input {\n    border: none;\n    background: transparent;\n    outline-width: 0;\n  }\n\n  .sidebar__chats {\n    overflow: scroll;\n  }\n\n  /* Hide scrollbar for Chrome, Safari and Opera */\n  .sidebar__chats::-webkit-scrollbar {\n    display: none;\n  }\n\n  /* Hide scrollbar for IE, Edge and Firefox */\n  .sidebar__chats {\n    -ms-overflow-style: none; /* IE and Edge */\n    scrollbar-width: none; /* Firefox */\n  }\n"])));
 
 function Sidebar(_ref) {
   var className = _ref.className;
@@ -1816,7 +1816,7 @@ function Sidebar(_ref) {
 
 var _templateObject;
 
-var AppContainer = styled__default["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  /* */\n  display: flex;\n"])));
+var AppContainer = styled__default["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  /* */\n  display: flex;\n  height:100%;\n"])));
 
 var IMessage = function IMessage(props) {
   var data = props.data,
