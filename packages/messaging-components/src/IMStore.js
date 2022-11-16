@@ -17,6 +17,7 @@ const { Provider, useStore } = createContext(null);
 const StoreProvider = ({ componentProps, children }) => {
   //const { client } = useGraphQLContext();
   // console.log("PROVIDER CLIENT ", client);
+
   const {
     currentUser,
     onUpdate,

@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin =
   require("webpack").container.ModuleFederationPlugin;
-   
+
 const webpack = require("webpack");
 
 const deps = require('./package.json').dependencies;
@@ -43,9 +43,9 @@ module.exports = {
     ],
   },
   plugins: [
-   
-    new webpack.EnvironmentPlugin([ 'DEBUG','REACT_APP_ID']),
-   
+
+    new webpack.EnvironmentPlugin(['DEBUG', 'REACT_APP_ID', 'REACT_APP_VERSION']),
+
     new ModuleFederationPlugin({
       name: process.env.REACT_APP_ID,
       filename: "remoteEntry.js",
@@ -63,13 +63,13 @@ module.exports = {
           singleton: true, // only a single version of the shared module is allowed
           requiredVersion: deps["react-dom"]
         },
-         
-            '@prifina/hooks-v2': {
-                import: '@prifina/hooks-v2'
-              }  
-              
-          }
-        
+
+        '@prifina/hooks-v2': {
+          import: '@prifina/hooks-v2'
+        }
+
+      }
+
     }),
     new HtmlWebpackPlugin({
       //title: process.env.REACT_APP_ID,
