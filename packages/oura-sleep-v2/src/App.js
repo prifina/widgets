@@ -22,6 +22,7 @@ import {
   useFocusEffect,
 } from "@chakra-ui/react";
 
+import data from "./data.json"
 
 const Container = styled.div`
   width: ${ props => props.size ? props.size.split("x")[0] : "300px"};
@@ -124,12 +125,16 @@ const App = (props) => {
         fields: "summary_date,awake,light,deep,rem",
       });
 
-      setWeeklyProcessedData(processData(result.data.getDataObject.content, 7));
-      setMonthlyProcessedData(processData(result.data.getDataObject.content, 30));
-      setYearlyProcessedData(processData(result.data.getDataObject.content, 365));
+      if (stage === "dev") {
+        setWeeklyProcessedData([...data.weekData]);
+        setMonthlyProcessedData([...data.monthData]);
+        setYearlyProcessedData([...data.YearData]);
+      }
     }
     getData();
   }, [day]);
+
+  console.log(stage)
 
   return (
     <Container size={widgetDimensions[size]}>

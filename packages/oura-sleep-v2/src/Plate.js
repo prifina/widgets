@@ -176,17 +176,18 @@ const Plate = ({ id, date, day, setDay, selectedOption, availableOptions, chnage
             />
 
             <Tooltip
-              cursor={{ fill: "transparent" }}
-              contentStyle={{
-                background: "rgba(0, 0, 0, 0.9)",
-                padding: 5,
-                border: 0,
-                // width: 85,
-              }}
-              itemStyle={{ fontSize: 14 }}
-              formatter={(awake) => {
-                return secondsToTime(awake);
-              }}
+              // cursor={{ fill: "transparent" }}
+              // contentStyle={{
+              //   background: "rgba(0, 0, 0, 0.9)",
+              //   padding: 5,
+              //   border: 0,
+              //   // width: 85,
+              // }}
+              // itemStyle={{ fontSize: 14 }}
+              // formatter={(awake) => {
+              //   console.log(awake)
+              //   return secondsToTime(awake);
+              // }}
             />
 
             <Bar barSize={45} stackId="a" name="Awake" dataKey="awake" fill="#f3f3c2" />

@@ -1,0 +1,408 @@
+{
+  "weekData": [
+    {
+      "summary_date": "2023-01-23",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-24",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-25",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-26",
+      "awake": 0,
+      "light": 0,
+      "rem": 0,
+      "deep": 0,
+      "total": 0
+    },
+    {
+      "summary_date": "2023-01-27",
+      "awake": 0,
+      "light": 0,
+      "rem": 0,
+      "deep": 0,
+      "total": 0
+    },
+    {
+      "summary_date": "2023-01-28",
+      "awake": 0,
+      "light": 0,
+      "rem": 0,
+      "deep": 0,
+      "total": 0
+    },
+    {
+      "summary_date": "2023-01-29",
+      "awake": 0,
+      "light": 0,
+      "rem": 0,
+      "deep": 0,
+      "total": 0
+    }
+  ],
+  "monthData": [
+    {
+      "summary_date": "2023-01-01",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-02",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-03",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-04",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-05",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-06",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-07",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-08",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-09",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-10",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-11",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-12",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-13",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-14",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-15",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-16",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-17",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-18",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-19",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-20",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-21",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-22",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-23",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-24",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-25",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "2023-01-26",
+      "awake": 0,
+      "light": 0,
+      "rem": 0,
+      "deep": 0,
+      "total": 0
+    },
+    {
+      "summary_date": "2023-01-27",
+      "awake": 0,
+      "light": 0,
+      "rem": 0,
+      "deep": 0,
+      "total": 0
+    },
+    {
+      "summary_date": "2023-01-28",
+      "awake": 0,
+      "light": 0,
+      "rem": 0,
+      "deep": 0,
+      "total": 0
+    },
+    {
+      "summary_date": "2023-01-29",
+      "awake": 0,
+      "light": 0,
+      "rem": 0,
+      "deep": 0,
+      "total": 0
+    },
+    {
+      "summary_date": "2023-01-30",
+      "awake": 0,
+      "light": 0,
+      "rem": 0,
+      "deep": 0,
+      "total": 0
+    },
+    {
+      "summary_date": "2023-01-31",
+      "awake": 0,
+      "light": 0,
+      "rem": 0,
+      "deep": 0,
+      "total": 0
+    }
+  ],
+  "YearData": [
+    {
+      "summary_date": "January",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "February",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "March",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "Aprill",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "May",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "June",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "July",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "August",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "September",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "October",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "November",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    },
+    {
+      "summary_date": "December",
+      "awake": 1230,
+      "light": 10260,
+      "rem": 7140,
+      "deep": 2910,
+      "total": 20310
+    }
+  ]
+}
