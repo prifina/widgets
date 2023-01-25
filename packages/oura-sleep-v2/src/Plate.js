@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 import { secondsToTime } from "./functions"
@@ -8,7 +8,7 @@ import {
   Spacer,
   Text,
   Box,
-  Select,
+  // Select,
   Image,
   IconButton,
   useFocusEffect,
@@ -27,14 +27,33 @@ import {
 } from "recharts";
 
 
-const Plate = ({ date, day, processedData, setDay }) => {
+const Plate = ({ id, date, day, setDay, selectedOption, availableOptions, chnageAvalibleOptions, monthlyProcessedData, yearlyProcessedData, weeklyProcessedData }) => {
+  const handleChange = (e) => {
+    console.log("change")
+    chnageAvalibleOptions(id, e.target.value, selectedOption)
+  };
+  let processedData = {}
+
+  switch(selectedOption) {
+    case "Month":
+      processedData = monthlyProcessedData
+      break;
+    case "Year":
+      processedData = yearlyProcessedData
+      break;
+    case "Week":
+      processedData = weeklyProcessedData
+      break;
+  }
+
+  console.log(processedData)
+
   return (
     <Box
       style={{
         background: "rgba(251, 242, 242, 0.3)",
         borderRadius: 10,
         minWidth: 284,
-        // maxHeight: 279,
         flex: "1 1",
       }}
     >
@@ -47,9 +66,29 @@ const Plate = ({ date, day, processedData, setDay }) => {
         borderTopRightRadius={8}
         borderTopLeftRadius={8}
       >
-        <p>
-          123
-        </p>
+        {
+          availableOptions.length === 0 ?
+          <></>
+          :
+          <select
+            onChange={handleChange}
+            value={selectedOption}
+            style={{
+              background: "#FFA654",
+              border: 0,
+              borderRadius: 5,
+              padding: 3,
+              outline: "none",
+            }}
+          >
+            <option value={selectedOption} disabled >{selectedOption}</option>
+          {
+            availableOptions.map((item)=>(
+              <option value={item}>{item}</option>
+              ))
+          }
+        </select>
+        }
         <Flex>
           <IconButton
             style={{
@@ -150,10 +189,10 @@ const Plate = ({ date, day, processedData, setDay }) => {
               }}
             />
 
-            <Bar barSize={45} name="Awake" dataKey="awake" fill="#f3f3c2" />
-            <Bar barSize={45} name="Light" dataKey="light" fill="#FFA654" />
-            <Bar barSize={45} name="Deep" dataKey="deep" fill="#B96314" />
-            <Bar barSize={45} name="REM" dataKey="rem" fill="#6D3D10" />
+            <Bar barSize={45} stackId="a" name="Awake" dataKey="awake" fill="#f3f3c2" />
+            <Bar barSize={45} stackId="a" name="Light" dataKey="light" fill="#FFA654" />
+            <Bar barSize={45} stackId="a" name="Deep" dataKey="deep" fill="#B96314" />
+            <Bar barSize={45} stackId="a" name="REM" dataKey="rem" fill="#6D3D10" />
           </BarChart>
         </ResponsiveContainer>
       </Box>
