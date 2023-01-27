@@ -41,7 +41,6 @@ const Plate = ({ id, selectedOption, availableOptions, chnageAvalibleOptions, se
     case "Week":
       if (widgetsData.week.dates.length > 0){
         chartData = widgetsData.week.processedData
-        console.log(widgetsData)
         const startWeek = new Date(widgetsData.week.dates[0]);
         const endWeek = new Date(widgetsData.week.dates[1]);
         showenDate = `${months[startWeek.getMonth()].slice(0,3)} ${startWeek.getDate()} - ${months[endWeek.getMonth()].slice(0,3)} ${endWeek.getDate()} (${startWeek.getFullYear()})`;

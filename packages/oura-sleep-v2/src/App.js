@@ -81,7 +81,7 @@ const App = (props) => {
   }
 
   const dataUpdate = async (payload) => {
-    // console.log("UPDATE ", payload);
+    console.log("UPDATE ", payload);
 
     if (
       payload.hasOwnProperty("settings") &&
@@ -102,21 +102,19 @@ const App = (props) => {
       ) {
         // setProcessedData(); 
       }
-      // console.log("PAYLOAD DATA", payload);
+      console.log("PAYLOAD DATA", payload);
     }
   };
 
   const processAsyncData = (data,period) => {
-    // console.log("ORIGINAL PROCESS ASYNC DATA", data);
+    console.log("ORIGINAL PROCESS ASYNC DATA", data);
 
     let filterData = data;
 
     //const keys = filterData[0].split(",");
     const keys = "summary_date,awake,light,rem,deep,total".split(",");
     let newArray = [];
-    console.log("keys", keys);
     if (stage === "dev") {
-      console.log("test",filterData)
       const header = filterData[0].split(",");
       const rowData = filterData[1].split(",");
       const newData = [];
@@ -291,9 +289,6 @@ const App = (props) => {
       const previousYear  = fullDate.getFullYear() - widgetsData.year.offset;
       const startOfYear = toIsoDate(new Date(previousYear, 0, 1));
       const endOfYear = toIsoDate(new Date(previousYear, 11, 31));
-
-      console.log("startOfYear", startOfYear)
-      console.log(endOfYear)
 
       setWidgetsData(prev => ({
         ...prev,
