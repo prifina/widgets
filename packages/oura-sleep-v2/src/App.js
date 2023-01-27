@@ -100,7 +100,7 @@ const App = (props) => {
         payload.data.dataconnector === "Oura/querySleepSummariesAsync" &&
         payload.data.content.length > 1
       ) {
-        // setProcessedData(); 
+        processAsyncData(payload.data.content);
       }
       console.log("PAYLOAD DATA", payload);
     }
