@@ -7297,7 +7297,7 @@ dotenv-expand@^5.1.0:
   resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-5.1.0.tgz#3fbaf020bfd794884072ea26b1e9791d45a629f0"
   integrity sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==
 
-dotenv@^16.0.1:
+dotenv@^16.0.1, dotenv@^16.0.3:
   version "16.0.3"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.3.tgz#115aec42bac5053db3c456db30cc243a5a836a07"
   integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
@@ -12412,15 +12412,6 @@ react-test-renderer@^18.2.0:
     react-shallow-renderer "^16.15.0"
     scheduler "^0.23.0"
 
-react-three-fbx-viewer@*:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-three-fbx-viewer/-/react-three-fbx-viewer-1.0.0.tgz#30378a9216ca1f6b504e12eaa584def43061f253"
-  integrity sha512-966uaGEv0P0uNobCa8GRKiABciEZ6uMI0UNtzUo4cF+9dgFEoRQD75AwsMPGTcWSM4I6iXYw3n80tgH5OLFzWQ==
-  dependencies:
-    three "^0.94.0"
-    three-fbxloader-offical "^1.0.0"
-    three-orbit-controls "^82.1.0"
-
 react-three-fiber@0.0.0-deprecated:
   version "0.0.0-deprecated"
   resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-0.0.0-deprecated.tgz#c737242487d824cf9520307308b7e4c4071a278f"
@@ -14066,11 +14057,6 @@ three@^0.125.0:
   version "0.125.2"
   resolved "https://registry.yarnpkg.com/three/-/three-0.125.2.tgz#dcba12749a2eb41522e15212b919cd3fbf729b12"
   integrity sha512-7rIRO23jVKWcAPFdW/HREU2NZMGWPBZ4XwEMt0Ak0jwLUKVJhcKM55eCBWyGZq/KiQbeo1IeuAoo/9l2dzhTXA==
-
-three@^0.94.0:
-  version "0.94.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.94.0.tgz#4ce6db7f2bfbf79c2d73444aa6e3cfc08a32d762"
-  integrity sha512-UFyqFrb/CaTAHStYaPNxNeddNo/wlApRMJK0oIWjx5WMj/xhgXWKMRuAJ+leZBIA4wgeqifrbjKiwmNiysgMLg==
 
 through2@^2.0.0:
   version "2.0.5"

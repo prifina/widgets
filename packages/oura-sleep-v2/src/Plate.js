@@ -178,7 +178,7 @@ const Plate = ({ id, selectedOption, availableOptions, chnageAvalibleOptions, se
               border: 0,
               cursor: "pointer",
               fontSize: 19,
-              color: "#fff",
+              color: `${widgetsData[selectedOption.toLowerCase()].offset === 0 ? "#4c4c4c" : "#fff"}`,
             }}
             aria-label="Search database"
             icon={<ChevronRightIcon />}
