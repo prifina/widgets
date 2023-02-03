@@ -19,12 +19,21 @@ const App = (props) => {
   const [ouraScore, setOuraScore] = useState();
 
   const processData = (data) => {
-    console.log("OURA SCORE PROCESS DATA", data);
+    //console.log("OURA SCORE PROCESS DATA", data);
 
     let newData = data;
     console.log("OURA SCORE PROCESSED NEW DATA", newData);
+    let newScore = 0;
+    let i = newData.length - 1;
+    do {
+      // first col is summary_date
+      newScore = newData[i].split(",")[1];
+      i--;
+    }
+    while (newScore < 1 && i > 0);
 
-    setOuraScore(newData[1]);
+    //setOuraScore(newData[1]);
+    setOuraScore(newScore);
   };
 
   const dataUpdate = async (payload) => {
@@ -52,7 +61,7 @@ const App = (props) => {
       registerDataConnector(APP_ID, [Oura]);
 
       const d = new Date();
-      const dd = d.setDate(d.getDate() - 1);
+      const dd = d.setDate(d.getDate() - 7);
       // const dateStr = new Date(dd).toISOString().split("T")[0];
 
       const dateStr = toIsoDate(new Date(dd));
@@ -66,7 +75,7 @@ const App = (props) => {
         APP_ID
       ].Oura.queryReadinessSummariesAsync({
         filter: filter,
-        fields: "score",
+        fields: "summary_date,score",
       });
       console.log("activityResult", activityResult);
 

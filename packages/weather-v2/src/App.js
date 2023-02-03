@@ -14,7 +14,7 @@ import { days, months } from "./utils/periods";
 
 import { getDayIcon, getNightIcon } from "./utils/iconsMap";
 
-import {APP_ID} from "./environment";
+import { APP_ID } from "./environment";
 
 const containerStyle = {
   width: "300px",
@@ -57,6 +57,7 @@ const App = (props) => {
 
   const dataUpdate = (data) => {
     // should check the data payload... :)
+    console.log("WEATHER WIDGET UPDATE CALLBACK ", data);
 
     if (
       data.hasOwnProperty("settings") &&
@@ -207,8 +208,8 @@ const App = (props) => {
     const currentTemperature = weatherData.current.temp_c;
 
     const location = weatherData.location.name;
-    const locationTime = weatherData.location.localtime_epoch*1000;
-    
+    const locationTime = weatherData.location.localtime_epoch * 1000;
+
 
     const time = new Date(locationTime);
     const currentTime = time.toLocaleString("en-US", {
