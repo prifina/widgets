@@ -11,7 +11,7 @@ module.exports = merge(common, {
         static: {
             directory: path.join(__dirname, "dist"),
         },
-        port: 3004,
+        port: 3003,
     },
     output: {
         publicPath: "auto",

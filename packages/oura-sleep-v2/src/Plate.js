@@ -105,7 +105,7 @@ const Plate = ({ id, selectedOption, availableOptions, chnageAvalibleOptions, se
         background: "rgba(251, 242, 242, 0.3)",
         borderRadius: 10,
         minWidth: 284,
-        maxHeight: 280,
+        maxHeight: 270,
         flex: "1 1",
       }}
     >
@@ -254,7 +254,7 @@ const Plate = ({ id, selectedOption, availableOptions, chnageAvalibleOptions, se
                   fontSize: 13,
                   fill: "#fff",
                 }}
-                                label={{ value: 'MONTHS', position: 'top', dy: 45, fill:'white' }}
+                label={{ value: 'MONTHS', position: 'top', dy: 45, fill:'white' }}
               />}
             <YAxis
                 axisLine={false}

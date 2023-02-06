@@ -43,14 +43,14 @@ const App = (props) => {
   const { stage, check, onUpdate, API, registerDataConnector } = usePrifina();
   const [availableOptions, setAvailableOptions] = useState([]);
   const [widgetsInfo, setWidgetsInfo] = useState([]);
-  const [size, setSize] = useState("616x616");
+  const [size, setSize] = useState("600x600");
   const prifinaInit = useRef();
   const fullDate = new Date();
 
   // Small: "300x300"
-  // MediusWide: "616x300"
-  // MediumTall: "300x616"
-  // Large: "616x616"
+  // MediusWide: "600x300"
+  // MediumTall: "300x600"
+  // Large: "600x600"
 
   const [widgetsData, setWidgetsData] = useState({
     week: {
@@ -176,7 +176,7 @@ const App = (props) => {
 
   //Update Size
   useEffect(() => {
-    if(size === "616x616"){
+    if(size === "600x600"){
       setWidgetsInfo([{
         id: 1,
         option: "Week"
