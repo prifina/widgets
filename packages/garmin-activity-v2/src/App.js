@@ -31,12 +31,15 @@ import {
 } from "recharts";
 
 const Container = styled.div`
-  height: 300px;
-  width: 300px;
+  width: ${ props => props.size && props.size.split("x")[0]};
+  height: ${ props => props.size &&  props.size.split("x")[1]};
   border-radius: 10px;
   background: linear-gradient(180deg, #2e302d 0%, #69d3c7 149.83%);
 
   padding: 11px 8px 0px 8px;
+  
+  display: flex;
+  flex-direction: column;
 `;
 
 // unique appID for the widget....
@@ -45,11 +48,32 @@ const Container = styled.div`
 const App = (props) => {
   const { stage, check, onUpdate, API, registerDataConnector } = usePrifina();
 
+  const [numberOfPlate, setNumberOfPlate] = useState(1)
+  const [size, setSize] = useState("300x300");
+
+  // Small: "300x300"
+  // MediusWide: "600x300"
+  // MediumTall: "300x600"
+  // Large: "600x600"
+
   // const stage = "dev";
 
   const [displayData, setDisplayData] = useState();
 
   const [processedData, setProcessedData] = useState();
+
+  useEffect(() => {
+    switch(size) {
+      case "600x600":
+        setNumberOfPlate(3)
+        break;
+      case "300x300":
+        setNumberOfPlate(1)
+        break;
+      default:
+        setNumberOfPlate(2)
+    }
+  }, [size]);
 
   const processData = (data) => {
     console.log("ORIGINAL PROCESS DATA", data);
@@ -81,6 +105,14 @@ const App = (props) => {
       //   processData(payload.data.content);
       // }
       console.log("PAYLOAD DATA", payload);
+    }
+    
+    if (
+      payload.hasOwnProperty("settings") &&
+      typeof data.settings === "object" &&
+      payload.settings.hasOwnProperty("size")
+    ) {
+      setSize(payload.settings.size);
     }
   };
 
@@ -141,131 +173,144 @@ const App = (props) => {
   console.log("day", day);
 
   return (
-    <Container>
-      <Flex alignItems="center" mb={21}>
-        <Text fontSize={16} color="white" fontWeight={700} ml={9} mr={95}>
+    <Container size={size}>
+      <Flex alignItems="center" justify="space-between" mb={9}>
+        <Text fontSize={16} color="white" fontWeight={700} ml={9}>
           Activity widget
         </Text>
-        <Image src={GarminIcon} />
+        <Image src={GarminIcon} style={{marginRight:"30px"}}/>
       </Flex>
-      <Box>
-        <Flex
-          h={32}
-          justifyContent="space-between"
-          alignItems="center"
-          bg="#236B5F"
-          padding="0px 65px 0px 65px"
-          borderTopRightRadius={8}
-          borderTopLeftRadius={8}
-        >
-          <IconButton
+      <Flex gap={8} wrap="wrap" style={{flex: 1, marginBottom: 10}}>
+        {Array.from({ length: numberOfPlate }, (_, i) => (
+          <Box
+            key={i}
             style={{
-              background: "transparent",
-              border: 0,
-              cursor: "pointer",
-              fontSize: 19,
+              background: "rgba(251, 242, 242, 0.3)",
+              borderRadius: 10,
+              minWidth: 284,
+              maxHeight: 270,
+              flex: "1 1",
             }}
-            aria-label="Search database"
-            icon={<ChevronLeftIcon color="white" />}
-            onClick={async () => {
-              setDay(day + 1);
-            }}
-          />
-          <Text color="white">{date}</Text>
-
-          <IconButton
-            disabled={day === 0 ? true : false}
-            style={{
-              background: "transparent",
-              border: 0,
-              cursor: "pointer",
-              fontSize: 19,
-            }}
-            aria-label="Search database"
-            icon={<ChevronRightIcon color="white" />}
-            onClick={async () => {
-              setDay(day - 1);
-            }}
-          />
-        </Flex>
-        <Box
-          height={190}
-          style={{
-            background: "rgba(251, 242, 242, 0.3)",
-            borderBottomLeftRadius: 8,
-            borderBottomRightRadius: 8,
-            paddingTop: 10,
-          }}
-        >
-          <Flex
-            width="100%"
-            justifyContent="space-between"
-            style={{ paddingRight: 55, paddingLeft: 55 }}
           >
-            <Flex alignItems="center">
-              <FireIcon color="#FF5977" />
-              <Text ml={3} color="#FF5977">
-                {processedData === undefined
-                  ? 0
-                  : processedData.bmrkilocalories}
-              </Text>
+            <Flex
+              h={32}
+              justifyContent="space-between"
+              alignItems="center"
+              bg="#236B5F"
+              padding="0px 65px 0px 65px"
+              borderTopRightRadius={8}
+              borderTopLeftRadius={8}
+            >
+              <IconButton
+                style={{
+                  background: "transparent",
+                  border: 0,
+                  cursor: "pointer",
+                  fontSize: 19,
+                }}
+                aria-label="Search database"
+                icon={<ChevronLeftIcon color="white" />}
+                onClick={async () => {
+                  setDay(day + 1);
+                }}
+              />
+              <Text color="white">{date}</Text>
+    
+              <IconButton
+                disabled={day === 0 ? true : false}
+                style={{
+                  background: "transparent",
+                  border: 0,
+                  cursor: "pointer",
+                  fontSize: 19,
+                }}
+                aria-label="Search database"
+                icon={<ChevronRightIcon color="white" />}
+                onClick={async () => {
+                  setDay(day - 1);
+                }}
+              />
             </Flex>
-            <Flex alignItems="center">
-              <StepsIcon color="#5AEDD2" />
-              <Text ml={3} color="#5AEDD2">
-                {processedData === undefined ? 0 : processedData.steps}
-              </Text>
-            </Flex>
-            <Flex alignItems="center">
-              <DistanceIcon color="#F8F043" />
-              <Text ml={3} color="#F8F043">
-                {processedData === undefined
-                  ? 0
-                  : processedData.distanceinmeters}
-              </Text>
-            </Flex>
-          </Flex>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              style={{ cursor: "pointer" }}
-              data={displayData}
-              margin={{
-                top: 5,
-                right: 0,
-                left: 0,
-                bottom: 30,
+            <Box
+              style={{
+                background: "rgba(251, 242, 242, 0.3)",
+                borderBottomLeftRadius: 8,
+                borderBottomRightRadius: 8,
+                paddingTop: 10,
+                height: 'calc(100% - 32px)',
               }}
             >
-              <CartesianGrid strokeDasharray="none" stroke="null" />
-              <XAxis hide dataKey="name" />
-              <YAxis hide />
-              <Tooltip
-                cursor={{ fill: "transparent" }}
-                contentStyle={{
-                  background: "rgba(0, 0, 0, 0.6)",
-                  padding: 5,
-                  border: 0,
-                }}
-                itemStyle={{ fontSize: 14 }}
-              />
-              <Bar
-                barSize={45}
-                name="Active calories"
-                dataKey="bmrkilocalories"
-                fill="#FF5977"
-              />
-              <Bar barSize={45} name="Steps" dataKey="steps" fill="#5AEDD2" />
-
-              <Bar
-                barSize={45}
-                name="Distance"
-                dataKey="distanceinmeters"
-                fill="#F8F043"
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </Box>
-      </Box>
+              <Flex
+                width="100%"
+                justifyContent="space-between"
+                style={{ paddingRight: 55, paddingLeft: 55 }}
+              >
+                <Flex alignItems="center">
+                  <FireIcon color="#FF5977" />
+                  <Text ml={3} color="#FF5977">
+                    {processedData === undefined
+                      ? 0
+                      : processedData.bmrkilocalories}
+                  </Text>
+                </Flex>
+                <Flex alignItems="center">
+                  <StepsIcon color="#5AEDD2" />
+                  <Text ml={3} color="#5AEDD2">
+                    {processedData === undefined ? 0 : processedData.steps}
+                  </Text>
+                </Flex>
+                <Flex alignItems="center">
+                  <DistanceIcon color="#F8F043" />
+                  <Text ml={3} color="#F8F043">
+                    {processedData === undefined
+                      ? 0
+                      : processedData.distanceinmeters}
+                  </Text>
+                </Flex>
+              </Flex>
+              <ResponsiveContainer width="100%" height="90%">
+                <BarChart
+                  style={{ cursor: "pointer" }}
+                  data={displayData}
+                  margin={{
+                    top: 5,
+                    right: 0,
+                    left: 0,
+                    bottom: 30,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="none" stroke="null" />
+                  <XAxis hide dataKey="name" />
+                  <YAxis hide />
+                  <Tooltip
+                    cursor={{ fill: "transparent" }}
+                    contentStyle={{
+                      background: "rgba(0, 0, 0, 0.6)",
+                      padding: 5,
+                      border: 0,
+                    }}
+                    itemStyle={{ fontSize: 14 }}
+                  />
+                  <Bar
+                    barSize={45}
+                    name="Active calories"
+                    dataKey="bmrkilocalories"
+                    fill="#FF5977"
+                  />
+                  <Bar barSize={45} name="Steps" dataKey="steps" fill="#5AEDD2" />
+    
+                  <Bar
+                    barSize={45}
+                    name="Distance"
+                    dataKey="distanceinmeters"
+                    fill="#F8F043"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </Box>
+          </Box>
+        ))}
+      </Flex>
     </Container>
   );
 };

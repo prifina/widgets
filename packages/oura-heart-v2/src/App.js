@@ -23,11 +23,14 @@ import {
 
 
 const Container = styled.div`
-  height: 300px;
-  width: 300px;
+  width: ${ props => props.size && props.size.split("x")[0]};
+  height: ${ props => props.size &&  props.size.split("x")[1]};
   border-radius: 10px;
   background: linear-gradient(180deg, #343434 0%, #d3bc69 149.83%);
   padding: 11px 8px 0px 8px;
+
+  display: flex;
+  flex-direction: column;
 `;
 
 // unique appID for the widget....
@@ -47,9 +50,30 @@ const asyncFalseData = [
 const App = (props) => {
   const { stage, check, onUpdate, API, registerDataConnector } = usePrifina();
 
+  const [numberOfPlate, setNumberOfPlate] = useState(1)
+  const [size, setSize] = useState("300x300");
+
+  // Small: "300x300"
+  // MediusWide: "600x300"
+  // MediumTall: "300x600"
+  // Large: "600x600"
+
   const [processedAsyncData, setProcessedAsyncData] = useState([]);
   const [period, setPeriod] = useState(6);
   const [avg, setAvg] = useState();
+
+  useEffect(() => {
+    switch(size) {
+      case "600x600":
+        setNumberOfPlate(3)
+        break;
+      case "300x300":
+        setNumberOfPlate(1)
+        break;
+      default:
+        setNumberOfPlate(2)
+    }
+  }, [size]);
 
   const prifinaInit = useRef();
   const processAsyncData = (data) => {
@@ -127,6 +151,14 @@ const App = (props) => {
       }
       console.log("PAYLOAD DATA", payload);
     }
+    
+    if (
+      payload.hasOwnProperty("settings") &&
+      typeof data.settings === "object" &&
+      payload.settings.hasOwnProperty("size")
+    ) {
+      setSize(payload.settings.size);
+    }
   };
 
   useEffect(() => {
@@ -183,143 +215,156 @@ const App = (props) => {
   console.log("period", period);
 
   return (
-    <Container>
-      <Flex alignItems="center" mb={21}>
-        <Text fontSize={16} color="white" fontWeight={700} ml={9} mr={110}>
+    <Container size={size}>
+      <Flex alignItems="center" justify="space-between" mb={9}>
+        <Text fontSize={16} color="white" fontWeight={700} ml={9}>
           Heart widget
         </Text>
-        <Image src={OuraIcon} />
+        <Image src={OuraIcon} style={{marginRight:"30px"}}/>
       </Flex>
-      <Box>
-        <Flex
-          h={32}
-          justifyContent="space-between"
-          alignItems="center"
-          bg="#FFA654"
-          padding="0px 25px 0px 25px"
-          borderTopRightRadius={8}
-          borderTopLeftRadius={8}
-        >
-          <>
-            <select
-              onChange={handleChange}
-              style={{
-                background: "#FFF500",
-                border: 0,
-                borderRadius: 10,
-                padding: 3,
-                outline: "none",
-              }}
-            >
-              <option value={6}>Last week</option>
-              <option value={14}>Last 15 days</option>
-              <option value={28}>Last Month</option>
-              <option value={89}>Last 3 Months</option>
-            </select>
-          </>
-          <Box bg="#FFF500" borderRadius={4} width={50} textAlign="center">
-            RHR
-          </Box>
-        </Flex>
-        <Box
-          height={200}
-          style={{
-            background: "rgba(251, 242, 242, 0.3)",
-            borderBottomLeftRadius: 8,
-            borderBottomRightRadius: 8,
-            paddingTop: 10,
-            backgroundImage: `url(${Heart})`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "right",
-          }}
-        >
-          <Flex
-            width="100%"
-            justifyContent="center"
-            style={{ paddingRight: 55, paddingLeft: 55 }}
+      <Flex gap={8} wrap="wrap" style={{ flex: 1, marginBottom: 10 }}>
+        {Array.from({ length: numberOfPlate }, (_, i) => (
+          <Box
+            key={i}
+            style={{
+              background: "rgba(251, 242, 242, 0.3)",
+              borderRadius: 10,
+              minWidth: 284,
+              maxHeight: 270,
+              flex: "1 1",
+            }}
           >
+            <Flex
+              h={32}
+              justifyContent="space-between"
+              alignItems="center"
+              bg="#FFA654"
+              padding="0px 25px 0px 25px"
+              borderTopRightRadius={8}
+              borderTopLeftRadius={8}
+            >
+              <>
+                <select
+                  onChange={handleChange}
+                  style={{
+                    background: "#FFF500",
+                    border: 0,
+                    borderRadius: 10,
+                    padding: 3,
+                    outline: "none",
+                  }}
+                >
+                  <option value={6}>Last week</option>
+                  <option value={14}>Last 15 days</option>
+                  <option value={28}>Last Month</option>
+                  <option value={89}>Last 3 Months</option>
+                </select>
+              </>
+              <Box bg="#FFF500" borderRadius={4} width={50} textAlign="center">
+                RHR
+              </Box>
+            </Flex>
             <Box
-              width={71}
-              height={75}
-              bg="rgba(118, 110, 86, 0.44)"
               style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                borderRadius: 8,
-                position: "relative",
+                background: "rgba(251, 242, 242, 0.3)",
+                borderBottomLeftRadius: 8,
+                borderBottomRightRadius: 8,
+                paddingTop: 10,
+                backgroundImage: `url(${Heart})`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "right",
+                height: 'calc(100% - 32px)',
               }}
             >
-              <Text as="b" fontSize={48} color="#FFF500" lineHeight={1.1}>
-                {isNaN(avg) ? "-" : avg}
-              </Text>
-              <Text
-                fontSize={12}
-                color="white"
-                position="absolute"
-                bottom="5px"
+              <Flex
+                width="100%"
+                justifyContent="center"
+                style={{ paddingRight: 55, paddingLeft: 55 }}
               >
-                AVG RHR
-              </Text>
+                <Box
+                  width={71}
+                  height={75}
+                  bg="rgba(118, 110, 86, 0.44)"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    borderRadius: 8,
+                    position: "relative",
+                  }}
+                >
+                  <Text as="b" fontSize={48} color="#FFF500" lineHeight={1.1}>
+                    {isNaN(avg) ? "-" : avg}
+                  </Text>
+                  <Text
+                    fontSize={12}
+                    color="white"
+                    position="absolute"
+                    bottom="5px"
+                  >
+                    AVG RHR
+                  </Text>
+                </Box>
+              </Flex>
+              <ResponsiveContainer width="100%" height="62%">
+                  <LineChart
+                    data={processedAsyncData}
+                    margin={{
+                      top: 10,
+                      right: 25,
+                      left: -15,
+                      bottom: 0,
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <Tooltip
+                      cursor={{ fill: "transparent" }}
+                      contentStyle={{
+                        background: "#FFA654",
+                        padding: 5,
+                        border: 0,
+                        borderRadius: 8,
+                      }}
+                      itemStyle={{ fontSize: 12 }}
+                    />
+                    <Line
+                      name="Resting HR"
+                      type="monotoneX"
+                      dataKey="hr_lowest"
+                      stroke="#FFF500"
+                      strokeWidth={2}
+                      activeDot={{ r: 2 }}
+                      dot={{
+                        stroke: "yellow",
+                        strokeWidth: 1,
+                        r: 2,
+                      }}
+                    />
+      
+                    <XAxis
+                      dataKey="summary_date"
+                      tickLine={false}
+                      fontSize={8}
+                      stroke="white"
+                    />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      label={{
+                        value: "RESTING HR",
+                        angle: -90,
+                        stroke: "white",
+                        fontSize: 10,
+                      }}
+                      stroke="white"
+                      fontSize={10}
+                    />
+                  </LineChart>
+              </ResponsiveContainer>
             </Box>
-          </Flex>
-          <ResponsiveContainer width="100%" height="65%">
-            <LineChart
-              data={processedAsyncData}
-              margin={{
-                top: 10,
-                right: 25,
-                left: -15,
-                bottom: 0,
-              }}
-              style={{ cursor: "pointer" }}
-            >
-              <Tooltip
-                cursor={{ fill: "transparent" }}
-                contentStyle={{
-                  background: "#FFA654",
-                  padding: 5,
-                  border: 0,
-                  borderRadius: 8,
-                }}
-                itemStyle={{ fontSize: 12 }}
-              />
-              <Line
-                name="Resting HR"
-                type="monotoneX"
-                dataKey="hr_lowest"
-                stroke="#FFF500"
-                strokeWidth={2}
-                activeDot={{ r: 2 }}
-                dot={{
-                  stroke: "yellow",
-                  strokeWidth: 1,
-                  r: 2,
-                }}
-              />
-
-              <XAxis
-                dataKey="summary_date"
-                tickLine={false}
-                fontSize={8}
-                stroke="white"
-              />
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                label={{
-                  value: "RESTING HR",
-                  angle: -90,
-                  stroke: "white",
-                  fontSize: 10,
-                }}
-                stroke="white"
-                fontSize={10}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </Box>
-      </Box>
+          </Box>
+        ))}
+      </Flex>
     </Container>
   );
 };
