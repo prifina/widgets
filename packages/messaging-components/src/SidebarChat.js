@@ -110,7 +110,7 @@ function SidebarChat({ id, chatName, info, className }) {
           <h3>{chatName}</h3>
           {info.length > 0 && info[0]?.message !== undefined && (
             <>
-              <p>{info[0]?.message}</p>
+              <p>{info[0]?.message}...</p>
               <small>{timeago.format(new Date(info[0]?.timestamp))}</small>
             </>
           )}

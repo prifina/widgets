@@ -1,6 +1,6 @@
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
-import React, { useRef, forwardRef, useState, useEffect } from 'react';
+import React, { useRef, forwardRef, useState, useLayoutEffect, useEffect } from 'react';
 import styled from 'styled-components';
 import create from 'zustand';
 import createContext from 'zustand/context';
@@ -8,6 +8,7 @@ import { usePrifina, Op } from '@prifina/hooks-v2';
 import IM from '@prifina/messaging';
 import { Avatar, IconButton } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import MicIcon from '@material-ui/icons/Mic';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import shallow from 'zustand/shallow';
 import SearchIcon from '@material-ui/icons/Search';
@@ -447,20 +448,8 @@ function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
 
-function _toConsumableArray(arr) {
-  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-}
-
-function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) return _arrayLikeToArray(arr);
-}
-
 function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
-}
-
-function _iterableToArray(iter) {
-  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
 
 function _iterableToArrayLimit(arr, i) {
@@ -512,10 +501,6 @@ function _arrayLikeToArray(arr, len) {
   return arr2;
 }
 
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
@@ -526,10 +511,17 @@ var _createContext = createContext(null),
 //const useStore = create(subscribeWithSelector(() => ({ paw: true, snout: true, fur: true })))
 
 
+var shortId = function shortId() {
+  // this is unique enough...
+  return Math.random().toString(36).slice(-10);
+};
+
 var StoreProvider = function StoreProvider(_ref) {
   var componentProps = _ref.componentProps,
       children = _ref.children; //const { client } = useGraphQLContext();
   // console.log("PROVIDER CLIENT ", client);
+
+  console.log("PRIFINA HOOK USER ", usePrifina());
 
   var _usePrifina = usePrifina(),
       currentUser = _usePrifina.currentUser,
@@ -543,10 +535,15 @@ var StoreProvider = function StoreProvider(_ref) {
 
   var _notify = useRef(null);
 
+  var _notifySidebar = useRef(null);
+
   return /*#__PURE__*/React.createElement(Provider, {
     createStore: function createStore() {
-      return create(function (set, get) {
+      return create(function (set, get, subscribe) {
         return {
+          /*   storeSubscribe: () => {
+              return subscribe;
+            }, */
           mode: 0,
           appType: "",
           appId: "",
@@ -566,9 +563,12 @@ var StoreProvider = function StoreProvider(_ref) {
           notify: function notify(callback) {
             _notify.current = callback;
           },
+          notifySidebar: function notifySidebar(callback) {
+            _notifySidebar.current = callback;
+          },
           createMessage: function () {
             var _createMessage = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(msg) {
-              var appID, sender, receiver, chatId, msgRes, currentMessages;
+              var appID, sender, receiver, chatId, msgRes, currentMessages, newMsg;
               return _regeneratorRuntime().wrap(function _callee$(_context) {
                 while (1) {
                   switch (_context.prev = _context.next) {
@@ -592,7 +592,7 @@ var StoreProvider = function StoreProvider(_ref) {
                       msgRes = _context.sent;
                       console.log("NEW MSG ", msgRes);
                       currentMessages = get().messages;
-                      currentMessages.push({
+                      newMsg = {
                         id: msgRes.data.createMessage.messageId,
                         data: {
                           timestamp: msgRes.data.createMessage.createdAt,
@@ -601,23 +601,18 @@ var StoreProvider = function StoreProvider(_ref) {
                           sender: sender,
                           chatId: chatId
                         }
-                      });
+                      };
+                      currentMessages.push(newMsg);
                       set({
                         messages: currentMessages
                       });
+                      console.log("STORE NEW MESSAGES ", currentMessages); //get().update({ addMessage: msgRes.data.createMessage });
+                      //console.log("UPDATE NOTIFICATION");
+                      //return msgRes.data.createMessage;
 
-                    /*
-                    data:
-                    createMessage:
-                    body: "\"testing\""
-                    chatId: "tero"
-                    createdAt: 1661509469391
-                    messageId: "rfx877"
-                    receiver: "tero"
-                    sender: "Testing-uuid"
-                    */
+                      return _context.abrupt("return", newMsg);
 
-                    case 11:
+                    case 14:
                     case "end":
                       return _context.stop();
                   }
@@ -824,7 +819,9 @@ var StoreProvider = function StoreProvider(_ref) {
                   switch (_context4.prev = _context4.next) {
                     case 0:
                       appID = get().appId;
-                      API[appID].Messaging.queryGetUnreadMessages({}).then(function (m) {
+                      API[appID].Messaging.queryGetUnreadMessages({
+                        filter: {}
+                      }).then(function (m) {
                         console.log("UNREAD ", m);
                       });
 
@@ -877,7 +874,7 @@ var StoreProvider = function StoreProvider(_ref) {
 
                     case 5:
                       msgs = _context5.sent;
-                      console.log("MSGS ", msgs);
+                      console.log("MSGS XXX", msgs);
                     //{ id,user, contents: { timestamp, message,sender} },
 
                     /*
@@ -964,6 +961,7 @@ var StoreProvider = function StoreProvider(_ref) {
 
             if (payload !== null && payload !== void 0 && payload.addMessage) {
               var msgStatus = JSON.parse(payload.addMessage.result);
+              console.log("MSG STATUS ", msgStatus);
 
               if (msgStatus.cnt > 0) {
                 API[appID].Messaging.queryGetUnreadMessages({}).then(function (m) {
@@ -973,6 +971,12 @@ var StoreProvider = function StoreProvider(_ref) {
                     console.log("UPDATE SUBS");
 
                     _notify.current(m.data);
+                  }
+
+                  if (_notifySidebar.current) {
+                    console.log("UPDATE SIDEBAR SUBS");
+
+                    _notifySidebar.current(m.data);
                   }
                 });
               }
@@ -1013,7 +1017,8 @@ var StoreProvider = function StoreProvider(_ref) {
             var tasks = [];
             tasks.push(API[appId].Messaging.subscribeMessagingStatus({
               variables: {
-                receiver: currentUser.uuid
+                receiver: currentUser.uuid,
+                appHandler: shortId()
               }
             }));
             tasks.push(API[appId].Messaging.queryUserAddressBook({}));
@@ -1032,7 +1037,8 @@ var StoreProvider = function StoreProvider(_ref) {
 
                 chatInfo[m.sender].push({
                   message: m.body,
-                  timestamp: m.createdAt
+                  timestamp: m.createdAt,
+                  id: m.messageId
                 });
               });
               var chats = userAddressBook.data.getAddressBook.map(function (u) {
@@ -1069,7 +1075,7 @@ var StoreProvider = function StoreProvider(_ref) {
 
 var _templateObject$4;
 
-var MsgDiv = styled.div(_templateObject$4 || (_templateObject$4 = _taggedTemplateLiteral(["\n  /* */\n  .message {\n    display: flex;\n    align-items: center;\n    position: relative;\n    width: fit-content;\n    justify-content: space-between;\n    margin: 15px;\n  }\n  .message > p {\n    background-color: #f3f3f5;\n    font-size: medium;\n    padding: 15px;\n    border-radius: 20px;\n    margin: 10px;\n    margin-right: auto;\n  }\n  .message > small {\n    color: gray;\n    position: absolute;\n    font-size: 8px;\n    bottom: -7px;\n    right: 0;\n  }\n  .message__sender {\n    margin-left: auto;\n  }\n\n  .message__sender > .message__photo {\n    order: 1;\n    margin: 15px;\n  }\n\n  .message__photo {\n    order: 0;\n  }\n\n  .message__sender > p {\n    background-color: #3cabfa;\n    color: white;\n  }\n"])));
+var MsgDiv = styled.div(_templateObject$4 || (_templateObject$4 = _taggedTemplateLiteral(["\n  /* */\n  .message {\n    display: flex;\n    align-items: center;\n    position: relative;\n    width: fit-content;\n    justify-content: space-between;\n    margin: 15px;\n    min-width:80px;\n  }\n  .message > p {\n    background-color: #f3f3f5;\n    font-size: medium;\n    padding: 15px;\n    border-radius: 20px;\n    margin: 10px;\n    margin-right: auto;\n  }\n  .message > small {\n    color: gray;\n    position: absolute;\n    font-size: 8px;\n    bottom: -7px;\n    right: 0;\n  }\n  .message__sender {\n    margin-left: auto;\n  }\n\n  .message__sender > .message__photo {\n    order: 1;\n    margin: 15px;\n  }\n\n  .message__photo {\n    order: 0;\n  }\n\n  .message__sender > p {\n    background-color: #3cabfa;\n    color: white;\n  }\n"])));
 /*
 const Form = styled(Message)`
   .message {
@@ -1135,22 +1141,27 @@ function ChatMessage({
   */
 
 function Message(_ref) {
-  var user = _ref.user,
-      chat = _ref.chat,
-      _ref$contents = _ref.contents,
-      timestamp = _ref$contents.timestamp,
-      message = _ref$contents.message,
-      sender = _ref$contents.sender,
-      photo = _ref$contents.photo,
-      chatId = _ref$contents.chatId; // console.log("PROPS ", props);
+  var user = _ref.user;
+  _ref.chat;
+  var contents = _ref.contents;
+  var timestamp = contents.timestamp,
+      message = contents.message,
+      sender = contents.sender;
+  contents.chatId; //contents: { timestamp, message, sender, chatId },  //photo ???
+  // console.log("PROPS ", props);
 
-  console.log("CHAT ", user, chat, sender, message, chatId);
+  /* 
+  console.log("CHAT ", user,);
+  console.log("CHAT ", chat,);
+  console.log("CHAT ", sender,);
+  console.log("CHAT ", message,);
+  console.log("CHAT ", chatId); */
+
   console.log("CHAT ", user.uuid === sender);
   return /*#__PURE__*/React.createElement(MsgDiv, null, /*#__PURE__*/React.createElement("div", {
     className: "message ".concat(user.uuid === sender ? "message__sender" : "")
   }, user.uuid !== sender && /*#__PURE__*/React.createElement(Avatar, {
-    className: "message__photo",
-    src: photo
+    className: "message__photo"
   }), /*#__PURE__*/React.createElement("p", null, JSON.parse(message)), /*#__PURE__*/React.createElement("small", null, new Date(timestamp).toLocaleString())));
 }
 
@@ -1170,30 +1181,22 @@ var ChatMessage$1 = /*#__PURE__*/forwardRef(ChatMessage);
 
 var _templateObject$3, _templateObject2$1;
 
+window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+var usrlang = navigator.language || navigator.userLanguage;
 var ChatContainer = styled.div(_templateObject$3 || (_templateObject$3 = _taggedTemplateLiteral(["\n  /* */\n  width: ", ";\n"])), function (props) {
   return props.width;
 });
-var Form$2 = styled(Chat)(_templateObject2$1 || (_templateObject2$1 = _taggedTemplateLiteral(["\n  .chat {\n    display: flex;\n    flex-direction: column;\n    flex: 0.65;\n    /* height: 100vh; */\n    height:100%;\n    background-color: white;\n  }\n  .chat__nav {\n    height:20px;\n    background-color: #f5f5f5;\n  }\n  .nav__icon {\n    padding:0px;\n  }\n  .chat__header {\n    padding: 10px;\n    padding-top:0px;\n    padding-bottom:0px;\n    display: flex;\n    justify-content: space-between;\n    border-bottom: 1px solid lightgray;\n    background-color: #f5f5f5;\n  }\n\n  .chat__header > h4 {\n    font-weight: 500;\n    color: gray;\n  }\n\n  .chat__name {\n    color: black;\n  }\n\n  .chat__input {\n    display: flex;\n    align-items: center;\n    padding: 10px 20px;\n    border-top: 1px solid lightgray;\n    background-color: #f5f5f5;\n  }\n\n  .chat__input > form {\n    flex: 1;\n  }\n\n  .chat__messages {\n    flex: 1;\n    overflow: scroll;\n  }\n\n  /* Hide scrollbar for Chrome, Safari and Opera */\n  .chat__messages::-webkit-scrollbar {\n    display: none;\n  }\n\n  /* Hide scrollbar for IE, Edge and Firefox */\n  .chat__messages {\n    -ms-overflow-style: none; /* IE and Edge */\n    scrollbar-width: none; /* Firefox */\n  }\n\n  .chat__input > form > input {\n    width: 98%;\n    outline-width: 0;\n    border: 1px solid lightgray;\n    border-radius: 999px;\n    padding: 5px;\n  }\n\n  .chat__input > form > button {\n    display: none;\n  }\n"])));
-
-function useIsMountedRef() {
-  var isMountedRef = useRef(null);
-  useEffect(function () {
-    isMountedRef.current = true;
-    return function () {
-      return isMountedRef.current = false;
-    };
-  });
-  return isMountedRef;
-}
+var Form$2 = styled(Chat)(_templateObject2$1 || (_templateObject2$1 = _taggedTemplateLiteral(["\n  .chat {\n    display: flex;\n    flex-direction: column;\n    flex: 0.65;\n    /* height: 100vh; */\n    height:100%;\n    background-color: white;\n  }\n  .chat__nav {\n    height:20px;\n    background-color: #f5f5f5;\n  }\n  .nav__icon {\n    padding:0px;\n  }\n  .chat__header {\n    padding: 10px;\n    padding-top:0px;\n    padding-bottom:0px;\n    display: flex;\n    justify-content: space-between;\n    border-bottom: 1px solid lightgray;\n    background-color: #f5f5f5;\n  }\n\n  .chat__header > h4 {\n    font-weight: 500;\n    color: gray;\n  }\n\n  .chat__name {\n    color: black;\n  }\n\n  .chat__input {\n    display: flex;\n    align-items: center;\n    padding: 10px 20px;\n    border-top: 1px solid lightgray;\n    background-color: #f5f5f5;\n  }\n/* \n  .chat__input > form {\n    flex: 1;\n  }\n */\n  .chat__messages {\n    flex: 1;\n    overflow: scroll;\n  }\n\n  /* Hide scrollbar for Chrome, Safari and Opera */\n  .chat__messages::-webkit-scrollbar {\n    display: none;\n  }\n\n  /* Hide scrollbar for IE, Edge and Firefox */\n  .chat__messages {\n    -ms-overflow-style: none; /* IE and Edge */\n    scrollbar-width: none; /* Firefox */\n  }\n\n  .chat__mic.rec {\n    color:red;\n  }\n  .chat__input >  input {\n    width: 98%;\n    outline-width: 0;\n    border: 1px solid lightgray;\n    border-radius: 999px;\n    padding: 5px;\n  } \n/* \n  .chat__input > form > input {\n    width: 98%;\n    outline-width: 0;\n    border: 1px solid lightgray;\n    border-radius: 999px;\n    padding: 5px;\n  } */\n/* \n  .chat__input > form > button {\n    display: none;\n  } */\n"])));
 
 function Chat(_ref) {
-  _ref.newChats;
-  var className = _ref.className; //const user = useSelector(selectUser);
+  var newChats = _ref.newChats,
+      className = _ref.className; //const user = useSelector(selectUser);
 
   var _useStore = useStore(function (state) {
     return {
       mode: state.mode,
       changeMode: state.changeMode,
+      getUnreadMessages: state.getUnreadMessages,
       messages: state.messages,
       notify: state.notify,
       updateMsgStatus: state.updateMsgStatus,
@@ -1209,7 +1212,9 @@ function Chat(_ref) {
       messages = _useStore.messages,
       createMessage = _useStore.createMessage,
       updateMsgStatus = _useStore.updateMsgStatus,
-      notify = _useStore.notify; //const messages=useStore((state)=>state.messages); 
+      notify = _useStore.notify;
+
+  _useStore.getUnreadMessages; //const messages=useStore((state)=>state.messages); 
 
   /*
   // Object pick, re-renders the component when either state.nuts or state.honey change
@@ -1220,8 +1225,7 @@ function Chat(_ref) {
   */
   //  const { appID, API, receiver, sender, newChatMessage } = useAppContext();
 
-
-  var _useState = useState([]),
+  var _useState = useState(messages),
       _useState2 = _slicedToArray(_useState, 2),
       msgList = _useState2[0],
       setMsgList = _useState2[1];
@@ -1231,6 +1235,22 @@ function Chat(_ref) {
       input = _useState4[0],
       setInput = _useState4[1];
 
+  var _useState5 = useState(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      mic = _useState6[0],
+      setMic = _useState6[1];
+
+  var speech = useRef("");
+
+  var _useState7 = useState(0),
+      _useState8 = _slicedToArray(_useState7, 2),
+      scrollTop = _useState8[0],
+      setScrollTop = _useState8[1]; //const [language, setLang] = useState(usrlang);
+
+
+  var scrollTimer = useRef(null);
+  var msgTimer = useRef([]);
+  var effectCalled = useRef(false);
   notify(function (payload) {
     /*currentMessages.push(
       {
@@ -1257,8 +1277,17 @@ function Chat(_ref) {
     console.log("TESTING ", payload);
     var msg = [];
 
-    if (payload !== null && payload !== void 0 && payload.getUnreadMsgs) {
+    if (msgTimer.current.length > 0) {
+      msgTimer.current.forEach(function (t) {
+        clearTimeout(t);
+      });
+    }
+
+    msgTimer.current = [];
+
+    if ((payload === null || payload === void 0 ? void 0 : payload.getUnreadMsgs) !== undefined) {
       msg = payload.getUnreadMsgs.map(function (m) {
+        console.log("NEW MESSAGE ", m);
         return {
           id: m.messageId,
           data: {
@@ -1272,12 +1301,41 @@ function Chat(_ref) {
       });
     }
 
-    setMsgList(_toConsumableArray(msgList), _toConsumableArray(msg));
+    console.log("NEW MESSAGES ", msg);
+
+    if (msg.length > 0) {
+      var sentMessages = [];
+      msg.forEach(function (m) {
+        if (m.data.receiver === currentUser.uuid && m.data.sender === currentChat.chatId) {
+          sentMessages.push(m);
+        }
+      });
+      console.log("UPDATE3 MSG STATUS ", sentMessages);
+      msgTimer.current = sentMessages.map(function (m) {
+        return setTimeout( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+          return _regeneratorRuntime().wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  _context.next = 2;
+                  return updateMsgStatus(m.id);
+
+                case 2:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee);
+        })), 500);
+      });
+      setMsgList(msgList.concat(msg));
+    } //setMsgList([...msgList], [...msg]);
+    // scrollChat();
+
   }); // const chatName = receiver.name;
   //const chatId = useSelector(selectChatId);
   //const [chatId, setChatId] = useState("");
 
-  useIsMountedRef();
   /*
      const filter = {
        ["chatId"]: {
@@ -1400,22 +1458,43 @@ function Chat(_ref) {
     //console.log("MESSAGES ", messages);
   */
 
-  useEffect(function () {
-    var scrollTimer = null;
-    var msgTimer = []; //if (isMountedRef.current) {
-
+  var scrollChat = function scrollChat() {
     var chatDiv = document.getElementsByClassName("chat");
-    var msgDiv = document.getElementsByClassName("chat__messages"); //let msgDiv = document.getElementsByClassName("chat__input");
+    var msgDiv = document.getElementsByClassName("chat__messages"); //console.log("SCROLLS CHATS... ", chatDiv, msgDiv);
     //console.log("CHATS ", msgDiv);
 
     if (msgDiv.length > 0) {
       //console.log("CHATS ", chatDiv[0].scrollHeight);
-      scrollTimer = setTimeout(function () {
-        //console.log("SCROLL ");
+      scrollTimer.current = setTimeout(function () {
         msgDiv[0].scrollTop = chatDiv[0].scrollHeight; //console.log("SCROLL ", chatDiv[0].scrollHeight);
-      }, 200); //let msg = { messageId: variables.messageId, status: variables.status };
-      //mutationUpdateMessageStatus
+      }, 500); // clearTimeout(scrollTimer);
+    }
+  };
 
+  useLayoutEffect(function () {
+    if (scrollTop > 0) {
+      scrollChat();
+    }
+
+    return function () {
+      if (scrollTimer.current) {
+        clearTimeout(scrollTimer.current);
+        scrollTimer.current = null;
+      }
+    }; // }
+  }, [scrollTop]);
+  useEffect(function () {
+    if (msgTimer.current.length > 0) {
+      msgTimer.current.forEach(function (t) {
+        clearTimeout(t);
+      });
+    }
+
+    msgTimer.current = [];
+
+    function init() {
+      //effectCalled.current = true;
+      // scrollChat();
       var sentMessages = [];
       messages.forEach(function (m) {
         if (m.data.receiver === currentUser.uuid && m.data.sender === currentChat.chatId) {
@@ -1423,51 +1502,132 @@ function Chat(_ref) {
         }
       });
       console.log("UPDATE MSG STATUS ", sentMessages);
-      msgTimer = sentMessages.map(function (m) {
-        return setTimeout( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-          return _regeneratorRuntime().wrap(function _callee$(_context) {
+      msgTimer.current = sentMessages.map(function (m) {
+        return setTimeout( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+          return _regeneratorRuntime().wrap(function _callee2$(_context2) {
             while (1) {
-              switch (_context.prev = _context.next) {
+              switch (_context2.prev = _context2.next) {
                 case 0:
-                  _context.next = 2;
+                  _context2.next = 2;
                   return updateMsgStatus(m.id);
 
                 case 2:
                 case "end":
-                  return _context.stop();
+                  return _context2.stop();
               }
             }
-          }, _callee);
+          }, _callee2);
         })), 500);
+      });
+      setMsgList(messages);
+      setScrollTop(function (prev) {
+        return prev + 1;
       });
     }
 
-    setMsgList(messages); // }
-
-    return function () {
-      if (scrollTimer !== null) {
-        clearTimeout(scrollTimer);
-        msgTimer.forEach(function (t) {
+    if (messages.length > 0) {
+      console.log("CHAT INIT ");
+      init();
+    }
+    /*
+    return () => {
+      if (msgTimer.length > 0) {
+         msgTimer.forEach((t) => {
           clearTimeout(t);
         });
       }
     };
-  }); // }, [isMountedRef, receiver]);
+    */
+
+  }, [newChats]);
+
+  var updateMsgList = function updateMsgList() {
+    var msgTimer = [];
+    var sentMessages = [];
+    messages.forEach(function (m) {
+      if (m.data.receiver === currentUser.uuid && m.data.sender === currentChat.chatId) {
+        sentMessages.push(m);
+      }
+    });
+    console.log("UPDATE2 MSG STATUS ", sentMessages);
+    msgTimer = sentMessages.map(function (m) {
+      return setTimeout( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return updateMsgStatus(m.id);
+
+              case 2:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      })), 500);
+    });
+    setMsgList(messages);
+    setScrollTop(function (prev) {
+      return prev + 1;
+    });
+
+    if (msgTimer.length > 0) {
+      msgTimer.forEach(function (t) {
+        clearTimeout(t);
+      });
+    }
+  };
 
   var sendMessage = /*#__PURE__*/function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(e) {
-      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(e, micInput) {
+      var currentInput, newMsg;
+      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
         while (1) {
-          switch (_context2.prev = _context2.next) {
+          switch (_context4.prev = _context4.next) {
             case 0:
               // currentUser == sender
               // currentChat == receiver
-              console.log("SAVE MSG ", input, currentUser, currentChat);
-              e.preventDefault();
-              _context2.next = 4;
-              return createMessage(input);
+              currentInput = micInput || input;
+              console.log("SEND MSG ", currentInput, currentUser, currentChat);
 
-            case 4:
+              if (!(currentInput !== "")) {
+                _context4.next = 7;
+                break;
+              }
+
+              _context4.next = 5;
+              return createMessage(currentInput);
+
+            case 5:
+              newMsg = _context4.sent;
+
+              if (msgList.length === 0) {
+                updateMsgList();
+              } else {
+                if (newMsg.id !== msgList[msgList.length - 1].id) {
+                  console.log("NEW MSG ", newMsg); //console.log("LAST MSG ", msgList[msgList.length - 1]);
+
+                  setMsgList(msgList.concat([newMsg]));
+                }
+                /*
+                return {
+                  id: m.messageId, data: {
+                    timestamp: m.createdAt,
+                    message: m.body,
+                    receiver: m.receiver,
+                    sender: m.sender,
+                    chatId: m.chatId
+                  }
+                }
+                */
+
+              }
+
+            // console.log("NEW MESSAGE2 ", newMsg);
+            //console.log("NEW MESSAGE22 ", messages);
+
+            case 7:
               /*
                 API[appID].Messaging.mutationCreateMessage({
                   variables: {
@@ -1496,22 +1656,70 @@ function Chat(_ref) {
                   setInput("");
                 });
               */
+              // scrollChat();
+              speech.current = "";
               setInput("");
+              setScrollTop(function (prev) {
+                return prev + 1;
+              });
 
-            case 5:
+              if (e) {
+                e.preventDefault();
+              }
+
+            case 11:
             case "end":
-              return _context2.stop();
+              return _context4.stop();
           }
         }
-      }, _callee2);
+      }, _callee4);
     }));
 
-    return function sendMessage(_x) {
-      return _ref3.apply(this, arguments);
+    return function sendMessage(_x, _x2) {
+      return _ref5.apply(this, arguments);
     };
   }();
 
-  console.log("MSGS ", messages);
+  useEffect(function () {
+    var recognition;
+
+    if (mic) {
+      console.log("RECORDING ");
+      recognition = new window.SpeechRecognition(); // does this support all browser languages?
+
+      recognition.lang = usrlang;
+
+      recognition.onresult = function (event) {
+        var speechToText = event.results[0][0].transcript; //console.log("TEXT ", speechToText);
+
+        speech.current = speechToText;
+        setMic(false);
+      };
+
+      recognition.start();
+    } else {
+      if (speech.current !== "") {
+        //recognition.stop();  recording stops automatically....
+        console.log("SEND", speech.current);
+        setInput(speech.current);
+        sendMessage(null, speech.current);
+      }
+    }
+  }, [mic]);
+  useEffect(function () {
+    if (!effectCalled.current) {
+      effectCalled.current = true;
+    }
+
+    return function () {
+      if (msgTimer.current.length > 0) {
+        msgTimer.current.forEach(function (t) {
+          clearTimeout(t);
+        });
+      }
+    };
+  }, []);
+  console.log("CHAT MSGS ", messages, msgList);
   return /*#__PURE__*/React.createElement(ChatContainer, {
     width: mode === 1 ? "60%" : "100%"
   }, /*#__PURE__*/React.createElement("div", {
@@ -1531,10 +1739,11 @@ function Chat(_ref) {
     className: "chat__header"
   }, /*#__PURE__*/React.createElement("h4", null, "To: ", /*#__PURE__*/React.createElement("span", {
     className: "chat__name"
-  }, currentChat === null || currentChat === void 0 ? void 0 : currentChat.name)), /*#__PURE__*/React.createElement("strong", null, "Details")), /*#__PURE__*/React.createElement("div", {
+  }, currentChat === null || currentChat === void 0 ? void 0 : currentChat.name))), /*#__PURE__*/React.createElement("div", {
     className: "chat__messages"
   }, msgList.map(function (m) {
     console.log("EXTRA ", currentChat, m); //if (receiver.chatId !== m.data.chatId) return null;
+    // if empty currentChat,... return null
 
     return /*#__PURE__*/React.createElement(ChatMessage$1, {
       key: m.id,
@@ -1542,22 +1751,31 @@ function Chat(_ref) {
       chat: currentChat.chatId,
       contents: m.data
     });
-  })), (currentChat === null || currentChat === void 0 ? void 0 : currentChat.chatId) !== undefined && /*#__PURE__*/React.createElement("div", {
+  })), (currentChat === null || currentChat === void 0 ? void 0 : currentChat.chatId) !== undefined && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "chat__input"
-  }, /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement("input", {
+  }, /*#__PURE__*/React.createElement(IconButton, {
+    onClick: function onClick() {
+      setMic(true);
+    }
+  }, /*#__PURE__*/React.createElement(MicIcon, {
+    className: "chat__mic ".concat(mic ? "rec" : "")
+  })), /*#__PURE__*/React.createElement("input", {
     value: input,
     onChange: function onChange(e) {
       return setInput(e.target.value);
     },
     placeholder: "iMessage",
-    type: "text"
-  }), /*#__PURE__*/React.createElement("button", {
-    onClick: sendMessage
-  }, "Send Message")), /*#__PURE__*/React.createElement(IconButton, {
+    type: "text",
+    onKeyDown: function onKeyDown(e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    }
+  }), /*#__PURE__*/React.createElement(IconButton, {
     onClick: sendMessage
   }, /*#__PURE__*/React.createElement(SendIcon, {
     className: "chat__send"
-  }))))));
+  })))))));
 }
 /*
 data:
@@ -1662,7 +1880,7 @@ function SidebarChat(_ref) {
     src: (_info$ = info[0]) === null || _info$ === void 0 ? void 0 : _info$.photo
   }), /*#__PURE__*/React.createElement("div", {
     className: "sidebarChat__info"
-  }, /*#__PURE__*/React.createElement("h3", null, chatName), info.length > 0 && ((_info$2 = info[0]) === null || _info$2 === void 0 ? void 0 : _info$2.message) !== undefined && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", null, (_info$3 = info[0]) === null || _info$3 === void 0 ? void 0 : _info$3.message), /*#__PURE__*/React.createElement("small", null, timeago.format(new Date((_info$4 = info[0]) === null || _info$4 === void 0 ? void 0 : _info$4.timestamp)))))));
+  }, /*#__PURE__*/React.createElement("h3", null, chatName), info.length > 0 && ((_info$2 = info[0]) === null || _info$2 === void 0 ? void 0 : _info$2.message) !== undefined && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", null, (_info$3 = info[0]) === null || _info$3 === void 0 ? void 0 : _info$3.message, "..."), /*#__PURE__*/React.createElement("small", null, timeago.format(new Date((_info$4 = info[0]) === null || _info$4 === void 0 ? void 0 : _info$4.timestamp)))))));
 }
 
 var _templateObject$1, _templateObject2;
@@ -1677,6 +1895,7 @@ function Sidebar(_ref) {
 
   var _useStore = useStore(function (state) {
     return {
+      notifySidebar: state.notifySidebar,
       mode: state.mode,
       currentUser: state.currentUser,
       chats: state.chats,
@@ -1688,8 +1907,51 @@ function Sidebar(_ref) {
       currentUser = _useStore.currentUser,
       chats = _useStore.chats,
       chatInfo = _useStore.chatInfo,
-      initChat = _useStore.initChat;
+      initChat = _useStore.initChat,
+      notifySidebar = _useStore.notifySidebar;
 
+  var _useState = useState(chatInfo),
+      _useState2 = _slicedToArray(_useState, 2),
+      info = _useState2[0],
+      setInfo = _useState2[1];
+
+  var _useState3 = useState(0),
+      _useState4 = _slicedToArray(_useState3, 2),
+      chatCnt = _useState4[0],
+      setChatCnt = _useState4[1];
+
+  notifySidebar(function (payload) {
+    // console.log("SIDEBAR ", payload);
+    // console.log("SIDEBAR CHATINFO ", chatInfo);
+    if ((payload === null || payload === void 0 ? void 0 : payload.getUnreadMsgs) !== undefined) {
+      var msgs = info;
+      payload.getUnreadMsgs.forEach(function (m) {
+        var mBody = m.body.substring(0, 40);
+        var msg = {
+          message: mBody,
+          timestamp: m.createdAt,
+          id: m.messageId
+        };
+
+        if ((msgs === null || msgs === void 0 ? void 0 : msgs[m.sender]) !== undefined) {
+          var mIdx = msgs[m.sender].findIndex(function (mm) {
+            return mm.id === m.messageId;
+          });
+
+          if (mIdx === -1) {
+            msgs[m.sender].unshift(msg);
+          }
+        } else {
+          msgs[m.sender] = [msg];
+        }
+      });
+      console.log("NEW SIDEBAR CHATS ", msgs);
+      setInfo(msgs);
+      setChatCnt(function (prev) {
+        return prev + 1;
+      });
+    }
+  });
   console.log("SIDEBAR 1", chats, chatInfo);
   /*
     const addChat = () => {
@@ -1723,12 +1985,13 @@ function Sidebar(_ref) {
   }, /*#__PURE__*/React.createElement(SearchIcon, null), /*#__PURE__*/React.createElement("input", {
     placeholder: "Search"
   }))), /*#__PURE__*/React.createElement("div", {
-    className: "sidebar__chats"
-  }, chats.map(function (_ref2) {
+    className: "sidebar__chats",
+    "chat-idx": chatCnt
+  }, chats.map(function (_ref2, i) {
     var chatId = _ref2.chatId,
         name = _ref2.name;
     return /*#__PURE__*/React.createElement("div", {
-      key: chatId,
+      key: chatId + "-" + i,
       onClick: /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
@@ -1751,8 +2014,9 @@ function Sidebar(_ref) {
         }, _callee);
       }))
     }, /*#__PURE__*/React.createElement(Form$1, {
+      key: "chat-id-" + chatId + '-' + i,
       id: chatId,
-      info: chatInfo[chatId] || [],
+      info: info[chatId] || [],
       chatName: name
     }));
   })))));
@@ -1811,6 +2075,7 @@ var IMessage = function IMessage(props) {
   useEffect(function () {
     console.log("NEW CHATS ", newChats);
   }, [newChats]);
+  console.log("CHATS MODE ", mode);
   return /*#__PURE__*/React.createElement(React.Fragment, null, !loading && /*#__PURE__*/React.createElement(AppContainer, null, (mode === 1 || mode === 2) && /*#__PURE__*/React.createElement(Form, null), (mode === 1 || mode === 3) && /*#__PURE__*/React.createElement(Form$2, {
     newChats: newChats
   })), loading && /*#__PURE__*/React.createElement("div", null, "Loading"));

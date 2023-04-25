@@ -1,5 +1,5 @@
 import { Avatar } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 
 import styled from "styled-components";
@@ -71,10 +71,49 @@ height:100;
 
 function Sidebar({ className }) {
 
-  const { mode, currentUser, chats, chatInfo, initChat } = useStore(
-    (state) => ({ mode: state.mode, currentUser: state.currentUser, chats: state.chats, chatInfo: state.chatInfo, initChat: state.initChat }),
+  const { mode, currentUser, chats, chatInfo, initChat, notifySidebar } = useStore(
+    (state) => ({ notifySidebar: state.notifySidebar, mode: state.mode, currentUser: state.currentUser, chats: state.chats, chatInfo: state.chatInfo, initChat: state.initChat }),
     shallow
   )
+
+  const [info, setInfo] = useState(chatInfo);
+  const [chatCnt, setChatCnt] = useState(0);
+
+  notifySidebar((payload) => {
+
+    // console.log("SIDEBAR ", payload);
+    // console.log("SIDEBAR CHATINFO ", chatInfo);
+    if (payload?.getUnreadMsgs !== undefined) {
+      const msgs = info;
+      payload.getUnreadMsgs.forEach(m => {
+        const mBody = m.body.substring(0, 40);
+        const msg = {
+          message: mBody,
+          timestamp: m.createdAt,
+          id: m.messageId,
+        }
+
+        if (msgs?.[m.sender] !== undefined) {
+          const mIdx = msgs[m.sender].findIndex(mm => mm.id === m.messageId);
+
+          if (mIdx === -1) {
+
+            msgs[m.sender].unshift(msg);
+          }
+
+
+        } else {
+          msgs[m.sender] = [msg];
+        }
+      });
+      console.log("NEW SIDEBAR CHATS ", msgs);
+      setInfo(msgs);
+      setChatCnt(prev => prev + 1);
+
+    }
+
+  });
+
 
   console.log("SIDEBAR 1", chats, chatInfo);
   /*
@@ -106,12 +145,13 @@ function Sidebar({ className }) {
           */}
           </div>
 
-          <div className="sidebar__chats">
-            {chats.map(({ chatId, name }) => (
-              <div key={chatId} onClick={async () => await initChat({ chatId, name })}>
+          <div className="sidebar__chats" chat-idx={chatCnt}>
+            {chats.map(({ chatId, name }, i) => (
+              <div key={chatId + "-" + i} onClick={async () => await initChat({ chatId, name })}>
                 <SidebarChat
+                  key={"chat-id-" + chatId + '-' + i}
                   id={chatId}
-                  info={chatInfo[chatId] || []}
+                  info={info[chatId] || []}
                   chatName={name}
                 />
               </div>

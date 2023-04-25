@@ -46,6 +46,7 @@ const IMessage = (props) => {
 
     console.log("NEW CHATS ", newChats);
 
+
   }, [newChats]);
 
   /*
@@ -212,7 +213,7 @@ const IMessage = (props) => {
 
     }
   };
-
+  console.log("CHATS MODE ", mode);
   return (
     <>
 

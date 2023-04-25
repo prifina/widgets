@@ -23,7 +23,6 @@
     "react-test-renderer": "^18.2.0",
     "@react-three/drei": "^8.19.2",
     "@react-three/fiber": "^7.0.26",
-    "react-three-fbx-viewer": "*",
     "three": "^0.125.0",
     "three-fbxloader-offical": "^1.0.0",
     "three-orbit-controls": "^82.1.0"

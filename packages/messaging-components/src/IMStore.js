@@ -13,11 +13,15 @@ const { Provider, useStore } = createContext(null);
 //mport { subscribeWithSelector } from 'zustand/middleware'
 //const useStore = create(subscribeWithSelector(() => ({ paw: true, snout: true, fur: true })))
 
+const shortId = () => {
+  // this is unique enough...
+  return Math.random().toString(36).slice(-10);
+}
 
 const StoreProvider = ({ componentProps, children }) => {
   //const { client } = useGraphQLContext();
   // console.log("PROVIDER CLIENT ", client);
-
+  console.log("PRIFINA HOOK USER ", usePrifina());
   const {
     currentUser,
     onUpdate,
@@ -29,9 +33,13 @@ const StoreProvider = ({ componentProps, children }) => {
 
   console.log("PRIFINA HOOK USER ", currentUser);
   const notify = useRef(null);
+  const notifySidebar = useRef(null);
   return (
     <Provider createStore={() =>
-      create((set, get) => ({
+      create((set, get, subscribe) => ({
+        /*   storeSubscribe: () => {
+            return subscribe;
+          }, */
         mode: 0,
         appType: "",
         appId: "",
@@ -48,6 +56,9 @@ const StoreProvider = ({ componentProps, children }) => {
         },
         notify: (callback) => {
           notify.current = callback;
+        },
+        notifySidebar: (callback) => {
+          notifySidebar.current = callback;
         },
         createMessage: async (msg) => {
           const appID = get().appId;
@@ -66,20 +77,24 @@ const StoreProvider = ({ componentProps, children }) => {
 
           console.log("NEW MSG ", msgRes);
           const currentMessages = get().messages;
-          currentMessages.push(
-            {
-              id: msgRes.data.createMessage.messageId,
-              data: {
-                timestamp: msgRes.data.createMessage.createdAt,
-                message: JSON.stringify(msg),
-                receiver: receiver,
-                sender: sender,
-                chatId: chatId
+          const newMsg = {
+            id: msgRes.data.createMessage.messageId,
+            data: {
+              timestamp: msgRes.data.createMessage.createdAt,
+              message: JSON.stringify(msg),
+              receiver: receiver,
+              sender: sender,
+              chatId: chatId
 
-              },
             },
-          );
+          };
+          currentMessages.push(newMsg);
           set({ messages: currentMessages });
+          console.log("STORE NEW MESSAGES ", currentMessages);
+          //get().update({ addMessage: msgRes.data.createMessage });
+          //console.log("UPDATE NOTIFICATION");
+          //return msgRes.data.createMessage;
+          return newMsg
           /*
           data:
   createMessage:
@@ -237,7 +252,7 @@ sender: "tero"
         },
         getUnreadMessages: async () => {
           const appID = get().appId;
-          API[appID].Messaging.queryGetUnreadMessages({}).then((m) => {
+          API[appID].Messaging.queryGetUnreadMessages({ filter: {} }).then((m) => {
             console.log("UNREAD ", m);
 
 
@@ -279,7 +294,7 @@ sender: "tero"
             filter: filter,
           })
 
-          console.log("MSGS ", msgs);
+          console.log("MSGS XXX", msgs);
           //{ id,user, contents: { timestamp, message,sender} },
           /*
                   // sort createdAt...
@@ -328,12 +343,17 @@ sender: "tero"
           }*/
           if (payload?.addMessage) {
             const msgStatus = JSON.parse(payload.addMessage.result);
+            console.log("MSG STATUS ", msgStatus)
             if (msgStatus.cnt > 0) {
               API[appID].Messaging.queryGetUnreadMessages({}).then((m) => {
                 console.log("UNREAD ", m);
                 if (notify.current) {
                   console.log("UPDATE SUBS")
                   notify.current(m.data);
+                }
+                if (notifySidebar.current) {
+                  console.log("UPDATE SIDEBAR SUBS")
+                  notifySidebar.current(m.data);
                 }
               });
             }
@@ -375,11 +395,16 @@ sender: "tero"
           registerDataConnector(appId, [IM]);
 
           const tasks = [];
+
+
           tasks.push(API[appId].Messaging.subscribeMessagingStatus({
             variables: {
               receiver: currentUser.uuid,
+              appHandler: shortId()
             },
           }))
+
+
           tasks.push(API[appId].Messaging.queryUserAddressBook({}));
           tasks.push(API[appId].Messaging.queryGetUnreadMessages({
             filter: {},
@@ -397,6 +422,7 @@ sender: "tero"
               chatInfo[m.sender].push({
                 message: m.body,
                 timestamp: m.createdAt,
+                id: m.messageId
               });
             });
             const chats = userAddressBook.data.getAddressBook.map((u) => ({
@@ -409,6 +435,9 @@ sender: "tero"
             set({ appType: appType, mode: mode, appId: appId, onUpdateID: id, loading: false, chatInfo: chatInfo, chats: chats });
 
           });
+
+
+
 
 
           /*

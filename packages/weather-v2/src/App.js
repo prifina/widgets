@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import useFetch from "./hooks/useFetch";
 
 import { usePrifina } from "@prifina/hooks-v2";
@@ -17,8 +17,13 @@ import { getDayIcon, getNightIcon } from "./utils/iconsMap";
 import { APP_ID } from "./environment";
 
 const containerStyle = {
+  /*
   width: "300px",
   height: "300px",
+  */
+  // responsive size...
+  width: "100%",
+  height: "100%",
   borderRadius: "10px",
   boxShadow: "0px 2px 8px rgba(91, 92, 91, 0.2)",
   paddingTop: 31,
@@ -34,8 +39,11 @@ const App = (props) => {
 
   const [active, setActive] = useState(true);
 
+
+
   const { city, data } = props;
   //const city = "san francisco";
+
 
   // init hook and get provider api services...
   const { onUpdate } = usePrifina();
@@ -43,6 +51,7 @@ const App = (props) => {
   // init provider api with your appID
   //const prifina = new Prifina({ appId: appID });
   let defaultCity = city;
+  let defaultHeight = "300px";
   if (
     typeof data !== "undefined" &&
     data.hasOwnProperty("settings") &&
@@ -52,8 +61,27 @@ const App = (props) => {
   ) {
     defaultCity = data.settings.city;
   }
+  if (
+    typeof data !== "undefined" &&
+    data.hasOwnProperty("settings") &&
+    typeof data.settings === "object" &&
+    data.settings.hasOwnProperty("size")
+  ) {
+    const parts = data.settings.size.split("x");
+    defaultHeight = parts[1] + 'px';
+  }
 
-  const [searchCity, setCity] = useState(defaultCity);
+
+  const [containerSize, setContainerSize] = useState(defaultHeight);
+
+  //const [searchCity, setCity] = useState(defaultCity);
+
+  const { weatherData, error, isLoading, setUrl } = useFetch(
+    `${API_BASE_URL}/v1/forecast.json?key=${API_KEY}&q=${defaultCity}&days=3&aqi=no&alerts=no`
+  );
+
+  const currentHeight = useRef(defaultHeight);
+  const effectCalled = useRef(false);
 
   const dataUpdate = (data) => {
     // should check the data payload... :)
@@ -61,30 +89,42 @@ const App = (props) => {
 
     if (
       data.hasOwnProperty("settings") &&
-      typeof data.settings === "object" &&
-      data.settings.hasOwnProperty("city")
+      typeof data.settings === "object"
+
     ) {
-      setCity(data.settings.city);
+      //setCity(data.settings.city);
       /*
       setUrl(
         `${API_BASE_URL}/data/2.5/weather?q=${data.settings.city}&units=metric&appid=${API_KEY}`
       );
       */
-      setUrl(
-        `${API_BASE_URL}/v1/forecast.json?key=${API_KEY}&q=${data.settings.city}&days=3&aqi=no&alerts=no`
-      );
+      if (data.settings.hasOwnProperty("city")) {
+        setUrl(
+          `${API_BASE_URL}/v1/forecast.json?key=${API_KEY}&q=${data.settings.city}&days=3&aqi=no&alerts=no`
+        );
+      }
+      if (data.settings.hasOwnProperty("size")) {
+        const parts = data.settings.size.split("x");
+        defaultHeight = parts[1] + 'px';
+        if (defaultHeight !== currentHeight.current) {
+          currentHeight.current = defaultHeight;
+          setContainerSize(defaultHeight);
+        }
+      }
+
     }
   };
 
   useEffect(() => {
     // init callback function for background updates/notifications
     //console.log("UPDATE INIT ", typeof onUpdate);
-    onUpdate(APP_ID, dataUpdate);
-  }, []);
+    // now running react 18, with strict mode... useEffects are triggered twice....
+    if (!effectCalled.current) {
+      effectCalled.current = true;
+      onUpdate(APP_ID, dataUpdate);
+    }
 
-  const { weatherData, error, isLoading, setUrl } = useFetch(
-    `${API_BASE_URL}/v1/forecast.json?key=${API_KEY}&q=${searchCity}&days=3&aqi=no&alerts=no`
-  );
+  }, []);
 
   ////background
   if (error) return <h2>Error when fetching: {error}</h2>;
@@ -442,8 +482,9 @@ const App = (props) => {
 
   return (
     <ChakraProvider resetCSS={false}>
+
       {isLoading === false && (
-        <Flex alt="container" style={containerStyle} flex={1} bg={bg}>
+        <Flex alt="container" style={{ ...containerStyle, height: containerSize }} flex={1} bg={bg}>
           {getContent()}
 
           {getForecast()}
@@ -451,7 +492,9 @@ const App = (props) => {
           {bottomContainer()}
         </Flex>
       )}
+
     </ChakraProvider>
+
   );
 };
 App.defaultProps = {

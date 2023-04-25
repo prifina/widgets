@@ -83,6 +83,8 @@ const App = (props) => {
   const [day, setDay] = useState(1);
   const [date, setDate] = useState();
 
+  const currentDay = useRef(0);
+
   useEffect(() => {
     async function init() {
       onUpdate(APP_ID, dataUpdate);
@@ -100,6 +102,7 @@ const App = (props) => {
   useEffect(() => {
     async function getData() {
 
+      currentDay.current = day;
       let d = new Date();
 
       const dd = d.setDate(d.getDate() - day);
@@ -129,7 +132,9 @@ const App = (props) => {
 
       processData(result.data.getDataObject.content);
     }
-    getData();
+    if (currentDay.current !== day) {
+      getData();
+    }
   }, [day]);
 
   console.log("day", day);

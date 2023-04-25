@@ -9,14 +9,14 @@ const App = (props) => {
     appId: APP_ID
   }
 
-  const appType = "widget";
+  const appType = "app";
   props = { ...props, appType };
   console.log("APP VERSION ", APP_VERSION);
   console.log("APP PROPS ", props)
 
 
   return (
-    <IMProvider componentProps={componentProps}>
+    <IMProvider componentProps={componentProps} >
       <IMessage {...props} />
     </IMProvider>
   );

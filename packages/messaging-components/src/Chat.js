@@ -1,7 +1,8 @@
 import { IconButton } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
+import MicIcon from "@material-ui/icons/Mic";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 //import { useSelector } from "react-redux";
 //import "./Chat.css";
 //import { selectChatId, selectChatName } from "./features/chatSlice";
@@ -14,6 +15,10 @@ import styled from "styled-components";
 
 import shallow from 'zustand/shallow'
 import { useStore } from "./IMStore";
+
+window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+
+const usrlang = navigator.language || navigator.userLanguage;
 
 const ChatContainer = styled.div`
   /* */
@@ -62,11 +67,11 @@ const Form = styled(Chat)`
     border-top: 1px solid lightgray;
     background-color: #f5f5f5;
   }
-
+/* 
   .chat__input > form {
     flex: 1;
   }
-
+ */
   .chat__messages {
     flex: 1;
     overflow: scroll;
@@ -83,33 +88,38 @@ const Form = styled(Chat)`
     scrollbar-width: none; /* Firefox */
   }
 
+  .chat__mic.rec {
+    color:red;
+  }
+  .chat__input >  input {
+    width: 98%;
+    outline-width: 0;
+    border: 1px solid lightgray;
+    border-radius: 999px;
+    padding: 5px;
+  } 
+/* 
   .chat__input > form > input {
     width: 98%;
     outline-width: 0;
     border: 1px solid lightgray;
     border-radius: 999px;
     padding: 5px;
-  }
-
+  } */
+/* 
   .chat__input > form > button {
     display: none;
-  }
+  } */
 `;
-
-function useIsMountedRef() {
-  const isMountedRef = useRef(null);
-  useEffect(() => {
-    isMountedRef.current = true;
-    return () => (isMountedRef.current = false);
-  });
-  return isMountedRef;
-}
 
 function Chat({ newChats, className }) {
   //const user = useSelector(selectUser);
 
-  const { mode, changeMode, currentUser, currentChat, messages, createMessage, updateMsgStatus, notify } = useStore(
-    (state) => ({ mode: state.mode, changeMode: state.changeMode, messages: state.messages, notify: state.notify, updateMsgStatus: state.updateMsgStatus, currentUser: state.currentUser, currentChat: state.currentChat, createMessage: state.createMessage }),
+  const { mode, changeMode, currentUser, currentChat, messages, createMessage, updateMsgStatus, notify, getUnreadMessages } = useStore(
+    (state) => ({
+      mode: state.mode, changeMode: state.changeMode,
+      getUnreadMessages: state.getUnreadMessages, messages: state.messages, notify: state.notify, updateMsgStatus: state.updateMsgStatus, currentUser: state.currentUser, currentChat: state.currentChat, createMessage: state.createMessage
+    }),
     shallow
   )
   //const messages=useStore((state)=>state.messages); 
@@ -123,9 +133,17 @@ function Chat({ newChats, className }) {
 
   //  const { appID, API, receiver, sender, newChatMessage } = useAppContext();
 
-  const [msgList, setMsgList] = useState([]);
+  const [msgList, setMsgList] = useState(messages);
   const [input, setInput] = useState("");
+  const [mic, setMic] = useState(false);
+  const speech = useRef("");
 
+  const [scrollTop, setScrollTop] = useState(0);
+  //const [language, setLang] = useState(usrlang);
+  const scrollTimer = useRef(null);
+  const msgTimer = useRef([]);
+
+  const effectCalled = useRef(false);
 
   notify((payload) => {
     /*currentMessages.push(
@@ -152,8 +170,16 @@ sender: "tero"
 */
     console.log("TESTING ", payload);
     let msg = [];
-    if (payload?.getUnreadMsgs) {
+    if (msgTimer.current.length > 0) {
+      msgTimer.current.forEach((t) => {
+        clearTimeout(t);
+      });
+    }
+    msgTimer.current = [];
+
+    if (payload?.getUnreadMsgs !== undefined) {
       msg = payload.getUnreadMsgs.map(m => {
+        console.log("NEW MESSAGE ", m);
         return {
           id: m.messageId, data: {
             timestamp: m.createdAt,
@@ -165,13 +191,37 @@ sender: "tero"
         }
       });
     }
+    console.log("NEW MESSAGES ", msg);
+    if (msg.length > 0) {
+      let sentMessages = [];
+      msg.forEach((m) => {
+        if (
+          m.data.receiver === currentUser.uuid &&
+          m.data.sender === currentChat.chatId
+        ) {
+          sentMessages.push(m);
+        }
+      });
+      console.log("UPDATE3 MSG STATUS ", sentMessages);
+      msgTimer.current = sentMessages.map((m) => {
+        return setTimeout(async () => {
+          await updateMsgStatus(m.id);
 
-    setMsgList([...msgList], [...msg]);
+        }, 500);
+      });
+
+      setMsgList(msgList.concat(msg));
+    }
+
+
+    //setMsgList([...msgList], [...msg]);
+
+
+    // scrollChat();
   });
   // const chatName = receiver.name;
   //const chatId = useSelector(selectChatId);
   //const [chatId, setChatId] = useState("");
-  const isMountedRef = useIsMountedRef();
   /*
      const filter = {
        ["chatId"]: {
@@ -293,25 +343,55 @@ sender: "tero"
     //console.log("MESSAGES ", messages);
   */
 
-  useEffect(() => {
-    let scrollTimer = null;
-    let msgTimer = [];
-    //if (isMountedRef.current) {
+  const scrollChat = () => {
+
     let chatDiv = document.getElementsByClassName("chat");
     let msgDiv = document.getElementsByClassName("chat__messages");
-    //let msgDiv = document.getElementsByClassName("chat__input");
 
+
+    //console.log("SCROLLS CHATS... ", chatDiv, msgDiv);
     //console.log("CHATS ", msgDiv);
     if (msgDiv.length > 0) {
+
       //console.log("CHATS ", chatDiv[0].scrollHeight);
-      scrollTimer = setTimeout(() => {
-        //console.log("SCROLL ");
+      scrollTimer.current = setTimeout(() => {
+
         msgDiv[0].scrollTop = chatDiv[0].scrollHeight;
         //console.log("SCROLL ", chatDiv[0].scrollHeight);
-      }, 200);
+      }, 500);
+      // clearTimeout(scrollTimer);
+    }
 
-      //let msg = { messageId: variables.messageId, status: variables.status };
-      //mutationUpdateMessageStatus
+  }
+
+  useLayoutEffect(() => {
+    if (scrollTop > 0) {
+      scrollChat();
+
+    }
+
+
+    return () => {
+      if (scrollTimer.current) {
+        clearTimeout(scrollTimer.current);
+        scrollTimer.current = null;
+      }
+    }
+    // }
+  }, [scrollTop])
+
+  useEffect(() => {
+
+    if (msgTimer.current.length > 0) {
+      msgTimer.current.forEach((t) => {
+        clearTimeout(t);
+      });
+    }
+    msgTimer.current = [];
+
+    function init() {
+      //effectCalled.current = true;
+      // scrollChat();
 
       let sentMessages = [];
       messages.forEach((m) => {
@@ -323,31 +403,102 @@ sender: "tero"
         }
       });
       console.log("UPDATE MSG STATUS ", sentMessages);
-      msgTimer = sentMessages.map((m) => {
+      msgTimer.current = sentMessages.map((m) => {
         return setTimeout(async () => {
           await updateMsgStatus(m.id);
+          //console.log("TIMER UPDATE ",m.id)
         }, 500);
       });
+
+      setMsgList(messages)
+      setScrollTop(prev => prev + 1);
     }
-    setMsgList(messages)
-    // }
+
+    if (messages.length > 0) {
+      console.log("CHAT INIT ")
+      init();
+    }
+    /*
     return () => {
-      if (scrollTimer !== null) {
-        clearTimeout(scrollTimer);
+      if (msgTimer.length > 0) {
 
         msgTimer.forEach((t) => {
           clearTimeout(t);
         });
       }
     };
-  });
-  // }, [isMountedRef, receiver]);
-  const sendMessage = async (e) => {
+    */
+
+  }, [newChats]);
+
+
+  const updateMsgList = () => {
+
+    let msgTimer = [];
+
+    let sentMessages = [];
+    messages.forEach((m) => {
+      if (
+        m.data.receiver === currentUser.uuid &&
+        m.data.sender === currentChat.chatId
+      ) {
+        sentMessages.push(m);
+      }
+    });
+    console.log("UPDATE2 MSG STATUS ", sentMessages);
+    msgTimer = sentMessages.map((m) => {
+      return setTimeout(async () => {
+        await updateMsgStatus(m.id);
+
+      }, 500);
+    });
+
+    setMsgList(messages)
+    setScrollTop(prev => prev + 1);
+
+    if (msgTimer.length > 0) {
+
+      msgTimer.forEach((t) => {
+        clearTimeout(t);
+      });
+    }
+
+
+  }
+
+  const sendMessage = async (e, micInput) => {
     // currentUser == sender
     // currentChat == receiver
-    console.log("SAVE MSG ", input, currentUser, currentChat);
-    e.preventDefault();
-    await createMessage(input);
+    const currentInput = micInput || input;
+    console.log("SEND MSG ", currentInput, currentUser, currentChat);
+
+    if (currentInput !== "") {
+      const newMsg = await createMessage(currentInput);
+      if (msgList.length === 0) {
+        updateMsgList();
+      } else {
+        if (newMsg.id !== msgList[msgList.length - 1].id) {
+          console.log("NEW MSG ", newMsg);
+          //console.log("LAST MSG ", msgList[msgList.length - 1]);
+          setMsgList(msgList.concat([newMsg]));
+        }
+        /*
+        return {
+          id: m.messageId, data: {
+            timestamp: m.createdAt,
+            message: m.body,
+            receiver: m.receiver,
+            sender: m.sender,
+            chatId: m.chatId
+          }
+        }
+        */
+      }
+
+      // console.log("NEW MESSAGE2 ", newMsg);
+      //console.log("NEW MESSAGE22 ", messages);
+    }
+
     /*
       API[appID].Messaging.mutationCreateMessage({
         variables: {
@@ -376,10 +527,61 @@ sender: "tero"
         setInput("");
       });
     */
+    // scrollChat();
+    speech.current = "";
     setInput("");
+    setScrollTop(prev => prev + 1);
+    if (e) {
+      e.preventDefault();
+    }
   };
 
-  console.log("MSGS ", messages);
+  useEffect(() => {
+    let recognition;
+
+    if (mic) {
+      console.log("RECORDING ",);
+
+      recognition = new window.SpeechRecognition();
+      // does this support all browser languages?
+      recognition.lang = usrlang;
+      recognition.onresult = (event) => {
+        const speechToText = event.results[0][0].transcript;
+        //console.log("TEXT ", speechToText);
+        speech.current = speechToText;
+        setMic(false);
+      }
+      recognition.start();
+
+    } else {
+
+      if (speech.current !== "") {
+        //recognition.stop();  recording stops automatically....
+        console.log("SEND", speech.current);
+        setInput(speech.current);
+        sendMessage(null, speech.current);
+      }
+    }
+
+
+
+  }, [mic])
+
+  useEffect(() => {
+    if (!effectCalled.current) {
+      effectCalled.current = true;
+    }
+
+    return () => {
+      if (msgTimer.current.length > 0) {
+
+        msgTimer.current.forEach((t) => {
+          clearTimeout(t);
+        });
+      }
+    };
+  }, [])
+  console.log("CHAT MSGS ", messages, msgList);
 
   return (
     <ChatContainer width={mode === 1 ? "60%" : "100%"}>
@@ -396,7 +598,9 @@ sender: "tero"
             <h4>
               To: <span className="chat__name">{currentChat?.name}</span>
             </h4>
+            {/* 
             <strong>Details</strong>
+            */}
           </div>
 
           {/* chat messages */}
@@ -422,10 +626,10 @@ sender: "tero"
             {msgList.map((m) => {
               console.log("EXTRA ", currentChat, m);
               //if (receiver.chatId !== m.data.chatId) return null;
+              // if empty currentChat,... return null
               return (
                 <ChatMessage
                   key={m.id}
-
                   user={currentUser}
                   chat={currentChat.chatId}
                   contents={m.data}
@@ -434,23 +638,38 @@ sender: "tero"
             })}
           </div>
           {currentChat?.chatId !== undefined && (
-            <div className="chat__input">
-              <form>
+            <>
+
+              <div className="chat__input">
+                <IconButton onClick={() => {
+                  setMic(true)
+                }}>
+                  <MicIcon className={`chat__mic ${mic ? "rec" : ""}`} />
+                </IconButton>
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="iMessage"
                   type="text"
+                  onKeyDown={e => {
+                    if (e.key === "Enter") {
+                      sendMessage();
+                    }
+                  }}
                 />
-                <button onClick={sendMessage}>Send Message</button>
-              </form>
+                {/* 
+              <button onClick={sendMessage}>Send Message</button>
+*/}
 
-              <IconButton onClick={sendMessage}>
-                <SendIcon className="chat__send" />
-              </IconButton>
-            </div>
+                <IconButton onClick={sendMessage}>
+                  <SendIcon className="chat__send" />
+                </IconButton>
+              </div>
+
+            </>
           )}
         </div>
+
       </div>
     </ChatContainer>
   );

@@ -15,6 +15,7 @@ const MsgDiv = styled.div`
     width: fit-content;
     justify-content: space-between;
     margin: 15px;
+    min-width:80px;
   }
   .message > p {
     background-color: #f3f3f5;
@@ -116,19 +117,27 @@ function ChatMessage({
 function Message({
   user,
   chat,
-  contents: { timestamp, message, sender, photo, chatId },
+  contents
 }) {
+  const { timestamp, message, sender, chatId } = contents;
+  //contents: { timestamp, message, sender, chatId },  //photo ???
   // console.log("PROPS ", props);
-  console.log("CHAT ", user, chat, sender, message, chatId);
+  /* 
+  console.log("CHAT ", user,);
+  console.log("CHAT ", chat,);
+  console.log("CHAT ", sender,);
+  console.log("CHAT ", message,);
+  console.log("CHAT ", chatId); */
   console.log("CHAT ", user.uuid === sender);
-
+  {/*  <Avatar className="message__photo" src={photo} />
+         */}
   return (
     <MsgDiv>
       <div
         className={`message ${user.uuid === sender ? "message__sender" : ""}`}
       >
         {user.uuid !== sender && (
-          <Avatar className="message__photo" src={photo} />
+          <Avatar className="message__photo" />
         )}
         <p>{JSON.parse(message)}</p>
         <small>{new Date(timestamp).toLocaleString()}</small>
